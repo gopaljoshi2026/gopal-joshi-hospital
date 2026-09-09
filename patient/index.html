@@ -1,0 +1,1962 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Patient Panel | Gopal Joshi Hospital
+</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f8fc;
+    color: #172033;
+}
+
+.patient-header {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.patient-logo {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f766e;
+}
+
+.patient-logo span {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 3px;
+}
+
+.patient-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.patient-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #0f766e;
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+}
+
+.logout-btn {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 0;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.patient-main {
+    width: min(1200px,92%);
+    margin: 30px auto;
+}
+
+.welcome-box {
+    background: linear-gradient(
+        135deg,
+        #0f766e,
+        #155e75
+    );
+    color: white;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+}
+
+.welcome-box h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    border: 1px solid #e5e7eb;
+}
+
+.dashboard-card h3 {
+    margin: 0 0 8px;
+    font-size: 15px;
+    color: #64748b;
+}
+
+.dashboard-number {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.panel-section {
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid #e5e7eb;
+}
+
+.panel-section h2 {
+    margin-top: 0;
+}
+
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.appointment-table th,
+.appointment-table td {
+    padding: 13px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+}
+
+.appointment-table th {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.panel-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.panel-btn {
+    border: 0;
+    padding: 12px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    background: #0f766e;
+    color: white;
+    font-weight: 600;
+}
+
+.panel-btn.secondary {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+.info-list {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+}
+
+.info-item {
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.info-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+}
+
+.feature-box {
+    border: 1px solid #e5e7eb;
+    padding: 20px;
+    border-radius: 14px;
+}
+
+.feature-box h3 {
+    margin: 0 0 8px;
+    color: #0f766e;
+}
+
+.feature-box p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.data-card {
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.data-card h3 {
+    margin-top: 0;
+    color: #0f766e;
+}
+
+.notice {
+    background: #fff7ed;
+    border-left: 4px solid #f97316;
+    padding: 15px;
+    border-radius: 8px;
+    color: #7c2d12;
+    margin-top: 15px;
+}
+
+.empty {
+    text-align: center;
+    color: #64748b;
+    padding: 25px;
+}
+
+@media(max-width:900px) {
+
+    .dashboard-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px) {
+
+    .patient-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-grid,
+    .feature-grid,
+    .info-list {
+        grid-template-columns: 1fr;
+    }
+
+    .appointment-table {
+        font-size: 13px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<header class="patient-header">
+
+    <div class="patient-logo">
+
+        Gopal Joshi Hospital
+
+        <span>
+            Patient Care Portal
+        </span>
+
+    </div>
+
+
+    <div class="patient-user">
+
+        <div class="patient-avatar">
+            GJ
+        </div>
+
+        <div>
+
+            <strong id="patientNameDisplay">
+                Patient
+            </strong>
+
+            <small
+                style="display:block;color:#64748b"
+            >
+                Patient Account
+            </small>
+
+        </div>
+
+
+        <button
+            class="logout-btn"
+            onclick="logoutPatient()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="patient-main">
+
+
+<section class="welcome-box">
+
+    <h1>
+        Welcome to Patient Panel
+    </h1>
+
+    <p>
+        Manage your appointments, prescriptions,
+        reports, bills and healthcare information
+        from one place.
+    </p>
+
+</section>
+
+
+<!-- STATS -->
+
+<section class="dashboard-grid">
+
+
+    <div class="dashboard-card">
+
+        <h3>
+            Upcoming Appointments
+        </h3>
+
+        <div
+            class="dashboard-number"
+            id="appointmentCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <h3>
+            Prescriptions
+        </h3>
+
+        <div
+            class="dashboard-number"
+            id="prescriptionCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <h3>
+            Lab Reports
+        </h3>
+
+        <div
+            class="dashboard-number"
+            id="reportCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-card">
+
+        <h3>
+            Pending Bills
+        </h3>
+
+        <div
+            class="dashboard-number"
+            id="pendingBills"
+        >
+            ₹0
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- APPOINTMENTS -->
+
+<section class="panel-section">
+
+    <h2>
+        My Appointments
+    </h2>
+
+
+    <div style="overflow-x:auto">
+
+        <table class="appointment-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Doctor
+                    </th>
+
+                    <th>
+                        Specialty
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="patientAppointments">
+
+                <tr>
+
+                    <td colspan="5">
+                        Loading appointments...
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <br>
+
+
+    <div class="panel-buttons">
+
+        <button
+            class="panel-btn"
+            onclick="goToAppointment()"
+        >
+            Book New Appointment
+        </button>
+
+
+        <button
+            class="panel-btn secondary"
+            onclick="loadPatientAppointments()"
+        >
+            Refresh
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- CLINICAL INFORMATION -->
+
+<section class="panel-section">
+
+    <h2>
+        My Clinical Information
+    </h2>
+
+    <div id="clinicalInformation">
+
+        <div class="empty">
+            No clinical information available yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PRESCRIPTIONS -->
+
+<section class="panel-section">
+
+    <h2>
+        My Prescriptions
+    </h2>
+
+    <div id="prescriptionInformation">
+
+        <div class="empty">
+            No prescriptions available yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- LAB REPORTS -->
+
+<section class="panel-section">
+
+    <h2>
+        My Lab Reports
+    </h2>
+
+    <div id="labInformation">
+
+        <div class="empty">
+            No laboratory reports available yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- BILLS -->
+
+<section class="panel-section">
+
+    <h2>
+        My Bills & Payments
+    </h2>
+
+    <div id="billInformation">
+
+        <div class="empty">
+            No billing information available yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FOLLOW UP -->
+
+<section class="panel-section">
+
+    <h2>
+        My Follow-ups
+    </h2>
+
+    <div id="followupInformation">
+
+        <div class="empty">
+            No follow-up information available yet.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="panel-section">
+
+    <h2>
+        Patient Services
+    </h2>
+
+
+    <div class="feature-grid">
+
+
+        <div class="feature-box">
+
+            <h3>
+                Appointments
+            </h3>
+
+            <p>
+                View upcoming and previous appointments.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Token & Queue
+            </h3>
+
+            <p>
+                View appointment queue information when available.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Prescriptions
+            </h3>
+
+            <p>
+                View prescriptions issued by your doctor.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Lab Reports
+            </h3>
+
+            <p>
+                Access diagnostic reports provided through the hospital.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Medical History
+            </h3>
+
+            <p>
+                View authorized previous healthcare records.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Bills
+            </h3>
+
+            <p>
+                View appointment and laboratory billing information.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Follow-up
+            </h3>
+
+            <p>
+                Track follow-up information from your doctor.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Medicine Information
+            </h3>
+
+            <p>
+                Search general educational medicine information.
+            </p>
+
+        </div>
+
+
+        <div class="feature-box">
+
+            <h3>
+                Feedback
+            </h3>
+
+            <p>
+                Share feedback about hospital services.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- PATIENT INFORMATION -->
+
+<section class="panel-section">
+
+    <h2>
+        My Information
+    </h2>
+
+
+    <div class="info-list">
+
+
+        <div class="info-item">
+
+            <strong>
+                Patient Name
+            </strong>
+
+            <span id="patientInfoName">
+                Not available
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <strong>
+                Email
+            </strong>
+
+            <span id="patientInfoEmail">
+                Not available
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <strong>
+                Phone
+            </strong>
+
+            <span id="patientInfoPhone">
+                Not available
+            </span>
+
+        </div>
+
+
+        <div class="info-item">
+
+            <strong>
+                Patient ID
+            </strong>
+
+            <span id="patientInfoId">
+                GJH-DEMO
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="notice">
+
+        This is a college/demo hospital management project.
+        Real medical information should be handled through
+        a properly secured healthcare system.
+
+    </div>
+
+</section>
+
+
+<!-- EMERGENCY -->
+
+<section class="panel-section">
+
+    <h2>
+        Emergency
+    </h2>
+
+    <p>
+        For a real medical emergency, contact local emergency
+        services or go to the nearest emergency department.
+    </p>
+
+
+    <div class="panel-buttons">
+
+        <button
+            class="panel-btn"
+            onclick="showEmergencyMessage()"
+        >
+            Emergency Assistance
+        </button>
+
+
+        <button
+            class="panel-btn secondary"
+            onclick="location.href='../index.html'"
+        >
+            Back to Hospital Website
+        </button>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<script>
+
+document.documentElement.style.visibility =
+    "hidden";
+
+
+let currentUser = null;
+
+let patientAppointments = [];
+
+
+// ====================================================
+// AUTH
+// ====================================================
+
+async function verifyPatientAccess() {
+
+    const token =
+        localStorage.getItem(
+            "gjh_token"
+        );
+
+
+    if (!token) {
+
+        location.replace(
+            "login.html"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/private/patient",
+                {
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !data.success ||
+            data.user?.role !== "patient"
+        ) {
+
+            throw new Error(
+                "Access denied"
+            );
+
+        }
+
+
+        currentUser =
+            data.user;
+
+
+        loadPatientProfile();
+
+
+        document.documentElement.style.visibility =
+            "visible";
+
+
+        await loadPatientAppointments();
+
+
+    } catch (error) {
+
+        localStorage.removeItem(
+            "gjh_token"
+        );
+
+        localStorage.removeItem(
+            "gjh_user"
+        );
+
+        location.replace(
+            "login.html"
+        );
+
+    }
+
+}
+
+
+// ====================================================
+// PROFILE
+// ====================================================
+
+function loadPatientProfile() {
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    document.getElementById(
+        "patientNameDisplay"
+    ).textContent =
+        currentUser.name ||
+        "Patient";
+
+
+    document.getElementById(
+        "patientInfoName"
+    ).textContent =
+        currentUser.name ||
+        "Not available";
+
+
+    document.getElementById(
+        "patientInfoEmail"
+    ).textContent =
+        currentUser.email ||
+        "Not available";
+
+
+    document.getElementById(
+        "patientInfoPhone"
+    ).textContent =
+        currentUser.phone ||
+        "Not available";
+
+
+    document.getElementById(
+        "patientInfoId"
+    ).textContent =
+        "GJH-" +
+        String(
+            currentUser.id
+        ).padStart(4,"0");
+
+}
+
+
+// ====================================================
+// LOAD APPOINTMENTS
+// ====================================================
+
+async function loadPatientAppointments() {
+
+    const table =
+        document.getElementById(
+            "patientAppointments"
+        );
+
+
+    table.innerHTML = `
+
+        <tr>
+
+            <td colspan="5">
+                Loading appointments...
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+        const token =
+            localStorage.getItem(
+                "gjh_token"
+            );
+
+
+        const response =
+            await fetch(
+                "/api/appointments",
+                {
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load appointments"
+            );
+
+        }
+
+
+        const allAppointments =
+            Array.isArray(
+                data.appointments
+            )
+                ? data.appointments
+                : [];
+
+
+        const patientEmail =
+            String(
+                currentUser?.email ||
+                ""
+            )
+            .trim()
+            .toLowerCase();
+
+
+        patientAppointments =
+            allAppointments.filter(
+                appointment =>
+                    String(
+                        appointment.email ||
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase() ===
+                    patientEmail
+            );
+
+
+        renderPatientAppointments();
+
+
+        updatePatientDashboard();
+
+
+        renderClinicalInformation();
+
+
+        renderPrescriptionInformation();
+
+
+        renderLabInformation();
+
+
+        renderBillInformation();
+
+
+        renderFollowupInformation();
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+                    Unable to load appointments.
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+// ====================================================
+// APPOINTMENTS TABLE
+// ====================================================
+
+function renderPatientAppointments() {
+
+    const table =
+        document.getElementById(
+            "patientAppointments"
+        );
+
+
+    if (!patientAppointments.length) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="5">
+                    No appointments found.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        patientAppointments
+        .map(
+            appointment => `
+
+            <tr>
+
+                <td>
+
+                    ${escapeHtml(
+                        appointment.doctorName ||
+                        appointment.doctor ||
+                        "Not available"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        appointment.specialty ||
+                        "General"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        appointment.date ||
+                        "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        appointment.time ||
+                        "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span class="status">
+
+                        ${escapeHtml(
+                            appointment.status ||
+                            "Booked"
+                        )}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// DASHBOARD
+// ====================================================
+
+function updatePatientDashboard() {
+
+    const upcoming =
+        patientAppointments.filter(
+            a =>
+                a.status !== "Completed" &&
+                a.status !== "Cancelled"
+        );
+
+
+    const prescriptions =
+        patientAppointments.filter(
+            a =>
+                String(
+                    a.prescription ||
+                    ""
+                ).trim()
+        );
+
+
+    const reports =
+        patientAppointments.reduce(
+            (total,a) =>
+                total +
+                (
+                    Array.isArray(a.tests)
+                        ? a.tests.filter(
+                            test =>
+                                String(
+                                    test.report ||
+                                    ""
+                                ).trim()
+                        ).length
+                        : 0
+                ),
+            0
+        );
+
+
+    const pendingBills =
+        patientAppointments.reduce(
+            (total,a) => {
+
+                const payment =
+                    a.payment || {};
+
+
+                if (
+                    payment.status ===
+                    "Pending"
+                ) {
+
+                    return total +
+                        (
+                            Number(
+                                payment.amount
+                            ) || 0
+                        );
+
+                }
+
+
+                return total;
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "appointmentCount"
+    ).textContent =
+        upcoming.length;
+
+
+    document.getElementById(
+        "prescriptionCount"
+    ).textContent =
+        prescriptions.length;
+
+
+    document.getElementById(
+        "reportCount"
+    ).textContent =
+        reports;
+
+
+    document.getElementById(
+        "pendingBills"
+    ).textContent =
+        "₹" +
+        pendingBills;
+
+}
+
+
+// ====================================================
+// CLINICAL INFORMATION
+// ====================================================
+
+function renderClinicalInformation() {
+
+    const box =
+        document.getElementById(
+            "clinicalInformation"
+        );
+
+
+    const records =
+        patientAppointments.filter(
+            a =>
+                String(
+                    a.diagnosis ||
+                    ""
+                ).trim() ||
+                String(
+                    a.clinicalNotes ||
+                    ""
+                ).trim()
+        );
+
+
+    if (!records.length) {
+
+        box.innerHTML = `
+
+            <div class="empty">
+                No clinical information available yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        records.map(
+            a => `
+
+            <div class="data-card">
+
+                <h3>
+                    ${escapeHtml(
+                        a.doctorName ||
+                        a.doctor ||
+                        "Doctor"
+                    )}
+                </h3>
+
+
+                <p>
+                    <strong>
+                        Appointment:
+                    </strong>
+
+                    ${escapeHtml(a.date)}
+                    ${escapeHtml(a.time)}
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <strong>
+                        Diagnosis:
+                    </strong>
+
+                    ${escapeHtml(
+                        a.diagnosis ||
+                        "Not recorded"
+                    )}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <strong>
+                        Clinical Notes:
+                    </strong>
+
+                    ${escapeHtml(
+                        a.clinicalNotes ||
+                        "Not recorded"
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// PRESCRIPTIONS
+// ====================================================
+
+function renderPrescriptionInformation() {
+
+    const box =
+        document.getElementById(
+            "prescriptionInformation"
+        );
+
+
+    const records =
+        patientAppointments.filter(
+            a =>
+                String(
+                    a.prescription ||
+                    ""
+                ).trim()
+        );
+
+
+    if (!records.length) {
+
+        box.innerHTML = `
+
+            <div class="empty">
+                No prescriptions available yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        records.map(
+            a => `
+
+            <div class="data-card">
+
+                <h3>
+                    ${escapeHtml(
+                        a.doctorName ||
+                        a.doctor ||
+                        "Doctor"
+                    )}
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Date:
+                    </strong>
+
+                    ${escapeHtml(a.date)}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <strong>
+                        Prescription / Treatment:
+                    </strong>
+
+                </p>
+
+
+                <p style="white-space:pre-wrap;margin-top:5px">
+
+                    ${escapeHtml(
+                        a.prescription
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// LAB REPORTS
+// ====================================================
+
+function renderLabInformation() {
+
+    const box =
+        document.getElementById(
+            "labInformation"
+        );
+
+
+    const reports = [];
+
+
+    patientAppointments.forEach(
+        appointment => {
+
+            if (
+                !Array.isArray(
+                    appointment.tests
+                )
+            ) {
+                return;
+            }
+
+
+            appointment.tests.forEach(
+                test => {
+
+                    if (
+                        String(
+                            test.report ||
+                            ""
+                        ).trim()
+                    ) {
+
+                        reports.push({
+
+                            appointment,
+
+                            test
+
+                        });
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    if (!reports.length) {
+
+        box.innerHTML = `
+
+            <div class="empty">
+                No laboratory reports available yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        reports.map(
+            item => `
+
+            <div class="data-card">
+
+                <h3>
+                    ${escapeHtml(
+                        item.test.name
+                    )}
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Doctor:
+                    </strong>
+
+                    ${escapeHtml(
+                        item.appointment.doctorName ||
+                        item.appointment.doctor ||
+                        "Doctor"
+                    )}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <strong>
+                        Status:
+                    </strong>
+
+                    ${escapeHtml(
+                        item.test.status ||
+                        "Completed"
+                    )}
+
+                </p>
+
+
+                <p style="margin-top:8px">
+
+                    <strong>
+                        Report:
+                    </strong>
+
+                </p>
+
+
+                <p style="white-space:pre-wrap">
+
+                    ${escapeHtml(
+                        item.test.report
+                    )}
+
+                </p>
+
+            </div>
+
+        `
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// BILL INFORMATION
+// ====================================================
+
+function renderBillInformation() {
+
+    const box =
+        document.getElementById(
+            "billInformation"
+        );
+
+
+    if (!patientAppointments.length) {
+
+        box.innerHTML = `
+
+            <div class="empty">
+                No billing information available yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        patientAppointments.map(
+            a => {
+
+                const payment =
+                    a.payment || {};
+
+
+                return `
+
+                <div class="data-card">
+
+                    <h3>
+                        Appointment Bill
+                    </h3>
+
+
+                    <p>
+
+                        <strong>
+                            Doctor:
+                        </strong>
+
+                        ${escapeHtml(
+                            a.doctorName ||
+                            a.doctor ||
+                            "Doctor"
+                        )}
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Date:
+                        </strong>
+
+                        ${escapeHtml(a.date)}
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Amount:
+                        </strong>
+
+                        ₹${escapeHtml(
+                            payment.amount ||
+                            a.fee ||
+                            0
+                        )}
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Payment Status:
+                        </strong>
+
+                        ${escapeHtml(
+                            payment.status ||
+                            "Pending"
+                        )}
+
+                    </p>
+
+
+                    ${
+                        payment.method
+                            ? `<p>
+                                <strong>
+                                    Method:
+                                </strong>
+                                ${escapeHtml(
+                                    payment.method
+                                )}
+                               </p>`
+                            : ""
+                    }
+
+                </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// FOLLOW UP
+// ====================================================
+
+function renderFollowupInformation() {
+
+    const box =
+        document.getElementById(
+            "followupInformation"
+        );
+
+
+    const records =
+        patientAppointments.filter(
+            a =>
+                a.followUp === true
+        );
+
+
+    if (!records.length) {
+
+        box.innerHTML = `
+
+            <div class="empty">
+                No follow-up information available yet.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        records.map(
+            a => `
+
+            <div class="data-card">
+
+                <h3>
+                    Follow-up Required
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Doctor:
+                    </strong>
+
+                    ${escapeHtml(
+                        a.doctorName ||
+                        a.doctor ||
+                        "Doctor"
+                    )}
+
+                </p>
+
+
+                ${
+                    a.followUpDate
+                        ? `<p>
+                            <strong>
+                                Follow-up Date:
+                            </strong>
+                            ${escapeHtml(
+                                a.followUpDate
+                            )}
+                           </p>`
+                        : ""
+                }
+
+
+                ${
+                    a.followUpNotes
+                        ? `<p style="margin-top:8px">
+                            <strong>
+                                Notes:
+                            </strong>
+                            ${escapeHtml(
+                                a.followUpNotes
+                            )}
+                           </p>`
+                        : ""
+                }
+
+            </div>
+
+        `
+        )
+        .join("");
+
+}
+
+
+// ====================================================
+// BOOK APPOINTMENT
+// ====================================================
+
+function goToAppointment() {
+
+    window.location.href =
+        "../index.html#appointment";
+
+}
+
+
+// ====================================================
+// LOGOUT
+// ====================================================
+
+function logoutPatient() {
+
+    localStorage.removeItem(
+        "gjh_token"
+    );
+
+    localStorage.removeItem(
+        "gjh_user"
+    );
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+// ====================================================
+// EMERGENCY
+// ====================================================
+
+function showEmergencyMessage() {
+
+    alert(
+        "For a real medical emergency, contact local emergency services or go to the nearest emergency department immediately."
+    );
+
+}
+
+
+// ====================================================
+// HTML SECURITY
+// ====================================================
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+// ====================================================
+// START
+// ====================================================
+
+verifyPatientAccess();
+
+</script>
+
+</body>
+
+</html>

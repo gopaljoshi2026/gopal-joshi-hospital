@@ -1,0 +1,1676 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel - Gopal Joshi Hospital</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1e293b;
+}
+
+.topbar{
+    height:70px;
+    background:linear-gradient(135deg,#312e81,#4f46e5);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    background:white;
+    color:#3730a3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.brand h2{
+    font-size:19px;
+}
+
+.brand p{
+    font-size:12px;
+    opacity:.85;
+    margin-top:3px;
+}
+
+.admin-info{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:white;
+    color:#3730a3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.logout{
+    background:#ef4444;
+    border:none;
+    color:white;
+    padding:9px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+.sidebar{
+    width:245px;
+    background:white;
+    border-right:1px solid #e5e7eb;
+    padding:20px 12px;
+    position:sticky;
+    top:70px;
+    height:calc(100vh - 70px);
+}
+
+.sidebar h3{
+    font-size:12px;
+    color:#94a3b8;
+    padding:10px 12px;
+    text-transform:uppercase;
+}
+
+.nav-btn{
+    width:100%;
+    padding:12px 14px;
+    border:none;
+    background:transparent;
+    text-align:left;
+    border-radius:8px;
+    cursor:pointer;
+    margin-bottom:5px;
+    color:#475569;
+    font-size:14px;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    background:#eef2ff;
+    color:#4338ca;
+    font-weight:bold;
+}
+
+.main{
+    flex:1;
+    padding:25px;
+    max-width:1600px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-title{
+    margin-bottom:22px;
+}
+
+.page-title h1{
+    font-size:28px;
+    margin-bottom:6px;
+}
+
+.page-title p{
+    color:#64748b;
+    font-size:14px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.stat h4{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.stat strong{
+    font-size:28px;
+}
+
+.stat span{
+    display:block;
+    margin-top:8px;
+    font-size:12px;
+    color:#16a34a;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.04);
+}
+
+.card h2{
+    font-size:18px;
+    margin-bottom:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:13px 10px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    background:#f8fafc;
+    color:#64748b;
+    font-size:12px;
+}
+
+.badge{
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.green{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.blue{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.orange{
+    background:#ffedd5;
+    color:#c2410c;
+}
+
+.red{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.purple{
+    background:#f3e8ff;
+    color:#7e22ce;
+}
+
+.alert{
+    padding:14px;
+    border-radius:10px;
+    margin-bottom:12px;
+    font-size:13px;
+}
+
+.alert.info{
+    background:#eff6ff;
+    color:#1e40af;
+    border:1px solid #bfdbfe;
+}
+
+.alert.warning{
+    background:#fff7ed;
+    color:#9a3412;
+    border:1px solid #fed7aa;
+}
+
+.alert.danger{
+    background:#fef2f2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+}
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.action{
+    border:1px solid #e5e7eb;
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    cursor:pointer;
+    text-align:left;
+}
+
+.action:hover{
+    background:#eef2ff;
+    border-color:#818cf8;
+}
+
+.action strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.action span{
+    font-size:12px;
+    color:#64748b;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    outline:none;
+}
+
+textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.btn{
+    background:#4f46e5;
+    color:white;
+    border:none;
+    padding:11px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn:hover{
+    background:#3730a3;
+}
+
+.btn-danger{
+    background:#dc2626;
+}
+
+.btn-small{
+    border:none;
+    padding:7px 10px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:bold;
+    background:#e0e7ff;
+    color:#3730a3;
+}
+
+.department-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.department{
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:18px;
+    background:#fafafa;
+}
+
+.department h3{
+    margin-bottom:8px;
+}
+
+.department p{
+    color:#64748b;
+    font-size:13px;
+}
+
+.department strong{
+    display:block;
+    margin-top:10px;
+    font-size:20px;
+}
+
+.security-box{
+    padding:18px;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.security-box h3{
+    margin-bottom:8px;
+}
+
+.security-box p{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.progress{
+    height:9px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress div{
+    height:100%;
+    border-radius:10px;
+}
+
+.bluebar{
+    background:#4f46e5;
+}
+
+.greenbar{
+    background:#16a34a;
+}
+
+.orangebar{
+    background:#f97316;
+}
+
+.redbar{
+    background:#dc2626;
+}
+
+.footer{
+    text-align:center;
+    padding:25px;
+    color:#94a3b8;
+    font-size:12px;
+}
+
+@media(max-width:1100px){
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .department-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:800px){
+    .sidebar{
+        width:70px;
+    }
+
+    .sidebar h3{
+        display:none;
+    }
+
+    .nav-btn{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav-btn::first-letter{
+        font-size:20px;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid,
+    .department-grid{
+        grid-template-columns:1fr;
+    }
+
+    .brand p{
+        display:none;
+    }
+
+    .admin-info > div:first-child{
+        display:none;
+    }
+}
+
+@media(max-width:550px){
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .brand h2{
+        font-size:15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+<div class="brand">
+
+<div class="logo">GJ</div>
+
+<div>
+<h2>Gopal Joshi Hospital</h2>
+<p>Administration & Security Portal</p>
+</div>
+
+</div>
+
+<div class="admin-info">
+
+<div>
+<strong>Hospital Admin</strong><br>
+<small>System Administration</small>
+</div>
+
+<div class="avatar">A</div>
+
+<button class="logout" onclick="logout()">Logout</button>
+
+</div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<h3>Administration</h3>
+
+<button class="nav-btn active" onclick="showPage('dashboard',this)">
+📊 Dashboard
+</button>
+
+<button class="nav-btn" onclick="showPage('users',this)">
+👥 Users
+</button>
+
+<button class="nav-btn" onclick="showPage('roles',this)">
+🔐 Roles & Access
+</button>
+
+<button class="nav-btn" onclick="showPage('departments',this)">
+🏥 Departments
+</button>
+
+<button class="nav-btn" onclick="showPage('security',this)">
+🛡️ Security
+</button>
+
+<button class="nav-btn" onclick="showPage('audit',this)">
+📋 Audit Logs
+</button>
+
+<button class="nav-btn" onclick="showPage('system',this)">
+⚙️ System
+</button>
+
+</aside>
+
+
+<main class="main">
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<div class="page-title">
+
+<h1>Admin Dashboard</h1>
+
+<p>Complete control and monitoring of Gopal Joshi Hospital.</p>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<h4>Total Users</h4>
+<strong id="totalUsers">10</strong>
+<span>Registered system users</span>
+</div>
+
+<div class="stat">
+<h4>Active Departments</h4>
+<strong>10</strong>
+<span>All departments operational</span>
+</div>
+
+<div class="stat">
+<h4>Security Status</h4>
+<strong>100%</strong>
+<span>System security active</span>
+</div>
+
+<div class="stat">
+<h4>System Uptime</h4>
+<strong>99.9%</strong>
+<span>System operational</span>
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div>
+
+<div class="card">
+
+<h2>System Overview</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Module</th>
+<th>Status</th>
+<th>Access</th>
+<th>Last Check</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Patient Management</td>
+<td><span class="badge green">Online</span></td>
+<td>Patient</td>
+<td>Just now</td>
+</tr>
+
+<tr>
+<td>Doctor Management</td>
+<td><span class="badge green">Online</span></td>
+<td>Doctor</td>
+<td>Just now</td>
+</tr>
+
+<tr>
+<td>Pharmacy</td>
+<td><span class="badge green">Online</span></td>
+<td>Pharmacy</td>
+<td>Just now</td>
+</tr>
+
+<tr>
+<td>Laboratory</td>
+<td><span class="badge green">Online</span></td>
+<td>Laboratory</td>
+<td>Just now</td>
+</tr>
+
+<tr>
+<td>Emergency Services</td>
+<td><span class="badge green">Online</span></td>
+<td>Ambulance</td>
+<td>Just now</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h2>Recent Admin Activity</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Activity</th>
+<th>User</th>
+<th>Status</th>
+<th>Time</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Admin login</td>
+<td>Hospital Admin</td>
+<td><span class="badge green">Success</span></td>
+<td>Now</td>
+</tr>
+
+<tr>
+<td>Doctor panel accessed</td>
+<td>Dr. Rajesh Sharma</td>
+<td><span class="badge blue">Accessed</span></td>
+<td>10 min ago</td>
+</tr>
+
+<tr>
+<td>Pharmacy inventory updated</td>
+<td>Pharmacy Staff</td>
+<td><span class="badge blue">Updated</span></td>
+<td>25 min ago</td>
+</tr>
+
+<tr>
+<td>Ambulance dispatched</td>
+<td>Ambulance Staff</td>
+<td><span class="badge orange">Active</span></td>
+<td>40 min ago</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<div>
+
+<div class="card">
+
+<h2>Security Alerts</h2>
+
+<div class="alert info">
+Authentication system is active.
+</div>
+
+<div class="alert warning">
+Regular password review is recommended.
+</div>
+
+<div class="alert danger">
+Production system should use HTTPS and secure sessions.
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Quick Actions</h2>
+
+<div class="quick-actions">
+
+<button class="action" onclick="showPage('users')">
+<strong>👥 Manage Users</strong>
+<span>Add and manage users</span>
+</button>
+
+<button class="action" onclick="showPage('roles')">
+<strong>🔐 Manage Roles</strong>
+<span>Review access permissions</span>
+</button>
+
+<button class="action" onclick="showPage('security')">
+<strong>🛡️ Security</strong>
+<span>Check security settings</span>
+</button>
+
+<button class="action" onclick="showPage('audit')">
+<strong>📋 Audit Logs</strong>
+<span>View system activity</span>
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- USERS -->
+
+<section id="users" class="page">
+
+<div class="page-title">
+
+<h1>User Management</h1>
+
+<p>Manage hospital system users and their departments.</p>
+
+</div>
+
+
+<div class="stats">
+
+<div class="stat">
+<h4>Total Users</h4>
+<strong id="userCount">10</strong>
+</div>
+
+<div class="stat">
+<h4>Active Users</h4>
+<strong>10</strong>
+</div>
+
+<div class="stat">
+<h4>Admin Users</h4>
+<strong>1</strong>
+</div>
+
+<div class="stat">
+<h4>Department Users</h4>
+<strong>9</strong>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>User Directory</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Username</th>
+<th>Role</th>
+<th>Department</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Hospital Admin</td>
+<td>admin</td>
+<td>Admin</td>
+<td>Administration</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Dr. Rajesh Sharma</td>
+<td>doctor</td>
+<td>Doctor</td>
+<td>Medical</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Pharmacy Staff</td>
+<td>pharmacy</td>
+<td>Pharmacy</td>
+<td>Pharmacy</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Laboratory Staff</td>
+<td>laboratory</td>
+<td>Laboratory</td>
+<td>Laboratory</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Nurse Staff</td>
+<td>nurse</td>
+<td>Nurse</td>
+<td>Nursing</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Reception Staff</td>
+<td>reception</td>
+<td>Reception</td>
+<td>Reception</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Bed Management Staff</td>
+<td>beds</td>
+<td>Beds</td>
+<td>Bed Management</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Ambulance Staff</td>
+<td>ambulance</td>
+<td>Ambulance</td>
+<td>Emergency Transport</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Hospital Manager</td>
+<td>manager</td>
+<td>Manager</td>
+<td>Management</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+<tr>
+<td>Patient Demo</td>
+<td>patient</td>
+<td>Patient</td>
+<td>Patient Services</td>
+<td><span class="badge green">Active</span></td>
+<td><button class="btn-small">View</button></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h2>Add System User</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Full Name</label>
+<input id="newName" placeholder="Enter full name">
+</div>
+
+<div class="form-group">
+<label>Username</label>
+<input id="newUsername" placeholder="Enter username">
+</div>
+
+<div class="form-group">
+<label>Role</label>
+
+<select id="newRole">
+
+<option>Doctor</option>
+<option>Pharmacy</option>
+<option>Laboratory</option>
+<option>Nurse</option>
+<option>Reception</option>
+<option>Beds</option>
+<option>Ambulance</option>
+<option>Manager</option>
+<option>Patient</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Status</label>
+
+<select>
+<option>Active</option>
+<option>Inactive</option>
+</select>
+
+</div>
+
+<div class="full">
+
+<button class="btn" onclick="addUser()">
+Add User
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ROLES -->
+
+<section id="roles" class="page">
+
+<div class="page-title">
+
+<h1>Roles & Access Control</h1>
+
+<p>Review role-based permissions for every hospital department.</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Role Permissions</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Role</th>
+<th>Dashboard</th>
+<th>Patient Data</th>
+<th>Management</th>
+<th>System Admin</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Admin</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge green">Full</span></td>
+</tr>
+
+<tr>
+<td>Manager</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Limited</span></td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Doctor</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge green">Clinical</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Nurse</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Care</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Pharmacy</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Medicine</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Laboratory</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Tests</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Reception</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Registration</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+<tr>
+<td>Ambulance</td>
+<td><span class="badge green">Full</span></td>
+<td><span class="badge blue">Emergency</span></td>
+<td><span class="badge red">No</span></td>
+<td><span class="badge red">No</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h2>Access Principle</h2>
+
+<div class="alert info">
+Each department should only access the data and operations required for its role.
+</div>
+
+<div class="alert warning">
+Admin access should be limited to authorized hospital administrators.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DEPARTMENTS -->
+
+<section id="departments" class="page">
+
+<div class="page-title">
+
+<h1>Department Management</h1>
+
+<p>Manage hospital departments and their operational status.</p>
+
+</div>
+
+
+<div class="department-grid">
+
+<div class="department">
+<h3>👨‍⚕️ Doctor</h3>
+<p>Medical consultation and clinical management</p>
+<strong>12 Staff</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>💊 Pharmacy</h3>
+<p>Medicine inventory and dispensing</p>
+<strong>4 Staff</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>🧪 Laboratory</h3>
+<p>Diagnostic tests and reports</p>
+<strong>5 Staff</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>👩‍⚕️ Nursing</h3>
+<p>Patient care and ward operations</p>
+<strong>10 Staff</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>🧾 Reception</h3>
+<p>Registration and appointments</p>
+<strong>3 Staff</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>🛏️ Beds</h3>
+<p>Bed allocation and occupancy</p>
+<strong>12 Beds</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>🚑 Ambulance</h3>
+<p>Emergency transport management</p>
+<strong>6 Ambulances</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>📊 Management</h3>
+<p>Hospital administration and monitoring</p>
+<strong>1 Manager</strong>
+<span class="badge green">Active</span>
+</div>
+
+<div class="department">
+<h3>🛡️ Administration</h3>
+<p>System security and user management</p>
+<strong>1 Admin</strong>
+<span class="badge green">Active</span>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SECURITY -->
+
+<section id="security" class="page">
+
+<div class="page-title">
+
+<h1>Security Center</h1>
+
+<p>Monitor authentication, access control and system security.</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Security Status</h2>
+
+<div class="security-box">
+
+<h3>Authentication</h3>
+
+<p>Hospital authentication service is currently operational.</p>
+
+<div class="progress">
+<div class="greenbar" style="width:100%"></div>
+</div>
+
+</div>
+
+
+<div class="security-box">
+
+<h3>Role Based Access</h3>
+
+<p>Department-level access restrictions are enabled.</p>
+
+<div class="progress">
+<div class="bluebar" style="width:100%"></div>
+</div>
+
+</div>
+
+
+<div class="security-box">
+
+<h3>Session Security</h3>
+
+<p>Demo authentication token system is currently active.</p>
+
+<div class="progress">
+<div class="orangebar" style="width:75%"></div>
+</div>
+
+</div>
+
+
+<div class="security-box">
+
+<h3>Production Security</h3>
+
+<p>HTTPS, secure sessions, password hashing and database security should be configured before real-world deployment.</p>
+
+<div class="progress">
+<div class="redbar" style="width:45%"></div>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Security Actions</h2>
+
+<button class="btn" onclick="securityCheck()">
+Run Security Check
+</button>
+
+</div>
+
+</section>
+
+
+<!-- AUDIT -->
+
+<section id="audit" class="page">
+
+<div class="page-title">
+
+<h1>Audit Logs</h1>
+
+<p>Track important system activities and administrative events.</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>System Activity</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Date & Time</th>
+<th>User</th>
+<th>Action</th>
+<th>Module</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+<td>Today 10:10</td>
+<td>Hospital Admin</td>
+<td>Login</td>
+<td>Admin</td>
+<td><span class="badge green">Success</span></td>
+</tr>
+
+<tr>
+<td>Today 09:55</td>
+<td>Hospital Manager</td>
+<td>Dashboard Access</td>
+<td>Manager</td>
+<td><span class="badge green">Success</span></td>
+</tr>
+
+<tr>
+<td>Today 09:40</td>
+<td>Doctor</td>
+<td>Patient Record Access</td>
+<td>Doctor</td>
+<td><span class="badge blue">Allowed</span></td>
+</tr>
+
+<tr>
+<td>Today 09:20</td>
+<td>Pharmacy</td>
+<td>Inventory Update</td>
+<td>Pharmacy</td>
+<td><span class="badge blue">Updated</span></td>
+</tr>
+
+<tr>
+<td>Today 08:50</td>
+<td>Ambulance</td>
+<td>Emergency Dispatch</td>
+<td>Ambulance</td>
+<td><span class="badge orange">Active</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+<!-- SYSTEM -->
+
+<section id="system" class="page">
+
+<div class="page-title">
+
+<h1>System Settings</h1>
+
+<p>Configure core hospital system settings.</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>Hospital Information</h2>
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Hospital Name</label>
+<input value="Gopal Joshi Hospital">
+</div>
+
+<div class="form-group">
+<label>Hospital Status</label>
+
+<select>
+<option>Open</option>
+<option>Emergency Only</option>
+<option>Closed</option>
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Contact Number</label>
+<input value="+91 9999999999">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input value="info@gopaljoshi.com">
+</div>
+
+<div class="form-group full">
+
+<label>Address</label>
+
+<textarea>Gopal Joshi Hospital, India</textarea>
+
+</div>
+
+<div class="full">
+
+<button class="btn" onclick="saveSystemSettings()">
+Save Settings
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>System Services</h2>
+
+<table>
+
+<tr>
+<td>Backend Server</td>
+<td><span class="badge green">Running</span></td>
+</tr>
+
+<tr>
+<td>Authentication</td>
+<td><span class="badge green">Active</span></td>
+</tr>
+
+<tr>
+<td>Role Based Access</td>
+<td><span class="badge green">Enabled</span></td>
+</tr>
+
+<tr>
+<td>API Services</td>
+<td><span class="badge green">Available</span></td>
+</tr>
+
+<tr>
+<td>Emergency Services</td>
+<td><span class="badge green">Available</span></td>
+</tr>
+
+</table>
+
+</div>
+
+</section>
+
+
+<div class="footer">
+
+Gopal Joshi Hospital © 2026 |
+Administration & Security Portal - Demo Project
+
+</div>
+
+</main>
+
+</div>
+
+
+<script>
+
+function showPage(pageId,button){
+
+    document.querySelectorAll(".page").forEach(page=>{
+        page.classList.remove("active");
+    });
+
+    const page=document.getElementById(pageId);
+
+    if(page){
+        page.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(btn=>{
+        btn.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+function addUser(){
+
+    const name=document.getElementById("newName").value.trim();
+
+    const username=document.getElementById("newUsername").value.trim();
+
+    const role=document.getElementById("newRole").value;
+
+    if(!name || !username){
+
+        alert("Please enter name and username.");
+
+        return;
+    }
+
+    const users=
+        JSON.parse(
+            localStorage.getItem("gjh_admin_users") || "[]"
+        );
+
+    users.push({
+        name:name,
+        username:username,
+        role:role,
+        status:"Active",
+        createdAt:new Date().toLocaleString()
+    });
+
+    localStorage.setItem(
+        "gjh_admin_users",
+        JSON.stringify(users)
+    );
+
+    document.getElementById("newName").value="";
+    document.getElementById("newUsername").value="";
+
+    alert(
+        "User added successfully.\\n\\n" +
+        "Note: This demo stores the record locally."
+    );
+
+}
+
+
+function securityCheck(){
+
+    alert(
+        "Security Check Complete\\n\\n" +
+        "Authentication: Active\\n" +
+        "Role Access: Enabled\\n" +
+        "API: Available\\n" +
+        "Backend: Running\\n\\n" +
+        "Production reminder: use HTTPS, secure sessions, " +
+        "hashed passwords and a database."
+    );
+
+}
+
+
+function saveSystemSettings(){
+
+    alert(
+        "System settings saved successfully."
+    );
+
+}
+
+
+function logout(){
+
+    localStorage.removeItem("gjh_token");
+
+    window.location.href="../index.html";
+
+}
+
+
+async function verifyAdminAccess(){
+
+    const token=
+        localStorage.getItem("gjh_token");
+
+    if(!token){
+
+        window.location.href="login.html";
+
+        return;
+    }
+
+    try{
+
+        const response=
+            await fetch(
+                "/api/private/admin",
+                {
+                    headers:{
+                        "Authorization":
+                        "Bearer "+token
+                    }
+                }
+            );
+
+        if(!response.ok){
+
+            localStorage.removeItem("gjh_token");
+
+            window.location.href="login.html";
+
+            return;
+        }
+
+    }catch(error){
+
+        console.log(
+            "Backend verification unavailable in demo mode."
+        );
+
+    }
+
+}
+
+
+verifyAdminAccess();
+
+</script>
+
+</body>
+</html>
+```

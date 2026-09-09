@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratory Login - Gopal Joshi Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f766e, #0d9488);
+            padding: 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #0f766e;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            padding: 13px;
+            margin-top: 22px;
+            border-radius: 8px;
+            background: #0f766e;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #115e59;
+        }
+
+        .error {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .demo {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f0fdfa;
+            color: #115e59;
+            font-size: 14px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>Laboratory Login</h1>
+
+    <p class="subtitle">
+        Gopal Joshi Hospital
+    </p>
+
+    <form id="loginForm">
+
+        <label>Username</label>
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+
+        <label>Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+        <div id="errorMessage" class="error"></div>
+
+    </form>
+
+    <div class="demo">
+        <strong>Demo Login</strong><br><br>
+        Username: laboratory<br>
+        Password: lab123
+    </div>
+
+    <a class="back" href="../index.html">
+        Back to Hospital
+    </a>
+
+</div>
+
+<script>
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        const username =
+            document.getElementById("username")
+                .value
+                .trim();
+
+        const password =
+            document.getElementById("password")
+                .value;
+
+        const errorMessage =
+            document.getElementById("errorMessage");
+
+        errorMessage.style.display = "none";
+
+        try {
+
+            const response = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+
+                errorMessage.textContent =
+                    data.message || "Invalid username or password";
+
+                errorMessage.style.display = "block";
+
+                return;
+            }
+
+            if (
+                !data.user ||
+                data.user.role !== "laboratory"
+            ) {
+
+                errorMessage.textContent =
+                    "This account does not have laboratory access.";
+
+                errorMessage.style.display = "block";
+
+                return;
+            }
+
+            localStorage.setItem(
+                "gjh_token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "gjh_user",
+                JSON.stringify(data.user)
+            );
+
+            window.location.href = "index.html";
+
+        } catch (error) {
+
+            errorMessage.textContent =
+                "Server connection failed. Please start the hospital server.";
+
+            errorMessage.style.display = "block";
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

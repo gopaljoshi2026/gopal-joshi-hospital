@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pharmacy Login - Gopal Joshi Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e8f5e9, #e3f2fd);
+        }
+
+        .login-box {
+            width: 380px;
+            max-width: 92%;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2e7d32;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #2e7d32;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1b5e20;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .demo {
+            margin-top: 20px;
+            padding: 12px;
+            background: #fff8e1;
+            border-radius: 9px;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #1565c0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="icon">💊</div>
+
+        <h1>Pharmacy Login</h1>
+
+        <p class="subtitle">
+            Gopal Joshi Hospital
+        </p>
+
+        <form id="loginForm">
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                required
+            >
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <button type="submit">
+                Login to Pharmacy Panel
+            </button>
+
+        </form>
+
+        <div
+            id="message"
+            class="message">
+        </div>
+
+        <div class="demo">
+            <strong>Demo Account</strong><br><br>
+            Username: pharmacy<br>
+            Password: pharmacy123
+        </div>
+
+        <a
+            href="../index.html"
+            class="back">
+            ← Back to Hospital
+        </a>
+
+    </div>
+
+    <script>
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const message =
+            document.getElementById("message");
+
+
+        loginForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                const username =
+                    document
+                        .getElementById("username")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                message.textContent =
+                    "Checking login...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/auth/login",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    username,
+                                    password
+                                })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        message.textContent =
+                            data.message ||
+                            "Login failed.";
+
+                        return;
+                    }
+
+
+                    if (
+                        !data.user ||
+                        data.user.role !== "pharmacy"
+                    ) {
+
+                        message.textContent =
+                            "This account is not authorized for Pharmacy Panel.";
+
+                        return;
+                    }
+
+
+                    localStorage.setItem(
+                        "gjh_token",
+                        data.token
+                    );
+
+
+                    localStorage.setItem(
+                        "gjh_user",
+                        JSON.stringify(data.user)
+                    );
+
+
+                    message.textContent =
+                        "Login successful. Opening Pharmacy Panel...";
+
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "index.html";
+
+                    }, 500);
+
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    message.textContent =
+                        "Server is not running. Please start the hospital backend.";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

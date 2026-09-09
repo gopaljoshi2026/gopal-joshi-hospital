@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login - Gopal Joshi Hospital</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f8fb;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            color: #0b6e8e;
+        }
+
+        .logo p {
+            margin-top: 8px;
+            color: #666;
+        }
+
+        .doctor-icon {
+            font-size: 50px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border: 1px solid #d5dce2;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .login-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            background: #0b6e8e;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+        .demo-info {
+            margin-top: 22px;
+            padding: 12px;
+            background: #f4f7f9;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <div class="doctor-icon">👨‍⚕️</div>
+
+        <div class="logo">
+            <h1>Gopal Joshi Hospital</h1>
+            <p>Private Doctor Access</p>
+        </div>
+
+        <h2>Doctor Login</h2>
+
+        <form id="doctorLoginForm">
+
+            <div class="form-group">
+                <label for="username">Doctor Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login to Doctor Panel
+            </button>
+
+        </form>
+
+        <div id="loginMessage" class="message"></div>
+
+        <div class="demo-info">
+            <strong>Demo Doctor Account</strong><br><br>
+            Username: doctor<br>
+            Password: doctor123
+        </div>
+
+        <a href="../index.html" class="back-link">
+            ← Back to Hospital Website
+        </a>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("doctorLoginForm");
+        const message = document.getElementById("loginMessage");
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            message.textContent = "Checking login...";
+            message.style.color = "#555";
+
+            try {
+
+                const response = await fetch(
+                    "/api/auth/login",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            username,
+                            password
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message || "Login failed"
+                    );
+                }
+
+                // IMPORTANT:
+                // Only doctor role can enter this panel.
+                if (data.user.role !== "doctor") {
+
+                    message.textContent =
+                        "Access denied. Doctor account required.";
+
+                    message.style.color = "red";
+
+                    return;
+                }
+
+                // Save authentication data
+                localStorage.setItem(
+                    "gjh_token",
+                    data.token
+                );
+
+                localStorage.setItem(
+                    "gjh_user",
+                    JSON.stringify(data.user)
+                );
+
+                message.textContent =
+                    "Login successful. Opening Doctor Panel...";
+
+                message.style.color = "green";
+
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 700);
+
+            } catch (error) {
+
+                message.textContent =
+                    error.message || "Unable to login";
+
+                message.style.color = "red";
+            }
+        });
+    </script>
+
+</body>
+</html>

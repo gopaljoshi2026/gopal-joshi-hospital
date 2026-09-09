@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception Login - Gopal Joshi Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+        }
+
+        .login-box {
+            width: 390px;
+            max-width: 92%;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1565c0;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1565c0;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #1565c0;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0d47a1;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            color: #d32f2f;
+            min-height: 20px;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #1565c0;
+            text-decoration: none;
+        }
+
+        .demo {
+            margin-top: 20px;
+            padding: 12px;
+            background: #eaf3ff;
+            border-radius: 9px;
+            font-size: 13px;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">🧑‍💼</div>
+
+    <h1>Reception Login</h1>
+
+    <p class="subtitle">
+        Gopal Joshi Hospital
+    </p>
+
+    <form id="loginForm">
+
+        <label for="username">Username</label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <div class="demo">
+        <strong>Demo Login</strong><br><br>
+        Username: reception<br>
+        Password: reception123
+    </div>
+
+    <a href="../index.html" class="back">
+        ← Back to Hospital Home
+    </a>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("message");
+
+    message.style.color = "#666";
+    message.textContent = "Checking login...";
+
+    try {
+
+        const response = await fetch("/api/auth/login", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+
+            message.style.color = "#d32f2f";
+            message.textContent =
+                data.message || "Invalid username or password";
+
+            return;
+        }
+
+        if (!data.user || data.user.role !== "reception") {
+
+            message.style.color = "#d32f2f";
+            message.textContent =
+                "This login is not authorized for Reception Panel.";
+
+            return;
+        }
+
+        localStorage.setItem(
+            "gjh_token",
+            data.token
+        );
+
+        localStorage.setItem(
+            "gjh_user",
+            JSON.stringify(data.user)
+        );
+
+        message.style.color = "#1565c0";
+        message.textContent =
+            "Login successful. Opening Reception Panel...";
+
+        setTimeout(function() {
+
+            window.location.href = "index.html";
+
+        }, 500);
+
+    } catch (error) {
+
+        message.style.color = "#d32f2f";
+        message.textContent =
+            "Server connection failed. Start the hospital server first.";
+
+        console.error(error);
+    }
+
+});
+
+</script>
+
+</body>
+</html>

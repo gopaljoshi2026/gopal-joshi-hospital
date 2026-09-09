@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Panel - Gopal Joshi Hospital</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            height: 70px;
+            background: linear-gradient(135deg, #075985, #0f766e);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            background: white;
+            color: #075985;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .brand h2 {
+            font-size: 19px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            opacity: .85;
+            margin-top: 3px;
+        }
+
+        .manager-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            color: #075985;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout {
+            background: #ef4444;
+            border: none;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 245px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 20px 12px;
+            position: sticky;
+            top: 70px;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            color: #94a3b8;
+            padding: 10px 12px;
+            text-transform: uppercase;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 12px 14px;
+            border: none;
+            background: transparent;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: bold;
+        }
+
+        .main {
+            flex: 1;
+            padding: 25px;
+            max-width: 1600px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-title {
+            margin-bottom: 22px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 12px rgba(0,0,0,.04);
+        }
+
+        .stat h4 {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat strong {
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+        .stat span {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #16a34a;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.04);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .department-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .department {
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+
+        .department h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .department p {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .department strong {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        th {
+            color: #64748b;
+            font-size: 12px;
+            background: #f8fafc;
+        }
+
+        .badge {
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .green {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .orange {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .blue {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .red {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .purple {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .progress-box {
+            margin-bottom: 17px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 9px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress div {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .bluebar {
+            background: #2563eb;
+        }
+
+        .greenbar {
+            background: #16a34a;
+        }
+
+        .orangebar {
+            background: #f97316;
+        }
+
+        .purplebar {
+            background: #9333ea;
+        }
+
+        .redbar {
+            background: #dc2626;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action {
+            border: 1px solid #e5e7eb;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            background: white;
+            text-align: left;
+        }
+
+        .action:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+
+        .action strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .action span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 5px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .btn {
+            background: #0369a1;
+            color: white;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #075985;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .report {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .report h3 {
+            margin-bottom: 10px;
+        }
+
+        .report p {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .report button {
+            border: none;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 9px 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .alert.warning {
+            background: #fff7ed;
+            color: #9a3412;
+            border: 1px solid #fed7aa;
+        }
+
+        .alert.danger {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert.info {
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media(max-width:1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .department-grid,
+            .report-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width:800px) {
+            .sidebar {
+                width: 70px;
+            }
+
+            .sidebar h3 {
+                display: none;
+            }
+
+            .nav-btn {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .nav-btn::first-letter {
+                font-size: 20px;
+            }
+
+            .main {
+                padding: 15px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .department-grid,
+            .report-grid,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brand p {
+                display: none;
+            }
+
+            .manager-info div:not(.avatar) {
+                display: none;
+            }
+        }
+
+        @media(max-width:550px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 12px;
+            }
+
+            .brand h2 {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+        <div class="logo">GJ</div>
+
+        <div>
+            <h2>Gopal Joshi Hospital</h2>
+            <p>Hospital Management Portal</p>
+        </div>
+    </div>
+
+    <div class="manager-info">
+
+        <div>
+            <strong>Hospital Manager</strong>
+            <small>Management Department</small>
+        </div>
+
+        <div class="avatar">M</div>
+
+        <button class="logout" onclick="logout()">Logout</button>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <h3>Management</h3>
+
+        <button class="nav-btn active" onclick="showPage('dashboard', this)">
+            📊 Dashboard
+        </button>
+
+        <button class="nav-btn" onclick="showPage('departments', this)">
+            🏥 Departments
+        </button>
+
+        <button class="nav-btn" onclick="showPage('staff', this)">
+            👨‍⚕️ Staff
+        </button>
+
+        <button class="nav-btn" onclick="showPage('finance', this)">
+            💰 Finance
+        </button>
+
+        <button class="nav-btn" onclick="showPage('reports', this)">
+            📈 Reports
+        </button>
+
+        <button class="nav-btn" onclick="showPage('performance', this)">
+            ⭐ Performance
+        </button>
+
+        <button class="nav-btn" onclick="showPage('complaints', this)">
+            📢 Complaints
+        </button>
+
+        <button class="nav-btn" onclick="showPage('settings', this)">
+            ⚙️ Settings
+        </button>
+
+    </aside>
+
+
+    <main class="main">
+
+
+        <!-- DASHBOARD -->
+
+        <section id="dashboard" class="page active">
+
+            <div class="page-title">
+                <h1>Hospital Dashboard</h1>
+                <p>Overall hospital operations and management overview.</p>
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h4>Total Patients</h4>
+                    <strong id="totalPatients">3</strong>
+                    <span>↑ Active patient records</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Total Staff</h4>
+                    <strong id="totalStaff">32</strong>
+                    <span>↑ Hospital workforce</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Available Beds</h4>
+                    <strong id="availableBeds">6</strong>
+                    <span>Ready for admission</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Monthly Revenue</h4>
+                    <strong>₹4.8L</strong>
+                    <span>↑ 12.5% this month</span>
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                <div>
+
+                    <div class="card">
+
+                        <h2>Department Overview</h2>
+
+                        <div class="department-grid">
+
+                            <div class="department">
+                                <h3>👨‍⚕️ Doctors</h3>
+                                <p>Medical professionals</p>
+                                <strong>12</strong>
+                            </div>
+
+                            <div class="department">
+                                <h3>💊 Pharmacy</h3>
+                                <p>Medicine inventory</p>
+                                <strong>200+</strong>
+                            </div>
+
+                            <div class="department">
+                                <h3>🧪 Laboratory</h3>
+                                <p>Diagnostic services</p>
+                                <strong>24</strong>
+                            </div>
+
+                            <div class="department">
+                                <h3>👩‍⚕️ Nursing</h3>
+                                <p>Nursing staff</p>
+                                <strong>10</strong>
+                            </div>
+
+                            <div class="department">
+                                <h3>🚑 Ambulance</h3>
+                                <p>Emergency transport</p>
+                                <strong>6</strong>
+                            </div>
+
+                            <div class="department">
+                                <h3>🛏️ Beds</h3>
+                                <p>Hospital capacity</p>
+                                <strong>12</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <h2>Recent Management Activity</h2>
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>New patient registered</td>
+                                    <td>Reception</td>
+                                    <td><span class="badge green">Completed</span></td>
+                                    <td>10 min ago</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Medicine stock updated</td>
+                                    <td>Pharmacy</td>
+                                    <td><span class="badge blue">Updated</span></td>
+                                    <td>25 min ago</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Lab report generated</td>
+                                    <td>Laboratory</td>
+                                    <td><span class="badge green">Completed</span></td>
+                                    <td>40 min ago</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Ambulance dispatched</td>
+                                    <td>Ambulance</td>
+                                    <td><span class="badge orange">En Route</span></td>
+                                    <td>1 hour ago</td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="card">
+
+                        <h2>Hospital Alerts</h2>
+
+                        <div class="alert warning">
+                            Pharmacy has medicines with low stock.
+                        </div>
+
+                        <div class="alert danger">
+                            1 ambulance currently requires maintenance.
+                        </div>
+
+                        <div class="alert info">
+                            6 beds are currently available.
+                        </div>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <h2>Quick Actions</h2>
+
+                        <div class="quick-actions">
+
+                            <button class="action" onclick="showPage('staff')">
+                                <strong>👨‍⚕️ Staff</strong>
+                                <span>Manage hospital staff</span>
+                            </button>
+
+                            <button class="action" onclick="showPage('finance')">
+                                <strong>💰 Finance</strong>
+                                <span>View financial data</span>
+                            </button>
+
+                            <button class="action" onclick="showPage('reports')">
+                                <strong>📈 Reports</strong>
+                                <span>Hospital reports</span>
+                            </button>
+
+                            <button class="action" onclick="showPage('complaints')">
+                                <strong>📢 Complaints</strong>
+                                <span>Patient complaints</span>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DEPARTMENTS -->
+
+        <section id="departments" class="page">
+
+            <div class="page-title">
+                <h1>Departments</h1>
+                <p>Monitor all hospital departments.</p>
+            </div>
+
+
+            <div class="card">
+
+                <h2>Department Status</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Head / Responsible</th>
+                            <th>Staff</th>
+                            <th>Status</th>
+                            <th>Performance</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Doctor</td>
+                            <td>Dr. Rajesh Sharma</td>
+                            <td>12</td>
+                            <td><span class="badge green">Active</span></td>
+                            <td>94%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Pharmacy</td>
+                            <td>Pharmacy Manager</td>
+                            <td>4</td>
+                            <td><span class="badge green">Active</span></td>
+                            <td>91%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Laboratory</td>
+                            <td>Lab Supervisor</td>
+                            <td>5</td>
+                            <td><span class="badge green">Active</span></td>
+                            <td>96%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Nursing</td>
+                            <td>Nurse Supervisor</td>
+                            <td>10</td>
+                            <td><span class="badge green">Active</span></td>
+                            <td>89%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Reception</td>
+                            <td>Reception Manager</td>
+                            <td>3</td>
+                            <td><span class="badge green">Active</span></td>
+                            <td>92%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Ambulance</td>
+                            <td>Transport Supervisor</td>
+                            <td>6</td>
+                            <td><span class="badge orange">Limited</span></td>
+                            <td>82%</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- STAFF -->
+
+        <section id="staff" class="page">
+
+            <div class="page-title">
+                <h1>Staff Management</h1>
+                <p>Monitor hospital employees and workforce.</p>
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h4>Doctors</h4>
+                    <strong>12</strong>
+                </div>
+
+                <div class="stat">
+                    <h4>Nurses</h4>
+                    <strong>10</strong>
+                </div>
+
+                <div class="stat">
+                    <h4>Support Staff</h4>
+                    <strong>10</strong>
+                </div>
+
+                <div class="stat">
+                    <h4>On Duty</h4>
+                    <strong>26</strong>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Staff Directory</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Department</th>
+                            <th>Shift</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Dr. Rajesh Sharma</td>
+                            <td>Doctor</td>
+                            <td>Medical</td>
+                            <td>Morning</td>
+                            <td><span class="badge green">On Duty</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Amit Kumar</td>
+                            <td>Driver</td>
+                            <td>Ambulance</td>
+                            <td>Day</td>
+                            <td><span class="badge green">Available</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Priya Sharma</td>
+                            <td>Nurse</td>
+                            <td>Nursing</td>
+                            <td>Morning</td>
+                            <td><span class="badge green">On Duty</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Rahul Verma</td>
+                            <td>Lab Technician</td>
+                            <td>Laboratory</td>
+                            <td>Day</td>
+                            <td><span class="badge blue">Working</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Neha Singh</td>
+                            <td>Pharmacist</td>
+                            <td>Pharmacy</td>
+                            <td>Evening</td>
+                            <td><span class="badge orange">Shift Soon</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FINANCE -->
+
+        <section id="finance" class="page">
+
+            <div class="page-title">
+                <h1>Finance Management</h1>
+                <p>Hospital revenue, expenses and billing overview.</p>
+            </div>
+
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h4>Total Revenue</h4>
+                    <strong>₹4.8L</strong>
+                    <span>↑ 12.5%</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Expenses</h4>
+                    <strong>₹2.1L</strong>
+                    <span>Monthly expenses</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Net Income</h4>
+                    <strong>₹2.7L</strong>
+                    <span>Current month</span>
+                </div>
+
+                <div class="stat">
+                    <h4>Pending Bills</h4>
+                    <strong>18</strong>
+                    <span>Needs follow-up</span>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Revenue Sources</h2>
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Doctor Consultation</span>
+                        <strong>42%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="bluebar" style="width:42%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Laboratory</span>
+                        <strong>24%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="greenbar" style="width:24%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Pharmacy</span>
+                        <strong>19%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="orangebar" style="width:19%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Other Services</span>
+                        <strong>15%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="purplebar" style="width:15%"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Recent Transactions</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Transaction</th>
+                            <th>Department</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Consultation Fee</td>
+                            <td>Doctor</td>
+                            <td>₹800</td>
+                            <td><span class="badge green">Paid</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Blood Test</td>
+                            <td>Laboratory</td>
+                            <td>₹600</td>
+                            <td><span class="badge green">Paid</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Medicine Bill</td>
+                            <td>Pharmacy</td>
+                            <td>₹1,250</td>
+                            <td><span class="badge orange">Pending</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- REPORTS -->
+
+        <section id="reports" class="page">
+
+            <div class="page-title">
+                <h1>Hospital Reports</h1>
+                <p>Generate and review management reports.</p>
+            </div>
+
+
+            <div class="report-grid">
+
+                <div class="report">
+                    <h3>📊 Patient Report</h3>
+                    <p>Patient registration, appointments and admissions.</p>
+                    <button onclick="generateReport('Patient')">Generate</button>
+                </div>
+
+                <div class="report">
+                    <h3>💰 Finance Report</h3>
+                    <p>Revenue, expenses and billing information.</p>
+                    <button onclick="generateReport('Finance')">Generate</button>
+                </div>
+
+                <div class="report">
+                    <h3>👨‍⚕️ Staff Report</h3>
+                    <p>Staff attendance and workforce statistics.</p>
+                    <button onclick="generateReport('Staff')">Generate</button>
+                </div>
+
+                <div class="report">
+                    <h3>💊 Pharmacy Report</h3>
+                    <p>Medicine inventory and stock status.</p>
+                    <button onclick="generateReport('Pharmacy')">Generate</button>
+                </div>
+
+                <div class="report">
+                    <h3>🧪 Laboratory Report</h3>
+                    <p>Tests, reports and diagnostic activity.</p>
+                    <button onclick="generateReport('Laboratory')">Generate</button>
+                </div>
+
+                <div class="report">
+                    <h3>🛏️ Bed Occupancy Report</h3>
+                    <p>Available, occupied and reserved beds.</p>
+                    <button onclick="generateReport('Bed Occupancy')">Generate</button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PERFORMANCE -->
+
+        <section id="performance" class="page">
+
+            <div class="page-title">
+                <h1>Hospital Performance</h1>
+                <p>Department-wise performance monitoring.</p>
+            </div>
+
+
+            <div class="card">
+
+                <h2>Department Performance</h2>
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Laboratory</span>
+                        <strong>96%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="greenbar" style="width:96%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Doctor Department</span>
+                        <strong>94%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="bluebar" style="width:94%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Reception</span>
+                        <strong>92%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="purplebar" style="width:92%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Pharmacy</span>
+                        <strong>91%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="greenbar" style="width:91%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Nursing</span>
+                        <strong>89%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="orangebar" style="width:89%"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+                        <span>Ambulance</span>
+                        <strong>82%</strong>
+                    </div>
+
+                    <div class="progress">
+                        <div class="redbar" style="width:82%"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- COMPLAINTS -->
+
+        <section id="complaints" class="page">
+
+            <div class="page-title">
+                <h1>Complaints Management</h1>
+                <p>Review and manage hospital complaints.</p>
+            </div>
+
+
+            <div class="card">
+
+                <h2>Complaint Summary</h2>
+
+                <div class="stats">
+
+                    <div class="stat">
+                        <h4>Total Complaints</h4>
+                        <strong>8</strong>
+                    </div>
+
+                    <div class="stat">
+                        <h4>Resolved</h4>
+                        <strong>5</strong>
+                    </div>
+
+                    <div class="stat">
+                        <h4>Pending</h4>
+                        <strong>2</strong>
+                    </div>
+
+                    <div class="stat">
+                        <h4>High Priority</h4>
+                        <strong>1</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Complaint Records</h2>
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>Subject</th>
+                            <th>Department</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>CMP-001</td>
+                            <td>Waiting time</td>
+                            <td>Reception</td>
+                            <td><span class="badge orange">Medium</span></td>
+                            <td><span class="badge green">Resolved</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>CMP-002</td>
+                            <td>Medicine availability</td>
+                            <td>Pharmacy</td>
+                            <td><span class="badge red">High</span></td>
+                            <td><span class="badge orange">Pending</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>CMP-003</td>
+                            <td>Billing clarification</td>
+                            <td>Reception</td>
+                            <td><span class="badge blue">Low</span></td>
+                            <td><span class="badge green">Resolved</span></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>Add Management Note</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Department</label>
+
+                        <select id="noteDepartment">
+
+                            <option>Doctor</option>
+                            <option>Pharmacy</option>
+                            <option>Laboratory</option>
+                            <option>Nursing</option>
+                            <option>Reception</option>
+                            <option>Ambulance</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Priority</label>
+
+                        <select id="notePriority">
+
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>Note</label>
+
+                        <textarea id="managementNote"
+                            placeholder="Enter management note..."></textarea>
+
+                    </div>
+
+                    <div class="full">
+                        <button class="btn" onclick="saveNote()">Save Note</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SETTINGS -->
+
+        <section id="settings" class="page">
+
+            <div class="page-title">
+                <h1>Management Settings</h1>
+                <p>Configure hospital management preferences.</p>
+            </div>
+
+
+            <div class="card">
+
+                <h2>Hospital Information</h2>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Hospital Name</label>
+                        <input value="Gopal Joshi Hospital">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input value="+91 9999999999">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input value="info@gopaljoshi.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Hospital Status</label>
+
+                        <select>
+                            <option>Open</option>
+                            <option>Closed</option>
+                            <option>Emergency Only</option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Hospital Address</label>
+
+                        <textarea>
+Gopal Joshi Hospital, India
+                        </textarea>
+
+                    </div>
+
+                    <div class="full">
+
+                        <button class="btn" onclick="saveSettings()">
+                            Save Settings
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>System Status</h2>
+
+                <table>
+
+                    <tr>
+                        <td>Hospital Management System</td>
+                        <td><span class="badge green">Operational</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Authentication System</td>
+                        <td><span class="badge green">Active</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Role Based Access</td>
+                        <td><span class="badge green">Enabled</span></td>
+                    </tr>
+
+                    <tr>
+                        <td>Emergency Services</td>
+                        <td><span class="badge green">Available</span></td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <div class="footer">
+            Gopal Joshi Hospital © 2026 | Hospital Management Portal - Demo Project
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    function showPage(pageId, button) {
+
+        document.querySelectorAll(".page").forEach(page => {
+            page.classList.remove("active");
+        });
+
+        document.getElementById(pageId).classList.add("active");
+
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        if (button) {
+            button.classList.add("active");
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    function generateReport(type) {
+
+        alert(
+            type +
+            " Report generated successfully.\\n\\n" +
+            "This is a demo report generation system."
+        );
+
+    }
+
+
+    function saveNote() {
+
+        const department =
+            document.getElementById("noteDepartment").value;
+
+        const priority =
+            document.getElementById("notePriority").value;
+
+        const note =
+            document.getElementById("managementNote").value.trim();
+
+        if (!note) {
+
+            alert("Please enter a management note.");
+
+            return;
+        }
+
+        const notes =
+            JSON.parse(
+                localStorage.getItem("gjh_manager_notes") || "[]"
+            );
+
+        notes.push({
+
+            department: department,
+
+            priority: priority,
+
+            note: note,
+
+            date: new Date().toLocaleString()
+
+        });
+
+        localStorage.setItem(
+            "gjh_manager_notes",
+            JSON.stringify(notes)
+        );
+
+        document.getElementById("managementNote").value = "";
+
+        alert("Management note saved successfully.");
+
+    }
+
+
+    function saveSettings() {
+
+        alert(
+            "Hospital settings saved successfully."
+        );
+
+    }
+
+
+    function logout() {
+
+        localStorage.removeItem("gjh_token");
+
+        window.location.href = "../index.html";
+
+    }
+
+
+    async function verifyManagerAccess() {
+
+        const token =
+            localStorage.getItem("gjh_token");
+
+        if (!token) {
+
+            window.location.href = "login.html";
+
+            return;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/private/manager",
+                    {
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+            if (!response.ok) {
+
+                localStorage.removeItem("gjh_token");
+
+                window.location.href = "login.html";
+
+                return;
+            }
+
+        } catch (error) {
+
+            console.log(
+                "Backend verification unavailable in demo mode."
+            );
+
+        }
+
+    }
+
+
+    verifyManagerAccess();
+
+</script>
+
+</body>
+</html>

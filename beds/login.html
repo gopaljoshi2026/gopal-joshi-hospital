@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beds Login - Gopal Joshi Hospital</title>
+</head>
+
+<body>
+
+    <h1>Beds & Room Management Login</h1>
+
+    <form id="loginForm">
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Username"
+            required
+        >
+
+        <br><br>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+        >
+
+        <br><br>
+
+        <button type="submit">Login</button>
+
+    </form>
+
+    <p id="message"></p>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    try {
+
+        const response = await fetch("/api/auth/login", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            message.textContent =
+                data.message || "Invalid username or password";
+            return;
+        }
+
+        if (!data.user || data.user.role !== "beds") {
+            message.textContent =
+                "This account is not authorized for Beds Panel.";
+            return;
+        }
+
+        localStorage.setItem("gjh_token", data.token);
+        localStorage.setItem(
+            "gjh_user",
+            JSON.stringify(data.user)
+        );
+
+        message.textContent =
+            "Login successful. Opening Beds Panel...";
+
+        setTimeout(function() {
+            window.location.href = "index.html";
+        }, 500);
+
+    } catch (error) {
+
+        message.textContent =
+            "Server connection failed.";
+
+        console.error(error);
+    }
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2980 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Nurse Panel | Gopal Joshi Hospital</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+.topbar{
+    height:70px;
+    background:linear-gradient(135deg,#087f8c,#12a6b5);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 3px 15px rgba(0,0,0,.12);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:44px;
+    height:44px;
+    background:white;
+    color:#087f8c;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+}
+
+.brand h2{
+    font-size:19px;
+}
+
+.brand span{
+    display:block;
+    font-size:12px;
+    opacity:.85;
+    margin-top:2px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-info{
+    text-align:right;
+}
+
+.profile-info strong{
+    display:block;
+    font-size:14px;
+}
+
+.profile-info small{
+    font-size:11px;
+    opacity:.8;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    background:rgba(255,255,255,.2);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-weight:bold;
+}
+
+.logout{
+    border:1px solid rgba(255,255,255,.5);
+    background:transparent;
+    color:white;
+    padding:8px 13px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+.sidebar{
+    width:245px;
+    background:white;
+    border-right:1px solid #e5e9f0;
+    padding:20px 14px;
+    position:sticky;
+    top:70px;
+    height:calc(100vh - 70px);
+}
+
+.sidebar-title{
+    font-size:11px;
+    color:#8a94a6;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin:8px 12px 10px;
+}
+
+.nav-btn{
+    width:100%;
+    border:none;
+    background:transparent;
+    text-align:left;
+    padding:12px 14px;
+    margin-bottom:5px;
+    border-radius:9px;
+    color:#566174;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    background:#e6f8fa;
+    color:#087f8c;
+}
+
+.main{
+    flex:1;
+    padding:25px;
+    min-width:0;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-header{
+    margin-bottom:22px;
+}
+
+.page-header h1{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.page-header p{
+    color:#748094;
+    font-size:14px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat{
+    background:white;
+    padding:18px;
+    border-radius:14px;
+    border:1px solid #e7ebf1;
+    box-shadow:0 3px 10px rgba(25,40,70,.04);
+}
+
+.stat-icon{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:#e6f8fa;
+    color:#087f8c;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+}
+
+.stat-number{
+    font-size:26px;
+    font-weight:800;
+    margin-top:12px;
+}
+
+.stat-label{
+    color:#7b8494;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e7ebf1;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.panel-title h2{
+    font-size:18px;
+}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.field{
+    margin-bottom:14px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    color:#596579;
+    font-weight:700;
+}
+
+input,select,textarea{
+    width:100%;
+    border:1px solid #d9dfe8;
+    padding:11px 13px;
+    border-radius:9px;
+    outline:none;
+    background:white;
+}
+
+textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#087f8c;
+    box-shadow:0 0 0 3px rgba(8,127,140,.08);
+}
+
+.search-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+
+.search-row input{
+    flex:1;
+    min-width:220px;
+}
+
+.btn{
+    border:none;
+    background:#087f8c;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn.success{
+    background:#16865c;
+}
+
+.btn.warning{
+    background:#d88a00;
+}
+
+.btn.danger{
+    background:#dc3545;
+}
+
+.btn.secondary{
+    background:#edf2f7;
+    color:#445066;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:900px;
+}
+
+th,td{
+    padding:13px 10px;
+    border-bottom:1px solid #edf0f4;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    background:#fafbfd;
+    color:#657084;
+    font-size:11px;
+    text-transform:uppercase;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.badge.normal{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.badge.pending{
+    background:#fff3d6;
+    color:#996800;
+}
+
+.badge.progress{
+    background:#e5f1ff;
+    color:#1764a0;
+}
+
+.badge.completed{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.badge.critical{
+    background:#ffe4e7;
+    color:#b42332;
+}
+
+.actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.small-btn{
+    border:none;
+    padding:7px 9px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:600;
+    background:#e6f8fa;
+    color:#087f8c;
+}
+
+.small-btn.green{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.small-btn.red{
+    background:#ffe8ea;
+    color:#b42332;
+}
+
+.patient-card{
+    border:1px solid #e5e9ef;
+    border-radius:11px;
+    padding:15px;
+    background:white;
+}
+
+.patient-card h3{
+    font-size:15px;
+    margin-bottom:6px;
+}
+
+.patient-card p{
+    color:#6d7788;
+    font-size:12px;
+    margin:5px 0;
+}
+
+.alert{
+    padding:13px 15px;
+    border-radius:9px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.alert.red{
+    background:#fff0f1;
+    border:1px solid #ffd0d4;
+    color:#a71d2a;
+}
+
+.alert.yellow{
+    background:#fff6df;
+    border:1px solid #f0dda8;
+    color:#805c00;
+}
+
+.alert.blue{
+    background:#edf7ff;
+    border:1px solid #cfe9ff;
+    color:#1764a0;
+}
+
+.vital-box{
+    border:1px solid #e5e9ef;
+    border-radius:10px;
+    padding:14px;
+    background:#fbfcfe;
+}
+
+.vital-box strong{
+    display:block;
+    font-size:20px;
+    margin-top:5px;
+}
+
+.vital-label{
+    color:#7a8494;
+    font-size:11px;
+}
+
+.empty{
+    padding:35px 15px;
+    text-align:center;
+    color:#8993a4;
+    font-size:13px;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,20,35,.55);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:700px;
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.close{
+    border:none;
+    background:#f0f2f5;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+.handover-box{
+    border-left:4px solid #087f8c;
+    background:#f7fbfc;
+    padding:15px;
+    margin-bottom:12px;
+    border-radius:8px;
+}
+
+@media(max-width:1150px){
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:900px){
+    .grid-2,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:70px;
+        padding:15px 8px;
+    }
+
+    .sidebar-title{
+        display:none;
+    }
+
+    .nav-btn{
+        font-size:0;
+        text-align:center;
+        padding:13px 5px;
+    }
+
+    .profile-info{
+        display:none;
+    }
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:450px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .brand h2{
+        font-size:15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="logo">GJ</div>
+
+        <div>
+            <h2>Gopal Joshi Hospital</h2>
+            <span>Nursing Management Portal</span>
+        </div>
+
+    </div>
+
+    <div class="profile">
+
+        <div class="profile-info">
+            <strong id="nurseUser">Nurse Staff</strong>
+            <small>Nursing Department</small>
+        </div>
+
+        <div class="avatar" id="avatar">N</div>
+
+        <button class="logout" onclick="logout()">Logout</button>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="sidebar-title">Nursing</div>
+
+    <button class="nav-btn active"
+            onclick="showPage('dashboard',this)">
+        🏠 Dashboard
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('patients',this)">
+        👨‍⚕️ Patients
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('vitals',this)">
+        ❤️ Vitals
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('medications',this)">
+        💊 Medications
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('tasks',this)">
+        ✅ Care Tasks
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('rounds',this)">
+        🩺 Ward Rounds
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('alerts',this)">
+        🚨 Alerts
+    </button>
+
+    <button class="nav-btn"
+            onclick="showPage('handover',this)">
+        🔄 Shift Handover
+    </button>
+
+</aside>
+
+
+<main class="main">
+
+
+<!-- DASHBOARD -->
+
+<section class="page active" id="dashboard">
+
+    <div class="page-header">
+
+        <h1>Nursing Dashboard</h1>
+
+        <p>
+            Monitor patients, vitals, care tasks and nursing activities.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="stat">
+            <div class="stat-icon">👥</div>
+            <div class="stat-number" id="totalPatients">0</div>
+            <div class="stat-label">Assigned Patients</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">❤️</div>
+            <div class="stat-number" id="vitalsCount">0</div>
+            <div class="stat-label">Vitals Recorded</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">💊</div>
+            <div class="stat-number" id="medCount">0</div>
+            <div class="stat-label">Medication Records</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number" id="pendingTasks">0</div>
+            <div class="stat-label">Pending Care Tasks</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-number" id="alertCount">0</div>
+            <div class="stat-label">Active Alerts</div>
+        </div>
+
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="panel">
+
+            <div class="panel-title">
+                <h2>Patient Overview</h2>
+
+                <button class="btn"
+                        onclick="showPage('patients')">
+                    View Patients
+                </button>
+            </div>
+
+            <div id="dashboardPatients"></div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-title">
+                <h2>Active Alerts</h2>
+
+                <button class="btn danger"
+                        onclick="showPage('alerts')">
+                    View Alerts
+                </button>
+
+            </div>
+
+            <div id="dashboardAlerts"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PATIENTS -->
+
+<section class="page" id="patients">
+
+    <div class="page-header">
+
+        <h1>Patient Management</h1>
+
+        <p>
+            View assigned patients and nursing information.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Assigned Patients</h2>
+
+            <button class="btn"
+                    onclick="openPatientModal()">
+                + Add Patient
+            </button>
+
+        </div>
+
+
+        <div class="search-row">
+
+            <input
+                id="patientSearch"
+                placeholder="Search patient, ID, ward or doctor..."
+                oninput="renderPatients()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Patient</th>
+                        <th>Age</th>
+                        <th>Ward</th>
+                        <th>Bed</th>
+                        <th>Doctor</th>
+                        <th>Condition</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="patientsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- VITALS -->
+
+<section class="page" id="vitals">
+
+    <div class="page-header">
+
+        <h1>Patient Vitals</h1>
+
+        <p>
+            Record and review patient vital observations.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Vitals Records</h2>
+
+            <button class="btn"
+                    onclick="openVitalsModal()">
+                + Record Vitals
+            </button>
+
+        </div>
+
+
+        <div class="search-row">
+
+            <input
+                id="vitalSearch"
+                placeholder="Search patient or record..."
+                oninput="renderVitals()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patient</th>
+                        <th>Temperature</th>
+                        <th>Pulse</th>
+                        <th>BP</th>
+                        <th>SpO2</th>
+                        <th>Respiration</th>
+                        <th>Time</th>
+                        <th>Flag</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="vitalsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- MEDICATIONS -->
+
+<section class="page" id="medications">
+
+    <div class="page-header">
+
+        <h1>Medication Administration</h1>
+
+        <p>
+            Record medication administration status as ordered by the treating team.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Medication Records</h2>
+
+            <button class="btn"
+                    onclick="openMedicationModal()">
+                + Add Record
+            </button>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patient</th>
+                        <th>Medicine</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                        <th>Time</th>
+                        <th>Notes</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="medicationTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TASKS -->
+
+<section class="page" id="tasks">
+
+    <div class="page-header">
+
+        <h1>Nursing Care Tasks</h1>
+
+        <p>
+            Track daily nursing activities and care tasks.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Care Tasks</h2>
+
+            <button class="btn"
+                    onclick="openTaskModal()">
+                + Add Task
+            </button>
+
+        </div>
+
+
+        <div class="search-row">
+
+            <select id="taskFilter"
+                    onchange="renderTasks()">
+
+                <option value="">All Tasks</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Patient</th>
+                        <th>Task</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Assigned</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="tasksTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ROUNDS -->
+
+<section class="page" id="rounds">
+
+    <div class="page-header">
+
+        <h1>Ward Rounds</h1>
+
+        <p>
+            Maintain nursing observations during ward rounds.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Ward Round Notes</h2>
+
+            <button class="btn"
+                    onclick="openRoundModal()">
+                + Add Round Note
+            </button>
+
+        </div>
+
+
+        <div id="roundsList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ALERTS -->
+
+<section class="page" id="alerts">
+
+    <div class="page-header">
+
+        <h1>Patient Alerts</h1>
+
+        <p>
+            Review nursing alerts and important observations.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div id="alertsList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- HANDOVER -->
+
+<section class="page" id="handover">
+
+    <div class="page-header">
+
+        <h1>Shift Handover</h1>
+
+        <p>
+            Record important patient information for the next nursing shift.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Handover Records</h2>
+
+            <button class="btn"
+                    onclick="openHandoverModal()">
+                + New Handover
+            </button>
+
+        </div>
+
+
+        <div id="handoverList"></div>
+
+    </div>
+
+</section>
+
+
+</main>
+</div>
+
+
+<!-- PATIENT MODAL -->
+
+<div class="modal" id="patientModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Add Patient</h2>
+
+            <button class="close"
+                    onclick="closeModal('patientModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Patient Name</label>
+
+                <input id="patientName"
+                       placeholder="Patient name">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Patient ID</label>
+
+                <input id="patientId"
+                       placeholder="Patient ID">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Age</label>
+
+                <input id="patientAge"
+                       type="number"
+                       placeholder="Age">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Ward</label>
+
+                <input id="patientWard"
+                       placeholder="Ward">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Bed</label>
+
+                <input id="patientBed"
+                       placeholder="Bed number">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Doctor</label>
+
+                <input id="patientDoctor"
+                       placeholder="Doctor name">
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>Condition / Nursing Information</label>
+
+                <textarea id="patientCondition"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="addPatient()">
+            Save Patient
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- VITALS MODAL -->
+
+<div class="modal" id="vitalsModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Record Patient Vitals</h2>
+
+            <button class="close"
+                    onclick="closeModal('vitalsModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Patient</label>
+
+                <select id="vitalPatient"></select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Temperature</label>
+
+                <input id="temperature"
+                       placeholder="Example: 37.0 °C">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Pulse</label>
+
+                <input id="pulse"
+                       placeholder="Example: 76 bpm">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Blood Pressure</label>
+
+                <input id="bp"
+                       placeholder="Example: 120/80">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>SpO2</label>
+
+                <input id="spo2"
+                       placeholder="Example: 98%">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Respiration</label>
+
+                <input id="respiration"
+                       placeholder="Example: 18/min">
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>Observation</label>
+
+                <textarea id="vitalObservation"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="saveVitals()">
+            Save Vitals
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MEDICATION MODAL -->
+
+<div class="modal" id="medicationModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Medication Record</h2>
+
+            <button class="close"
+                    onclick="closeModal('medicationModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Patient</label>
+
+                <select id="medPatient"></select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Medicine Name</label>
+
+                <input id="medicineName"
+                       placeholder="Medicine name">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Schedule</label>
+
+                <input id="medicineSchedule"
+                       placeholder="As per hospital order">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Status</label>
+
+                <select id="medicineStatus">
+
+                    <option>Administered</option>
+                    <option>Pending</option>
+                    <option>Not Administered</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>Notes</label>
+
+                <textarea id="medicineNotes"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="saveMedication()">
+            Save Record
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TASK MODAL -->
+
+<div class="modal" id="taskModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Add Care Task</h2>
+
+            <button class="close"
+                    onclick="closeModal('taskModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Patient</label>
+
+                <select id="taskPatient"></select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Task</label>
+
+                <input id="taskName"
+                       placeholder="Task name">
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Priority</label>
+
+                <select id="taskPriority">
+
+                    <option>Routine</option>
+                    <option>Important</option>
+                    <option>Urgent</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Status</label>
+
+                <select id="taskStatus">
+
+                    <option>Pending</option>
+                    <option>In Progress</option>
+                    <option>Completed</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="saveTask()">
+            Save Task
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- ROUND MODAL -->
+
+<div class="modal" id="roundModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Ward Round Note</h2>
+
+            <button class="close"
+                    onclick="closeModal('roundModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Patient</label>
+
+            <select id="roundPatient"></select>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Observation</label>
+
+            <textarea id="roundObservation"
+                      placeholder="Enter nursing observation"></textarea>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Action / Follow-up Note</label>
+
+            <textarea id="roundAction"></textarea>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="saveRound()">
+            Save Round Note
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- HANDOVER MODAL -->
+
+<div class="modal" id="handoverModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Shift Handover</h2>
+
+            <button class="close"
+                    onclick="closeModal('handoverModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Shift</label>
+
+                <select id="handoverShift">
+
+                    <option>Morning</option>
+                    <option>Evening</option>
+                    <option>Night</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Patient</label>
+
+                <select id="handoverPatient"></select>
+
+            </div>
+
+
+            <div class="field full">
+
+                <label>Important Patient Information</label>
+
+                <textarea id="handoverNotes"
+                          placeholder="Enter important information for next shift"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success"
+                onclick="saveHandover()">
+            Save Handover
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   AUTHENTICATION
+========================= */
+
+const token = localStorage.getItem("gjh_token");
+
+if(!token){
+    window.location.href="login.html";
+}
+
+
+async function verifyAccess(){
+
+    try{
+
+        const response = await fetch(
+            "/api/private/nurse",
+            {
+                headers:{
+                    Authorization:"Bearer "+token
+                }
+            }
+        );
+
+        if(!response.ok){
+
+            localStorage.removeItem("gjh_token");
+            localStorage.removeItem("gjh_user");
+
+            window.location.href="login.html";
+
+            return;
+        }
+
+        const data = await response.json();
+
+        if(data.user){
+
+            document.getElementById("nurseUser").textContent =
+                data.user.name || "Nurse Staff";
+
+            document.getElementById("avatar").textContent =
+                (data.user.name || "N").charAt(0).toUpperCase();
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+verifyAccess();
+
+
+function logout(){
+
+    localStorage.removeItem("gjh_token");
+    localStorage.removeItem("gjh_user");
+
+    window.location.href="login.html";
+
+}
+
+
+/* =========================
+   DATA
+========================= */
+
+let patients =
+    JSON.parse(localStorage.getItem("gjh_nurse_patients")) || [];
+
+let vitals =
+    JSON.parse(localStorage.getItem("gjh_nurse_vitals")) || [];
+
+let medications =
+    JSON.parse(localStorage.getItem("gjh_nurse_medications")) || [];
+
+let tasks =
+    JSON.parse(localStorage.getItem("gjh_nurse_tasks")) || [];
+
+let rounds =
+    JSON.parse(localStorage.getItem("gjh_nurse_rounds")) || [];
+
+let handovers =
+    JSON.parse(localStorage.getItem("gjh_nurse_handovers")) || [];
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "gjh_nurse_patients",
+        JSON.stringify(patients)
+    );
+
+    localStorage.setItem(
+        "gjh_nurse_vitals",
+        JSON.stringify(vitals)
+    );
+
+    localStorage.setItem(
+        "gjh_nurse_medications",
+        JSON.stringify(medications)
+    );
+
+    localStorage.setItem(
+        "gjh_nurse_tasks",
+        JSON.stringify(tasks)
+    );
+
+    localStorage.setItem(
+        "gjh_nurse_rounds",
+        JSON.stringify(rounds)
+    );
+
+    localStorage.setItem(
+        "gjh_nurse_handovers",
+        JSON.stringify(handovers)
+    );
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    if(page==="dashboard") renderDashboard();
+    if(page==="patients") renderPatients();
+    if(page==="vitals") renderVitals();
+    if(page==="medications") renderMedications();
+    if(page==="tasks") renderTasks();
+    if(page==="rounds") renderRounds();
+    if(page==="alerts") renderAlerts();
+    if(page==="handover") renderHandovers();
+
+}
+
+
+/* =========================
+   PATIENT MODAL
+========================= */
+
+function openPatientModal(){
+
+    document.getElementById("patientModal")
+        .classList.add("show");
+
+}
+
+
+function addPatient(){
+
+    const name =
+        document.getElementById("patientName").value.trim();
+
+    const id =
+        document.getElementById("patientId").value.trim();
+
+    const age =
+        document.getElementById("patientAge").value;
+
+    const ward =
+        document.getElementById("patientWard").value.trim();
+
+    const bed =
+        document.getElementById("patientBed").value.trim();
+
+    const doctor =
+        document.getElementById("patientDoctor").value.trim();
+
+    const condition =
+        document.getElementById("patientCondition").value.trim();
+
+
+    if(!name || !id || !ward || !bed){
+
+        alert("Please fill required patient fields.");
+
+        return;
+
+    }
+
+
+    patients.unshift({
+
+        id,
+
+        name,
+
+        age,
+
+        ward,
+
+        bed,
+
+        doctor,
+
+        condition,
+
+        createdAt:new Date().toLocaleString()
+
+    });
+
+
+    saveData();
+
+    closeModal("patientModal");
+
+    document.getElementById("patientName").value="";
+    document.getElementById("patientId").value="";
+    document.getElementById("patientAge").value="";
+    document.getElementById("patientWard").value="";
+    document.getElementById("patientBed").value="";
+    document.getElementById("patientDoctor").value="";
+    document.getElementById("patientCondition").value="";
+
+
+    renderPatients();
+    renderDashboard();
+
+}
+
+
+/* =========================
+   PATIENT TABLE
+========================= */
+
+function renderPatients(){
+
+    const query =
+        (document.getElementById("patientSearch")?.value || "")
+        .toLowerCase();
+
+
+    const data =
+        patients.filter(p=>
+            `${p.id} ${p.name} ${p.ward} ${p.bed} ${p.doctor}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+
+    const tbody =
+        document.getElementById("patientsTable");
+
+
+    if(!data.length){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="8">
+
+                    <div class="empty">
+                        No patients found.
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        data.map(p=>`
+
+            <tr>
+
+                <td>
+                    <strong>${p.id}</strong>
+                </td>
+
+                <td>${p.name}</td>
+
+                <td>${p.age || "-"}</td>
+
+                <td>${p.ward}</td>
+
+                <td>${p.bed}</td>
+
+                <td>${p.doctor || "-"}</td>
+
+                <td>${p.condition || "-"}</td>
+
+                <td>
+
+                    <button
+                        class="small-btn"
+                        onclick="viewPatient('${p.id}')"
+                    >
+                        View
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+function viewPatient(id){
+
+    const p =
+        patients.find(x=>x.id===id);
+
+    if(!p) return;
+
+    alert(
+        "Patient ID: "+p.id+
+        "\nName: "+p.name+
+        "\nAge: "+(p.age||"-")+
+        "\nWard: "+p.ward+
+        "\nBed: "+p.bed+
+        "\nDoctor: "+(p.doctor||"-")+
+        "\nCondition: "+(p.condition||"-")
+    );
+
+}
+
+
+/* =========================
+   PATIENT SELECTS
+========================= */
+
+function populatePatientSelects(){
+
+    const selects=[
+        "vitalPatient",
+        "medPatient",
+        "taskPatient",
+        "roundPatient",
+        "handoverPatient"
+    ];
+
+
+    selects.forEach(id=>{
+
+        const select =
+            document.getElementById(id);
+
+        if(!select) return;
+
+        select.innerHTML =
+            `<option value="">Select patient</option>`+
+            patients.map(p=>`
+
+                <option value="${p.id}">
+                    ${p.name} (${p.id})
+                </option>
+
+            `).join("");
+
+    });
+
+}
+
+
+/* =========================
+   VITALS
+========================= */
+
+function openVitalsModal(){
+
+    populatePatientSelects();
+
+    document.getElementById("vitalsModal")
+        .classList.add("show");
+
+}
+
+
+function saveVitals(){
+
+    const patientId =
+        document.getElementById("vitalPatient").value;
+
+    const patient =
+        patients.find(p=>p.id===patientId);
+
+    if(!patient){
+
+        alert("Please select patient.");
+
+        return;
+
+    }
+
+
+    const record={
+
+        id:"VIT-"+Date.now(),
+
+        patientId,
+
+        patient:patient.name,
+
+        temperature:
+            document.getElementById("temperature").value.trim(),
+
+        pulse:
+            document.getElementById("pulse").value.trim(),
+
+        bp:
+            document.getElementById("bp").value.trim(),
+
+        spo2:
+            document.getElementById("spo2").value.trim(),
+
+        respiration:
+            document.getElementById("respiration").value.trim(),
+
+        observation:
+            document.getElementById("vitalObservation").value.trim(),
+
+        time:new Date().toLocaleString()
+
+    };
+
+
+    vitals.unshift(record);
+
+    saveData();
+
+    closeModal("vitalsModal");
+
+    renderVitals();
+    renderDashboard();
+    generateAlerts();
+
+    alert("Vitals recorded successfully.");
+
+}
+
+
+function renderVitals(){
+
+    const query =
+        (document.getElementById("vitalSearch")?.value || "")
+        .toLowerCase();
+
+
+    const data =
+        vitals.filter(v=>
+            `${v.patient} ${v.patientId}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+
+    const tbody =
+        document.getElementById("vitalsTable");
+
+
+    if(!data.length){
+
+        tbody.innerHTML=`
+
+            <tr>
+                <td colspan="8">
+                    <div class="empty">
+                        No vitals records found.
+                    </div>
+                </td>
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        data.map(v=>`
+
+            <tr>
+
+                <td>${v.patient}</td>
+
+                <td>${v.temperature || "-"}</td>
+
+                <td>${v.pulse || "-"}</td>
+
+                <td>${v.bp || "-"}</td>
+
+                <td>${v.spo2 || "-"}</td>
+
+                <td>${v.respiration || "-"}</td>
+
+                <td>${v.time}</td>
+
+                <td>
+
+                    <span class="badge normal">
+                        Recorded
+                    </span>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   MEDICATIONS
+========================= */
+
+function openMedicationModal(){
+
+    populatePatientSelects();
+
+    document.getElementById("medicationModal")
+        .classList.add("show");
+
+}
+
+
+function saveMedication(){
+
+    const patientId =
+        document.getElementById("medPatient").value;
+
+    const patient =
+        patients.find(p=>p.id===patientId);
+
+    const medicine =
+        document.getElementById("medicineName")
+        .value.trim();
+
+    if(!patient || !medicine){
+
+        alert("Please select patient and medicine.");
+
+        return;
+
+    }
+
+
+    medications.unshift({
+
+        id:"MED-"+Date.now(),
+
+        patientId,
+
+        patient:patient.name,
+
+        medicine,
+
+        schedule:
+            document.getElementById("medicineSchedule")
+            .value.trim(),
+
+        status:
+            document.getElementById("medicineStatus").value,
+
+        notes:
+            document.getElementById("medicineNotes")
+            .value.trim(),
+
+        time:new Date().toLocaleString()
+
+    });
+
+
+    saveData();
+
+    closeModal("medicationModal");
+
+    renderMedications();
+    renderDashboard();
+
+    alert("Medication record saved.");
+
+}
+
+
+function renderMedications(){
+
+    const tbody =
+        document.getElementById("medicationTable");
+
+
+    if(!medications.length){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+                        No medication records found.
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        medications.map(m=>`
+
+            <tr>
+
+                <td>${m.patient}</td>
+
+                <td>${m.medicine}</td>
+
+                <td>${m.schedule || "-"}</td>
+
+                <td>
+
+                    <span class="badge ${
+                        m.status==="Administered"
+                        ?"completed"
+                        :"pending"
+                    }">
+
+                        ${m.status}
+
+                    </span>
+
+                </td>
+
+                <td>${m.time}</td>
+
+                <td>${m.notes || "-"}</td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   TASKS
+========================= */
+
+function openTaskModal(){
+
+    populatePatientSelects();
+
+    document.getElementById("taskModal")
+        .classList.add("show");
+
+}
+
+
+function saveTask(){
+
+    const patientId =
+        document.getElementById("taskPatient").value;
+
+    const patient =
+        patients.find(p=>p.id===patientId);
+
+    const task =
+        document.getElementById("taskName")
+        .value.trim();
+
+
+    if(!patient || !task){
+
+        alert("Please select patient and task.");
+
+        return;
+
+    }
+
+
+    tasks.unshift({
+
+        id:"TASK-"+Date.now(),
+
+        patientId,
+
+        patient:patient.name,
+
+        task,
+
+        priority:
+            document.getElementById("taskPriority").value,
+
+        status:
+            document.getElementById("taskStatus").value,
+
+        assignedAt:new Date().toLocaleString()
+
+    });
+
+
+    saveData();
+
+    closeModal("taskModal");
+
+    renderTasks();
+    renderDashboard();
+
+    alert("Care task added.");
+
+}
+
+
+function renderTasks(){
+
+    const filter =
+        document.getElementById("taskFilter")?.value || "";
+
+
+    const data =
+        tasks.filter(t=>
+            !filter || t.status===filter
+        );
+
+
+    const tbody =
+        document.getElementById("tasksTable");
+
+
+    if(!data.length){
+
+        tbody.innerHTML=`
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+                        No care tasks found.
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        data.map(t=>`
+
+            <tr>
+
+                <td>${t.patient}</td>
+
+                <td>${t.task}</td>
+
+                <td>
+
+                    <span class="badge ${
+                        t.priority==="Urgent"
+                        ?"critical"
+                        :"pending"
+                    }">
+
+                        ${t.priority}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <span class="badge ${
+                        t.status==="Completed"
+                        ?"completed"
+                        :t.status==="In Progress"
+                        ?"progress"
+                        :"pending"
+                    }">
+
+                        ${t.status}
+
+                    </span>
+
+                </td>
+
+                <td>${t.assignedAt}</td>
+
+                <td>
+
+                    ${
+                        t.status!=="Completed"
+                        ?`
+                        <button
+                            class="small-btn green"
+                            onclick="completeTask('${t.id}')"
+                        >
+                            Complete
+                        </button>
+                        `
+                        :"Done"
+                    }
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+function completeTask(id){
+
+    const task =
+        tasks.find(t=>t.id===id);
+
+    if(!task) return;
+
+    task.status="Completed";
+
+    saveData();
+
+    renderTasks();
+    renderDashboard();
+
+}
+
+
+/* =========================
+   WARD ROUNDS
+========================= */
+
+function openRoundModal(){
+
+    populatePatientSelects();
+
+    document.getElementById("roundModal")
+        .classList.add("show");
+
+}
+
+
+function saveRound(){
+
+    const patientId =
+        document.getElementById("roundPatient").value;
+
+    const patient =
+        patients.find(p=>p.id===patientId);
+
+    const observation =
+        document.getElementById("roundObservation")
+        .value.trim();
+
+    if(!patient || !observation){
+
+        alert("Please select patient and enter observation.");
+
+        return;
+
+    }
+
+
+    rounds.unshift({
+
+        id:"ROUND-"+Date.now(),
+
+        patientId,
+
+        patient:patient.name,
+
+        observation,
+
+        action:
+            document.getElementById("roundAction")
+            .value.trim(),
+
+        time:new Date().toLocaleString()
+
+    });
+
+
+    saveData();
+
+    closeModal("roundModal");
+
+    renderRounds();
+
+    alert("Ward round note saved.");
+
+}
+
+
+function renderRounds(){
+
+    const box =
+        document.getElementById("roundsList");
+
+
+    if(!rounds.length){
+
+        box.innerHTML=
+            `<div class="empty">No ward round notes yet.</div>`;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        rounds.map(r=>`
+
+            <div class="patient-card"
+                 style="margin-bottom:12px">
+
+                <h3>${r.patient}</h3>
+
+                <p>
+                    <strong>Observation:</strong>
+                    ${r.observation}
+                </p>
+
+                <p>
+                    <strong>Action / Follow-up:</strong>
+                    ${r.action || "-"}
+                </p>
+
+                <p>
+                    <strong>Recorded:</strong>
+                    ${r.time}
+                </p>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   ALERTS
+========================= */
+
+let generatedAlerts=[];
+
+
+function generateAlerts(){
+
+    generatedAlerts=[];
+
+
+    vitals.forEach(v=>{
+
+        const text =
+            `${v.temperature} ${v.pulse} ${v.bp} ${v.spo2}`
+            .toLowerCase();
+
+
+        if(
+            text.includes("critical") ||
+            text.includes("urgent")
+        ){
+
+            generatedAlerts.push({
+
+                patient:v.patient,
+
+                message:
+                    "Vital record contains an urgent/critical note.",
+
+                time:v.time
+
+            });
+
+        }
+
+    });
+
+
+    tasks
+        .filter(t=>t.priority==="Urgent" && t.status!=="Completed")
+        .forEach(t=>{
+
+            generatedAlerts.push({
+
+                patient:t.patient,
+
+                message:
+                    `Urgent care task pending: ${t.task}`,
+
+                time:t.assignedAt
+
+            });
+
+        });
+
+}
+
+
+function renderAlerts(){
+
+    generateAlerts();
+
+
+    const box =
+        document.getElementById("alertsList");
+
+
+    if(!generatedAlerts.length){
+
+        box.innerHTML=`
+
+            <div class="empty">
+                No active nursing alerts.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        generatedAlerts.map(a=>`
+
+            <div class="alert red">
+
+                <strong>${a.patient}</strong>
+
+                <br>
+
+                ${a.message}
+
+                <br>
+
+                <small>${a.time}</small>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   HANDOVER
+========================= */
+
+function openHandoverModal(){
+
+    populatePatientSelects();
+
+    document.getElementById("handoverModal")
+        .classList.add("show");
+
+}
+
+
+function saveHandover(){
+
+    const patientId =
+        document.getElementById("handoverPatient").value;
+
+    const patient =
+        patients.find(p=>p.id===patientId);
+
+    const notes =
+        document.getElementById("handoverNotes")
+        .value.trim();
+
+    if(!patient || !notes){
+
+        alert("Please select patient and enter handover information.");
+
+        return;
+
+    }
+
+
+    handovers.unshift({
+
+        id:"HAND-"+Date.now(),
+
+        patientId,
+
+        patient:patient.name,
+
+        shift:
+            document.getElementById("handoverShift").value,
+
+        notes,
+
+        time:new Date().toLocaleString()
+
+    });
+
+
+    saveData();
+
+    closeModal("handoverModal");
+
+    renderHandovers();
+
+    alert("Shift handover saved.");
+
+}
+
+
+function renderHandovers(){
+
+    const box =
+        document.getElementById("handoverList");
+
+
+    if(!handovers.length){
+
+        box.innerHTML=
+            `<div class="empty">
+                No shift handover records yet.
+            </div>`;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        handovers.map(h=>`
+
+            <div class="handover-box">
+
+                <strong>${h.patient}</strong>
+
+                <p style="margin-top:7px">
+                    Shift: ${h.shift}
+                </p>
+
+                <p style="margin-top:7px">
+                    ${h.notes}
+                </p>
+
+                <small>
+                    ${h.time}
+                </small>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+    generateAlerts();
+
+
+    document.getElementById("totalPatients")
+        .textContent=patients.length;
+
+    document.getElementById("vitalsCount")
+        .textContent=vitals.length;
+
+    document.getElementById("medCount")
+        .textContent=medications.length;
+
+    document.getElementById("pendingTasks")
+        .textContent=
+            tasks.filter(t=>t.status!=="Completed").length;
+
+    document.getElementById("alertCount")
+        .textContent=generatedAlerts.length;
+
+
+    const patientBox =
+        document.getElementById("dashboardPatients");
+
+
+    if(!patients.length){
+
+        patientBox.innerHTML=
+            `<div class="empty">
+                No patients assigned.
+            </div>`;
+
+    }else{
+
+        patientBox.innerHTML =
+            patients.slice(0,5).map(p=>`
+
+                <div class="patient-card"
+                     style="margin-bottom:8px">
+
+                    <h3>${p.name}</h3>
+
+                    <p>
+                        ID: ${p.id}
+                        • Ward: ${p.ward}
+                        • Bed: ${p.bed}
+                    </p>
+
+                    <p>
+                        Doctor: ${p.doctor || "-"}
+                    </p>
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    const alertBox =
+        document.getElementById("dashboardAlerts");
+
+
+    if(!generatedAlerts.length){
+
+        alertBox.innerHTML=
+            `<div class="empty">
+                No active alerts.
+            </div>`;
+
+    }else{
+
+        alertBox.innerHTML =
+            generatedAlerts.slice(0,5).map(a=>`
+
+                <div class="alert red">
+
+                    <strong>${a.patient}</strong>
+
+                    <br>
+
+                    ${a.message}
+
+                </div>
+
+            `).join("");
+
+    }
+
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+function closeModal(id){
+
+    document.getElementById(id)
+        .classList.remove("show");
+
+}
+
+
+document.querySelectorAll(".modal").forEach(modal=>{
+
+    modal.addEventListener("click",e=>{
+
+        if(e.target===modal){
+
+            modal.classList.remove("show");
+
+        }
+
+    });
+
+});
+
+
+/* =========================
+   INITIALIZATION
+========================= */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    populatePatientSelects();
+
+    renderDashboard();
+
+    renderPatients();
+
+    renderVitals();
+
+    renderMedications();
+
+    renderTasks();
+
+    renderRounds();
+
+    renderAlerts();
+
+    renderHandovers();
+
+});
+
+</script>
+
+</body>
+</html>
+```

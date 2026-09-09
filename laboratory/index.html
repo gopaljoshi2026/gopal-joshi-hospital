@@ -1,0 +1,2666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratory Panel | Gopal Joshi Hospital</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+button,input,select,textarea{
+    font:inherit;
+}
+
+.topbar{
+    height:70px;
+    background:linear-gradient(135deg,#155eef,#4c6fff);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 3px 15px rgba(0,0,0,.12);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:44px;
+    height:44px;
+    background:white;
+    color:#155eef;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    font-weight:800;
+}
+
+.brand h2{
+    font-size:19px;
+}
+
+.brand span{
+    display:block;
+    font-size:12px;
+    opacity:.85;
+    margin-top:2px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.profile-info{
+    text-align:right;
+}
+
+.profile-info strong{
+    display:block;
+    font-size:14px;
+}
+
+.profile-info small{
+    font-size:11px;
+    opacity:.8;
+}
+
+.avatar{
+    width:40px;
+    height:40px;
+    background:rgba(255,255,255,.2);
+    border-radius:50%;
+    display:grid;
+    place-items:center;
+    font-weight:bold;
+}
+
+.logout{
+    border:1px solid rgba(255,255,255,.5);
+    background:transparent;
+    color:white;
+    padding:8px 13px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 70px);
+}
+
+.sidebar{
+    width:245px;
+    background:white;
+    border-right:1px solid #e5e9f0;
+    padding:20px 14px;
+    position:sticky;
+    top:70px;
+    height:calc(100vh - 70px);
+}
+
+.sidebar-title{
+    font-size:11px;
+    color:#8a94a6;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin:8px 12px 10px;
+}
+
+.nav-btn{
+    width:100%;
+    border:none;
+    background:transparent;
+    text-align:left;
+    padding:12px 14px;
+    margin-bottom:5px;
+    border-radius:9px;
+    color:#566174;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.nav-btn:hover,
+.nav-btn.active{
+    background:#edf3ff;
+    color:#155eef;
+}
+
+.main{
+    flex:1;
+    padding:25px;
+    min-width:0;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-header{
+    margin-bottom:22px;
+}
+
+.page-header h1{
+    font-size:27px;
+    margin-bottom:5px;
+}
+
+.page-header p{
+    color:#748094;
+    font-size:14px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:22px;
+}
+
+.stat{
+    background:white;
+    padding:18px;
+    border-radius:14px;
+    border:1px solid #e7ebf1;
+    box-shadow:0 3px 10px rgba(25,40,70,.04);
+}
+
+.stat-icon{
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:#edf3ff;
+    color:#155eef;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+}
+
+.stat-number{
+    font-size:26px;
+    font-weight:800;
+    margin-top:12px;
+}
+
+.stat-label{
+    color:#7b8494;
+    font-size:12px;
+    margin-top:4px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e7ebf1;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:20px;
+}
+
+.panel-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.panel-title h2{
+    font-size:18px;
+}
+
+.grid-2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+.field{
+    margin-bottom:14px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    color:#596579;
+    font-weight:700;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    border:1px solid #d9dfe8;
+    padding:11px 13px;
+    border-radius:9px;
+    outline:none;
+    background:white;
+}
+
+textarea{
+    resize:vertical;
+    min-height:90px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#155eef;
+    box-shadow:0 0 0 3px rgba(21,94,239,.08);
+}
+
+.search-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+}
+
+.search-row input{
+    flex:1;
+    min-width:220px;
+}
+
+.btn{
+    border:none;
+    background:#155eef;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.btn:hover{
+    opacity:.9;
+}
+
+.btn.success{
+    background:#16865c;
+}
+
+.btn.warning{
+    background:#d88a00;
+}
+
+.btn.danger{
+    background:#dc3545;
+}
+
+.btn.secondary{
+    background:#edf2f7;
+    color:#445066;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:950px;
+}
+
+th,td{
+    padding:13px 10px;
+    border-bottom:1px solid #edf0f4;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    background:#fafbfd;
+    color:#657084;
+    font-size:11px;
+    text-transform:uppercase;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.badge.pending{
+    background:#fff3d6;
+    color:#996800;
+}
+
+.badge.sample{
+    background:#e5f1ff;
+    color:#1764a0;
+}
+
+.badge.processing{
+    background:#eee8ff;
+    color:#6542a5;
+}
+
+.badge.completed{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.badge.critical{
+    background:#ffe4e7;
+    color:#b42332;
+}
+
+.badge.normal{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.actions{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.small-btn{
+    border:none;
+    padding:7px 9px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:600;
+    background:#edf3ff;
+    color:#155eef;
+}
+
+.small-btn.green{
+    background:#e4f7ed;
+    color:#157347;
+}
+
+.small-btn.red{
+    background:#ffe8ea;
+    color:#b42332;
+}
+
+.test-card{
+    border:1px solid #e5e9ef;
+    border-radius:11px;
+    padding:15px;
+    background:white;
+}
+
+.test-card h3{
+    font-size:15px;
+    margin-bottom:6px;
+}
+
+.test-card p{
+    color:#6d7788;
+    font-size:12px;
+    margin:4px 0;
+}
+
+.empty{
+    padding:35px 15px;
+    text-align:center;
+    color:#8993a4;
+    font-size:13px;
+}
+
+.alert{
+    padding:13px 15px;
+    border-radius:9px;
+    margin-bottom:10px;
+    font-size:13px;
+}
+
+.alert.red{
+    background:#fff0f1;
+    border:1px solid #ffd0d4;
+    color:#a71d2a;
+}
+
+.alert.yellow{
+    background:#fff6df;
+    border:1px solid #f0dda8;
+    color:#805c00;
+}
+
+.report-box{
+    border:1px solid #dfe5ee;
+    padding:18px;
+    border-radius:10px;
+    background:#fbfcfe;
+}
+
+.report-header{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:18px;
+    padding-bottom:15px;
+    border-bottom:1px solid #e3e7ed;
+}
+
+.result-value{
+    font-size:18px;
+    font-weight:800;
+}
+
+.critical-result{
+    color:#b42332;
+}
+
+.normal-result{
+    color:#157347;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(10,20,35,.55);
+    z-index:2000;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:700px;
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    max-height:90vh;
+    overflow-y:auto;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.close{
+    border:none;
+    background:#f0f2f5;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+@media(max-width:1150px){
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:900px){
+    .grid-2,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .sidebar{
+        width:70px;
+        padding:15px 8px;
+    }
+
+    .sidebar-title{
+        display:none;
+    }
+
+    .nav-btn{
+        font-size:0;
+        text-align:center;
+        padding:13px 5px;
+    }
+
+    .profile-info{
+        display:none;
+    }
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+}
+
+@media(max-width:450px){
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .brand h2{
+        font-size:15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="logo">GJ</div>
+
+        <div>
+            <h2>Gopal Joshi Hospital</h2>
+            <span>Laboratory Management Portal</span>
+        </div>
+
+    </div>
+
+    <div class="profile">
+
+        <div class="profile-info">
+            <strong id="labUser">Laboratory Staff</strong>
+            <small>Laboratory Department</small>
+        </div>
+
+        <div class="avatar" id="avatar">L</div>
+
+        <button class="logout" onclick="logout()">Logout</button>
+
+    </div>
+
+</header>
+
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="sidebar-title">Laboratory</div>
+
+    <button class="nav-btn active" onclick="showPage('dashboard',this)">
+        🏠 Dashboard
+    </button>
+
+    <button class="nav-btn" onclick="showPage('requests',this)">
+        📋 Test Requests
+    </button>
+
+    <button class="nav-btn" onclick="showPage('samples',this)">
+        🧪 Samples
+    </button>
+
+    <button class="nav-btn" onclick="showPage('tests',this)">
+        🔬 Tests
+    </button>
+
+    <button class="nav-btn" onclick="showPage('results',this)">
+        📊 Results
+    </button>
+
+    <button class="nav-btn" onclick="showPage('reports',this)">
+        📄 Reports
+    </button>
+
+    <button class="nav-btn" onclick="showPage('critical',this)">
+        🚨 Critical Results
+    </button>
+
+</aside>
+
+
+<main class="main">
+
+
+<!-- DASHBOARD -->
+
+<section class="page active" id="dashboard">
+
+    <div class="page-header">
+
+        <h1>Laboratory Dashboard</h1>
+
+        <p>
+            Manage test requests, samples, laboratory results and reports.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="stat">
+            <div class="stat-icon">📋</div>
+            <div class="stat-number" id="totalRequests">0</div>
+            <div class="stat-label">Total Requests</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🧪</div>
+            <div class="stat-number" id="pendingSamples">0</div>
+            <div class="stat-label">Pending Samples</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🔬</div>
+            <div class="stat-number" id="processingTests">0</div>
+            <div class="stat-label">Processing Tests</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">📊</div>
+            <div class="stat-number" id="completedTests">0</div>
+            <div class="stat-label">Completed</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-icon">🚨</div>
+            <div class="stat-number" id="criticalCount">0</div>
+            <div class="stat-label">Critical Results</div>
+        </div>
+
+    </div>
+
+
+    <div class="grid-2">
+
+        <div class="panel">
+
+            <div class="panel-title">
+                <h2>Recent Test Requests</h2>
+
+                <button class="btn" onclick="showPage('requests')">
+                    View All
+                </button>
+            </div>
+
+            <div id="recentRequests"></div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-title">
+                <h2>Critical Results</h2>
+
+                <button class="btn danger" onclick="showPage('critical')">
+                    View
+                </button>
+            </div>
+
+            <div id="dashboardCritical"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REQUESTS -->
+
+<section class="page" id="requests">
+
+    <div class="page-header">
+
+        <h1>Laboratory Test Requests</h1>
+
+        <p>
+            Manage test requests received from doctors.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>Test Requests</h2>
+
+            <button class="btn" onclick="openRequestModal()">
+                + New Test Request
+            </button>
+
+        </div>
+
+
+        <div class="search-row">
+
+            <input
+                id="requestSearch"
+                placeholder="Search patient, doctor, test or request ID..."
+                oninput="renderRequests()"
+            >
+
+            <select id="requestStatusFilter" onchange="renderRequests()">
+
+                <option value="">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Sample Collected">Sample Collected</option>
+                <option value="Processing">Processing</option>
+                <option value="Completed">Completed</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Test</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="requestsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SAMPLES -->
+
+<section class="page" id="samples">
+
+    <div class="page-header">
+
+        <h1>Sample Management</h1>
+
+        <p>
+            Track sample collection and laboratory processing.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="search-row">
+
+            <input
+                id="sampleSearch"
+                placeholder="Search patient, sample ID or test..."
+                oninput="renderSamples()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Sample ID</th>
+                        <th>Patient</th>
+                        <th>Test</th>
+                        <th>Sample Type</th>
+                        <th>Collected</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="samplesTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- TESTS -->
+
+<section class="page" id="tests">
+
+    <div class="page-header">
+
+        <h1>Laboratory Test Directory</h1>
+
+        <p>
+            Common diagnostic tests available in the hospital laboratory.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="search-row">
+
+            <input
+                id="testSearch"
+                placeholder="Search test, category or sample type..."
+                oninput="renderTestDirectory()"
+            >
+
+        </div>
+
+
+        <div class="grid-3" id="testDirectory"></div>
+
+    </div>
+
+</section>
+
+
+<!-- RESULTS -->
+
+<section class="page" id="results">
+
+    <div class="page-header">
+
+        <h1>Result Entry</h1>
+
+        <p>
+            Enter laboratory observations and mark completed results.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="search-row">
+
+            <input
+                id="resultSearch"
+                placeholder="Search patient, test or request ID..."
+                oninput="renderResults()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Request</th>
+                        <th>Patient</th>
+                        <th>Test</th>
+                        <th>Result</th>
+                        <th>Reference</th>
+                        <th>Flag</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="resultsTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- REPORTS -->
+
+<section class="page" id="reports">
+
+    <div class="page-header">
+
+        <h1>Laboratory Reports</h1>
+
+        <p>
+            View completed laboratory reports.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="search-row">
+
+            <input
+                id="reportSearch"
+                placeholder="Search patient, report ID or test..."
+                oninput="renderReports()"
+            >
+
+        </div>
+
+
+        <div id="reportsList"></div>
+
+    </div>
+
+</section>
+
+
+<!-- CRITICAL -->
+
+<section class="page" id="critical">
+
+    <div class="page-header">
+
+        <h1>Critical Results</h1>
+
+        <p>
+            Review laboratory results flagged for urgent clinical attention.
+        </p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div id="criticalResults"></div>
+
+    </div>
+
+</section>
+
+
+</main>
+</div>
+
+
+<!-- REQUEST MODAL -->
+
+<div class="modal" id="requestModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Create Test Request</h2>
+
+            <button class="close" onclick="closeModal('requestModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label>Patient Name</label>
+
+                <input
+                    id="newPatient"
+                    placeholder="Patient name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Patient ID</label>
+
+                <input
+                    id="newPatientId"
+                    placeholder="Patient ID"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Doctor Name</label>
+
+                <input
+                    id="newDoctor"
+                    placeholder="Referring doctor"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Test</label>
+
+                <select id="newTest"></select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Priority</label>
+
+                <select id="newPriority">
+
+                    <option>Routine</option>
+                    <option>Urgent</option>
+                    <option>STAT</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="field">
+
+                <label>Clinical Notes</label>
+
+                <input
+                    id="newNotes"
+                    placeholder="Reason / clinical notes"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button class="btn success" onclick="createRequest()">
+            Create Request
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RESULT MODAL -->
+
+<div class="modal" id="resultModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Enter Laboratory Result</h2>
+
+            <button class="close" onclick="closeModal('resultModal')">
+                ×
+            </button>
+
+        </div>
+
+
+        <input type="hidden" id="resultRequestId">
+
+
+        <div id="resultTestInfo"></div>
+
+
+        <div class="field">
+
+            <label>Observed Result</label>
+
+            <input
+                id="observedResult"
+                placeholder="Example: 5.4 mmol/L"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Reference Range</label>
+
+            <input
+                id="referenceRange"
+                placeholder="Reference range"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Result Flag</label>
+
+            <select id="resultFlag">
+
+                <option value="Normal">Normal</option>
+                <option value="Abnormal">Abnormal</option>
+                <option value="Critical">Critical</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Lab Comments</label>
+
+            <textarea
+                id="labComments"
+                placeholder="Laboratory comments"
+            ></textarea>
+
+        </div>
+
+
+        <button class="btn success" onclick="saveResult()">
+            Save Result
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- REPORT MODAL -->
+
+<div class="modal" id="reportModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Laboratory Report</h2>
+
+            <button class="close" onclick="closeModal('reportModal')">
+                ×
+            </button>
+
+        </div>
+
+        <div id="reportContent"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   AUTH
+========================= */
+
+const token = localStorage.getItem("gjh_token");
+
+if(!token){
+    window.location.href="login.html";
+}
+
+
+async function verifyAccess(){
+
+    try{
+
+        const response = await fetch(
+            "/api/private/laboratory",
+            {
+                headers:{
+                    Authorization:"Bearer "+token
+                }
+            }
+        );
+
+        if(!response.ok){
+
+            localStorage.removeItem("gjh_token");
+            localStorage.removeItem("gjh_user");
+
+            window.location.href="login.html";
+
+            return;
+        }
+
+        const data = await response.json();
+
+        if(data.user){
+
+            document.getElementById("labUser").textContent =
+                data.user.name || "Laboratory Staff";
+
+            document.getElementById("avatar").textContent =
+                (data.user.name || "L").charAt(0).toUpperCase();
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+verifyAccess();
+
+
+function logout(){
+
+    localStorage.removeItem("gjh_token");
+    localStorage.removeItem("gjh_user");
+
+    window.location.href="login.html";
+
+}
+
+
+/* =========================
+   TEST DIRECTORY
+========================= */
+
+const labTests = [
+
+["Complete Blood Count (CBC)","Hematology","Blood","General blood cell evaluation"],
+["Hemoglobin","Hematology","Blood","Hemoglobin measurement"],
+["ESR","Hematology","Blood","Inflammation-related assessment"],
+["Peripheral Blood Smear","Hematology","Blood","Blood cell morphology"],
+["Blood Group","Hematology","Blood","ABO and Rh typing"],
+["Platelet Count","Hematology","Blood","Platelet measurement"],
+["PT/INR","Coagulation","Blood","Blood clotting assessment"],
+["aPTT","Coagulation","Blood","Coagulation assessment"],
+["D-Dimer","Coagulation","Blood","Assessment used in selected clotting evaluations"],
+
+["Blood Glucose Fasting","Biochemistry","Blood","Fasting glucose assessment"],
+["Blood Glucose Random","Biochemistry","Blood","Random glucose assessment"],
+["HbA1c","Biochemistry","Blood","Average blood glucose assessment"],
+["Lipid Profile","Biochemistry","Blood","Cholesterol and triglyceride assessment"],
+["Liver Function Test (LFT)","Biochemistry","Blood","Liver-related biochemical assessment"],
+["Kidney Function Test (KFT)","Biochemistry","Blood","Kidney-related biochemical assessment"],
+["Serum Creatinine","Biochemistry","Blood","Kidney function marker"],
+["Blood Urea","Biochemistry","Blood","Kidney function marker"],
+["Uric Acid","Biochemistry","Blood","Uric acid measurement"],
+["Serum Calcium","Biochemistry","Blood","Calcium measurement"],
+["Serum Sodium","Biochemistry","Blood","Sodium measurement"],
+["Serum Potassium","Biochemistry","Blood","Potassium measurement"],
+["Serum Chloride","Biochemistry","Blood","Chloride measurement"],
+["Total Protein","Biochemistry","Blood","Protein measurement"],
+["Albumin","Biochemistry","Blood","Albumin measurement"],
+["Bilirubin Total","Biochemistry","Blood","Bilirubin measurement"],
+["ALT / SGPT","Biochemistry","Blood","Liver enzyme measurement"],
+["AST / SGOT","Biochemistry","Blood","Liver enzyme measurement"],
+["Alkaline Phosphatase","Biochemistry","Blood","Enzyme measurement"],
+
+["TSH","Endocrinology","Blood","Thyroid-related assessment"],
+["Free T3","Endocrinology","Blood","Thyroid hormone assessment"],
+["Free T4","Endocrinology","Blood","Thyroid hormone assessment"],
+["Insulin","Endocrinology","Blood","Insulin measurement"],
+["Cortisol","Endocrinology","Blood","Hormone assessment"],
+
+["Urine Routine Examination","Urinalysis","Urine","Routine urine examination"],
+["Urine Microscopy","Urinalysis","Urine","Microscopic urine examination"],
+["Urine Culture","Microbiology","Urine","Urine culture for selected infections"],
+["Urine Pregnancy Test","Immunology","Urine","Pregnancy screening"],
+
+["Stool Routine Examination","Gastrointestinal","Stool","Routine stool examination"],
+["Stool Occult Blood","Gastrointestinal","Stool","Detection of hidden blood in stool"],
+["Stool Culture","Microbiology","Stool","Selected intestinal infection evaluation"],
+
+["Blood Culture","Microbiology","Blood","Blood culture for selected infections"],
+["Urine Culture and Sensitivity","Microbiology","Urine","Culture and antimicrobial sensitivity"],
+["Sputum Culture","Microbiology","Sputum","Respiratory infection evaluation"],
+["Throat Swab Culture","Microbiology","Swab","Selected throat infection evaluation"],
+["Wound Swab Culture","Microbiology","Swab","Selected wound infection evaluation"],
+
+["HIV Screening","Immunology","Blood","Screening test for HIV infection"],
+["HBsAg","Immunology","Blood","Hepatitis B screening"],
+["Anti-HCV","Immunology","Blood","Hepatitis C screening"],
+["VDRL","Immunology","Blood","Syphilis screening"],
+["CRP","Immunology","Blood","Inflammation marker"],
+["ASO Titre","Immunology","Blood","Selected streptococcal exposure assessment"],
+["RA Factor","Immunology","Blood","Autoimmune-related assessment"],
+["ANA","Immunology","Blood","Autoimmune-related assessment"],
+
+["Vitamin B12","Vitamins","Blood","Vitamin B12 measurement"],
+["Vitamin D","Vitamins","Blood","Vitamin D measurement"],
+["Folate","Vitamins","Blood","Folate measurement"],
+["Ferritin","Vitamins","Blood","Iron storage marker"],
+["Iron Studies","Vitamins","Blood","Iron status assessment"],
+
+["PSA","Tumor Marker","Blood","Prostate-related marker"],
+["CA-125","Tumor Marker","Blood","Selected clinical evaluation"],
+["CEA","Tumor Marker","Blood","Selected clinical evaluation"],
+["AFP","Tumor Marker","Blood","Selected clinical evaluation"],
+
+["Amylase","Biochemistry","Blood","Digestive enzyme measurement"],
+["Lipase","Biochemistry","Blood","Digestive enzyme measurement"],
+["LDH","Biochemistry","Blood","Enzyme measurement"],
+["CK-MB","Cardiac Marker","Blood","Cardiac marker assessment"],
+["Troponin I","Cardiac Marker","Blood","Cardiac injury marker"],
+["Troponin T","Cardiac Marker","Blood","Cardiac injury marker"],
+
+["ABG","Critical Care","Arterial Blood","Acid-base and gas assessment"],
+["Blood Lactate","Critical Care","Blood","Lactate measurement"],
+["Procalcitonin","Critical Care","Blood","Selected bacterial infection marker"],
+
+["COVID-19 PCR","Molecular","Nasopharyngeal Swab","Molecular respiratory infection testing"],
+["Influenza PCR","Molecular","Nasopharyngeal Swab","Influenza molecular testing"],
+["Dengue NS1","Infectious Disease","Blood","Dengue antigen screening"],
+["Dengue IgM","Infectious Disease","Blood","Dengue antibody assessment"],
+["Malaria Antigen","Infectious Disease","Blood","Malaria screening"],
+["Typhoid Test","Infectious Disease","Blood","Selected typhoid-related assessment"]
+
+].map((t,index)=>({
+
+    id:index+1,
+    name:t[0],
+    category:t[1],
+    sample:t[2],
+    description:t[3]
+
+}));
+
+
+/* =========================
+   LOCAL DATA
+========================= */
+
+let requests =
+    JSON.parse(localStorage.getItem("gjh_lab_requests")) || [];
+
+let results =
+    JSON.parse(localStorage.getItem("gjh_lab_results")) || [];
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(page,button){
+
+    document.querySelectorAll(".page").forEach(p=>{
+        p.classList.remove("active");
+    });
+
+    document.getElementById(page).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(b=>{
+        b.classList.remove("active");
+    });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    if(page==="dashboard") renderDashboard();
+    if(page==="requests") renderRequests();
+    if(page==="samples") renderSamples();
+    if(page==="tests") renderTestDirectory();
+    if(page==="results") renderResults();
+    if(page==="reports") renderReports();
+    if(page==="critical") renderCritical();
+
+}
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "gjh_lab_requests",
+        JSON.stringify(requests)
+    );
+
+    localStorage.setItem(
+        "gjh_lab_results",
+        JSON.stringify(results)
+    );
+
+}
+
+
+/* =========================
+   REQUEST MODAL
+========================= */
+
+function openRequestModal(){
+
+    populateTestSelect();
+
+    document.getElementById("requestModal")
+        .classList.add("show");
+
+}
+
+
+function createRequest(){
+
+    const patient =
+        document.getElementById("newPatient").value.trim();
+
+    const patientId =
+        document.getElementById("newPatientId").value.trim();
+
+    const doctor =
+        document.getElementById("newDoctor").value.trim();
+
+    const testId =
+        Number(document.getElementById("newTest").value);
+
+    const priority =
+        document.getElementById("newPriority").value;
+
+    const notes =
+        document.getElementById("newNotes").value.trim();
+
+    if(!patient || !doctor || !testId){
+
+        alert("Please fill required fields.");
+
+        return;
+
+    }
+
+    const test =
+        labTests.find(t=>t.id===testId);
+
+    const request = {
+
+        id:"LAB-"+Date.now(),
+
+        patient,
+        patientId,
+        doctor,
+        testId,
+        test:test.name,
+        category:test.category,
+        sample:test.sample,
+        priority,
+        notes,
+
+        status:"Pending",
+
+        date:new Date().toLocaleDateString(),
+
+        time:new Date().toLocaleTimeString(),
+
+        sampleId:"SMP-"+Date.now()
+
+    };
+
+    requests.unshift(request);
+
+    saveData();
+
+    closeModal("requestModal");
+
+    document.getElementById("newPatient").value="";
+    document.getElementById("newPatientId").value="";
+    document.getElementById("newDoctor").value="";
+    document.getElementById("newNotes").value="";
+
+    alert("Laboratory test request created.");
+
+    renderDashboard();
+    renderRequests();
+    renderSamples();
+
+}
+
+
+/* =========================
+   REQUEST TABLE
+========================= */
+
+function renderRequests(){
+
+    const query =
+        (document.getElementById("requestSearch")?.value || "")
+        .toLowerCase();
+
+    const status =
+        document.getElementById("requestStatusFilter")?.value || "";
+
+    const filtered =
+        requests.filter(r=>{
+
+            const text =
+                `${r.id} ${r.patient} ${r.doctor} ${r.test}`
+                .toLowerCase();
+
+            return (
+                text.includes(query) &&
+                (!status || r.status===status)
+            );
+
+        });
+
+
+    const tbody =
+        document.getElementById("requestsTable");
+
+    if(!filtered.length){
+
+        tbody.innerHTML=`
+            <tr>
+                <td colspan="8">
+                    <div class="empty">
+                        No test requests found.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        filtered.map(r=>`
+
+            <tr>
+
+                <td>
+                    <strong>${r.id}</strong>
+                </td>
+
+                <td>${r.patient}</td>
+
+                <td>${r.doctor}</td>
+
+                <td>${r.test}</td>
+
+                <td>
+                    <span class="badge ${
+                        r.priority==="STAT"
+                        ?"critical"
+                        :"pending"
+                    }">
+                        ${r.priority}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="badge ${statusClass(r.status)}">
+                        ${r.status}
+                    </span>
+                </td>
+
+                <td>${r.date}</td>
+
+                <td>
+
+                    <div class="actions">
+
+                        <button
+                            class="small-btn"
+                            onclick="viewRequest('${r.id}')"
+                        >
+                            View
+                        </button>
+
+                        ${
+                            r.status==="Pending"
+                            ?`
+                            <button
+                                class="small-btn green"
+                                onclick="collectSample('${r.id}')"
+                            >
+                                Collect
+                            </button>
+                            `
+                            :""
+                        }
+
+                        ${
+                            r.status==="Sample Collected"
+                            ?`
+                            <button
+                                class="small-btn"
+                                onclick="startProcessing('${r.id}')"
+                            >
+                                Process
+                            </button>
+                            `
+                            :""
+                        }
+
+                        ${
+                            r.status==="Processing"
+                            ?`
+                            <button
+                                class="small-btn green"
+                                onclick="openResult('${r.id}')"
+                            >
+                                Result
+                            </button>
+                            `
+                            :""
+                        }
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+function statusClass(status){
+
+    if(status==="Pending") return "pending";
+    if(status==="Sample Collected") return "sample";
+    if(status==="Processing") return "processing";
+    if(status==="Completed") return "completed";
+
+    return "pending";
+
+}
+
+
+/* =========================
+   SAMPLE MANAGEMENT
+========================= */
+
+function collectSample(id){
+
+    const request =
+        requests.find(r=>r.id===id);
+
+    if(!request) return;
+
+    request.status="Sample Collected";
+
+    request.sampleCollectedAt =
+        new Date().toLocaleString();
+
+    saveData();
+
+    renderRequests();
+    renderSamples();
+    renderDashboard();
+
+}
+
+
+function startProcessing(id){
+
+    const request =
+        requests.find(r=>r.id===id);
+
+    if(!request) return;
+
+    request.status="Processing";
+
+    request.processingAt =
+        new Date().toLocaleString();
+
+    saveData();
+
+    renderRequests();
+    renderSamples();
+    renderDashboard();
+
+}
+
+
+function renderSamples(){
+
+    const query =
+        (document.getElementById("sampleSearch")?.value || "")
+        .toLowerCase();
+
+    const data =
+        requests.filter(r=>{
+
+            const text =
+                `${r.sampleId} ${r.patient} ${r.test}`
+                .toLowerCase();
+
+            return text.includes(query);
+
+        });
+
+
+    const tbody =
+        document.getElementById("samplesTable");
+
+    if(!data.length){
+
+        tbody.innerHTML=`
+            <tr>
+                <td colspan="7">
+                    <div class="empty">
+                        No sample records found.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        data.map(r=>`
+
+            <tr>
+
+                <td>${r.sampleId}</td>
+
+                <td>${r.patient}</td>
+
+                <td>${r.test}</td>
+
+                <td>${r.sample}</td>
+
+                <td>
+                    ${r.sampleCollectedAt || "Not collected"}
+                </td>
+
+                <td>
+                    <span class="badge ${statusClass(r.status)}">
+                        ${r.status}
+                    </span>
+                </td>
+
+                <td>
+
+                    ${
+                        r.status==="Pending"
+                        ?`
+                        <button
+                            class="small-btn green"
+                            onclick="collectSample('${r.id}')"
+                        >
+                            Collect
+                        </button>
+                        `
+                        :
+                        r.status==="Sample Collected"
+                        ?`
+                        <button
+                            class="small-btn"
+                            onclick="startProcessing('${r.id}')"
+                        >
+                            Start Processing
+                        </button>
+                        `
+                        :
+                        "-"
+                    }
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   TEST DIRECTORY
+========================= */
+
+function renderTestDirectory(){
+
+    const query =
+        (document.getElementById("testSearch")?.value || "")
+        .toLowerCase();
+
+    const data =
+        labTests.filter(t=>
+            `${t.name} ${t.category} ${t.sample} ${t.description}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+
+    const box =
+        document.getElementById("testDirectory");
+
+
+    box.innerHTML =
+        data.map(t=>`
+
+            <div class="test-card">
+
+                <h3>${t.name}</h3>
+
+                <p>
+                    <strong>Category:</strong>
+                    ${t.category}
+                </p>
+
+                <p>
+                    <strong>Sample:</strong>
+                    ${t.sample}
+                </p>
+
+                <p>
+                    ${t.description}
+                </p>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   SELECT
+========================= */
+
+function populateTestSelect(){
+
+    const select =
+        document.getElementById("newTest");
+
+    select.innerHTML =
+        `<option value="">Select test</option>`+
+        labTests.map(t=>`
+
+            <option value="${t.id}">
+                ${t.name}
+            </option>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+function openResult(id){
+
+    const request =
+        requests.find(r=>r.id===id);
+
+    if(!request) return;
+
+    document.getElementById("resultRequestId").value=id;
+
+    document.getElementById("resultTestInfo").innerHTML=`
+
+        <div class="report-box" style="margin-bottom:15px">
+
+            <strong>${request.test}</strong>
+
+            <p style="margin-top:5px">
+                Patient: ${request.patient}
+            </p>
+
+            <p>
+                Sample: ${request.sample}
+            </p>
+
+        </div>
+
+    `;
+
+    document.getElementById("observedResult").value="";
+    document.getElementById("referenceRange").value="";
+    document.getElementById("resultFlag").value="Normal";
+    document.getElementById("labComments").value="";
+
+    document.getElementById("resultModal")
+        .classList.add("show");
+
+}
+
+
+function saveResult(){
+
+    const requestId =
+        document.getElementById("resultRequestId").value;
+
+    const request =
+        requests.find(r=>r.id===requestId);
+
+    if(!request) return;
+
+    const observed =
+        document.getElementById("observedResult")
+        .value.trim();
+
+    const reference =
+        document.getElementById("referenceRange")
+        .value.trim();
+
+    const flag =
+        document.getElementById("resultFlag").value;
+
+    const comments =
+        document.getElementById("labComments")
+        .value.trim();
+
+    if(!observed){
+
+        alert("Please enter observed result.");
+
+        return;
+
+    }
+
+
+    const existing =
+        results.find(r=>r.requestId===requestId);
+
+
+    const result = {
+
+        id:existing?.id || "RES-"+Date.now(),
+
+        requestId,
+
+        patient:request.patient,
+
+        patientId:request.patientId,
+
+        doctor:request.doctor,
+
+        test:request.test,
+
+        category:request.category,
+
+        sample:request.sample,
+
+        observed,
+
+        reference,
+
+        flag,
+
+        comments,
+
+        date:new Date().toLocaleDateString(),
+
+        time:new Date().toLocaleTimeString()
+
+    };
+
+
+    if(existing){
+
+        Object.assign(existing,result);
+
+    }else{
+
+        results.unshift(result);
+
+    }
+
+
+    request.status="Completed";
+
+    request.completedAt =
+        new Date().toLocaleString();
+
+
+    saveData();
+
+    closeModal("resultModal");
+
+    alert("Laboratory result saved.");
+
+    renderResults();
+    renderRequests();
+    renderReports();
+    renderDashboard();
+    renderCritical();
+
+}
+
+
+/* =========================
+   RESULTS TABLE
+========================= */
+
+function renderResults(){
+
+    const query =
+        (document.getElementById("resultSearch")?.value || "")
+        .toLowerCase();
+
+    const data =
+        results.filter(r=>
+            `${r.requestId} ${r.patient} ${r.test}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+
+    const tbody =
+        document.getElementById("resultsTable");
+
+
+    if(!data.length){
+
+        tbody.innerHTML=`
+            <tr>
+                <td colspan="8">
+                    <div class="empty">
+                        No laboratory results found.
+                    </div>
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        data.map(r=>`
+
+            <tr>
+
+                <td>${r.requestId}</td>
+
+                <td>${r.patient}</td>
+
+                <td>${r.test}</td>
+
+                <td>
+
+                    <span class="result-value ${
+                        r.flag==="Critical"
+                        ?"critical-result"
+                        :"normal-result"
+                    }">
+
+                        ${r.observed}
+
+                    </span>
+
+                </td>
+
+                <td>${r.reference || "-"}</td>
+
+                <td>
+
+                    <span class="badge ${
+                        r.flag==="Critical"
+                        ?"critical"
+                        :r.flag==="Abnormal"
+                        ?"pending"
+                        :"normal"
+                    }">
+
+                        ${r.flag}
+
+                    </span>
+
+                </td>
+
+                <td>
+                    <span class="badge completed">
+                        Completed
+                    </span>
+                </td>
+
+                <td>
+
+                    <button
+                        class="small-btn"
+                        onclick="viewReport('${r.id}')"
+                    >
+                        Report
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   REPORTS
+========================= */
+
+function renderReports(){
+
+    const query =
+        (document.getElementById("reportSearch")?.value || "")
+        .toLowerCase();
+
+    const data =
+        results.filter(r=>
+            `${r.id} ${r.patient} ${r.test}`
+            .toLowerCase()
+            .includes(query)
+        );
+
+
+    const box =
+        document.getElementById("reportsList");
+
+
+    if(!data.length){
+
+        box.innerHTML=
+            `<div class="empty">No reports available.</div>`;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        data.map(r=>`
+
+            <div class="report-box" style="margin-bottom:12px">
+
+                <div class="report-header">
+
+                    <div>
+
+                        <strong>
+                            ${r.test}
+                        </strong>
+
+                        <p style="margin-top:5px">
+                            Patient: ${r.patient}
+                        </p>
+
+                    </div>
+
+                    <div>
+                        <strong>${r.id}</strong>
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Result:
+                    <strong>${r.observed}</strong>
+                </p>
+
+                <p style="margin-top:5px">
+                    Flag: ${r.flag}
+                </p>
+
+                <br>
+
+                <button
+                    class="small-btn"
+                    onclick="viewReport('${r.id}')"
+                >
+                    View Full Report
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+function viewReport(id){
+
+    const result =
+        results.find(r=>r.id===id);
+
+    if(!result) return;
+
+    document.getElementById("reportContent").innerHTML=`
+
+        <div class="report-box">
+
+            <div class="report-header">
+
+                <div>
+
+                    <h3>Gopal Joshi Hospital</h3>
+
+                    <p>
+                        Laboratory Department
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        ${result.id}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <p>
+                <strong>Patient:</strong>
+                ${result.patient}
+            </p>
+
+            <p>
+                <strong>Patient ID:</strong>
+                ${result.patientId || "-"}
+            </p>
+
+            <p>
+                <strong>Referring Doctor:</strong>
+                ${result.doctor}
+            </p>
+
+            <p>
+                <strong>Test:</strong>
+                ${result.test}
+            </p>
+
+            <p>
+                <strong>Sample:</strong>
+                ${result.sample}
+            </p>
+
+
+            <hr style="margin:18px 0;border:none;border-top:1px solid #ddd">
+
+
+            <p>
+                <strong>Observed Result</strong>
+            </p>
+
+            <div
+                class="result-value ${
+                    result.flag==="Critical"
+                    ?"critical-result"
+                    :"normal-result"
+                }"
+                style="margin-top:8px"
+            >
+                ${result.observed}
+            </div>
+
+
+            <p style="margin-top:15px">
+                <strong>Reference:</strong>
+                ${result.reference || "-"}
+            </p>
+
+            <p style="margin-top:10px">
+                <strong>Flag:</strong>
+                ${result.flag}
+            </p>
+
+            <p style="margin-top:10px">
+                <strong>Comments:</strong>
+                ${result.comments || "No additional comments."}
+            </p>
+
+
+            <p style="margin-top:18px;color:#687386;font-size:12px">
+                Report generated:
+                ${result.date} ${result.time}
+            </p>
+
+
+            ${
+                result.flag==="Critical"
+                ?`
+                <div class="alert red" style="margin-top:18px">
+                    Critical result flagged for urgent clinical review.
+                </div>
+                `
+                :""
+            }
+
+        </div>
+
+    `;
+
+
+    document.getElementById("reportModal")
+        .classList.add("show");
+
+}
+
+
+/* =========================
+   CRITICAL RESULTS
+========================= */
+
+function renderCritical(){
+
+    const critical =
+        results.filter(r=>r.flag==="Critical");
+
+
+    const box =
+        document.getElementById("criticalResults");
+
+
+    if(!critical.length){
+
+        box.innerHTML=`
+            <div class="empty">
+                No critical laboratory results.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        critical.map(r=>`
+
+            <div class="alert red">
+
+                <strong>
+                    ${r.patient}
+                </strong>
+
+                — ${r.test}
+
+                <br>
+
+                Result:
+                <strong>${r.observed}</strong>
+
+                <br>
+
+                Request:
+                ${r.requestId}
+
+                <br><br>
+
+                <button
+                    class="small-btn red"
+                    onclick="viewReport('${r.id}')"
+                >
+                    View Report
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+/* =========================
+   VIEW REQUEST
+========================= */
+
+function viewRequest(id){
+
+    const r =
+        requests.find(x=>x.id===id);
+
+    if(!r) return;
+
+    alert(
+        "Request ID: "+r.id+
+        "\nPatient: "+r.patient+
+        "\nPatient ID: "+(r.patientId||"-")+
+        "\nDoctor: "+r.doctor+
+        "\nTest: "+r.test+
+        "\nSample: "+r.sample+
+        "\nPriority: "+r.priority+
+        "\nStatus: "+r.status+
+        "\nNotes: "+(r.notes||"-")
+    );
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+    const pending =
+        requests.filter(r=>r.status==="Pending").length;
+
+    const processing =
+        requests.filter(r=>r.status==="Processing").length;
+
+    const completed =
+        requests.filter(r=>r.status==="Completed").length;
+
+    const critical =
+        results.filter(r=>r.flag==="Critical").length;
+
+
+    document.getElementById("totalRequests")
+        .textContent=requests.length;
+
+    document.getElementById("pendingSamples")
+        .textContent=pending;
+
+    document.getElementById("processingTests")
+        .textContent=processing;
+
+    document.getElementById("completedTests")
+        .textContent=completed;
+
+    document.getElementById("criticalCount")
+        .textContent=critical;
+
+
+    const recent =
+        document.getElementById("recentRequests");
+
+
+    if(!requests.length){
+
+        recent.innerHTML=
+            `<div class="empty">No test requests yet.</div>`;
+
+    }else{
+
+        recent.innerHTML =
+            requests.slice(0,6).map(r=>`
+
+                <div class="test-card" style="margin-bottom:8px">
+
+                    <strong>${r.patient}</strong>
+
+                    <p>
+                        ${r.test}
+                    </p>
+
+                    <p>
+                        ${r.status}
+                        • ${r.date}
+                    </p>
+
+                </div>
+
+            `).join("");
+
+    }
+
+
+    const criticalBox =
+        document.getElementById("dashboardCritical");
+
+
+    const criticalData =
+        results.filter(r=>r.flag==="Critical");
+
+
+    if(!criticalData.length){
+
+        criticalBox.innerHTML=
+            `<div class="empty">No critical results.</div>`;
+
+    }else{
+
+        criticalBox.innerHTML =
+            criticalData.slice(0,5).map(r=>`
+
+                <div class="alert red">
+
+                    <strong>${r.patient}</strong>
+                    — ${r.test}
+
+                    <br>
+
+                    Result:
+                    <strong>${r.observed}</strong>
+
+                </div>
+
+            `).join("");
+
+    }
+
+}
+
+
+/* =========================
+   MODALS
+========================= */
+
+function closeModal(id){
+
+    document.getElementById(id)
+        .classList.remove("show");
+
+}
+
+
+document.querySelectorAll(".modal").forEach(modal=>{
+
+    modal.addEventListener("click",e=>{
+
+        if(e.target===modal){
+
+            modal.classList.remove("show");
+
+        }
+
+    });
+
+});
+
+
+/* =========================
+   INITIALIZATION
+========================= */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    populateTestSelect();
+
+    renderDashboard();
+
+    renderRequests();
+
+    renderSamples();
+
+    renderTestDirectory();
+
+    renderResults();
+
+    renderReports();
+
+    renderCritical();
+
+});
+
+</script>
+
+</body>
+</html>

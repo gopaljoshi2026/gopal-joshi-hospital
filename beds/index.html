@@ -1,0 +1,2742 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Beds Management Panel - Gopal Joshi Hospital</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1f2937;
+}
+
+.topbar{
+    height:72px;
+    background:linear-gradient(135deg,#0369a1,#0284c7);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    background:white;
+    color:#0369a1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.brand h1{
+    font-size:20px;
+}
+
+.brand p{
+    font-size:12px;
+    opacity:.85;
+}
+
+.staff{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.staff-info{
+    text-align:right;
+}
+
+.staff-name{
+    font-weight:bold;
+}
+
+.staff-role{
+    font-size:12px;
+    opacity:.85;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:white;
+    color:#0369a1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.logout{
+    border:none;
+    background:#dc2626;
+    color:white;
+    padding:9px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 72px);
+}
+
+.sidebar{
+    width:245px;
+    background:#0f172a;
+    color:white;
+    padding:22px 14px;
+    flex-shrink:0;
+}
+
+.sidebar-title{
+    font-size:12px;
+    color:#94a3b8;
+    padding:0 12px 10px;
+    text-transform:uppercase;
+}
+
+.sidebar a{
+    display:block;
+    color:#cbd5e1;
+    text-decoration:none;
+    padding:12px 14px;
+    border-radius:9px;
+    margin-bottom:5px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#0369a1;
+    color:white;
+}
+
+.main{
+    flex:1;
+    padding:28px;
+    overflow:hidden;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-header{
+    margin-bottom:22px;
+}
+
+.page-header h2{
+    color:#0f172a;
+    margin-bottom:6px;
+}
+
+.page-header p{
+    color:#64748b;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.card h3{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.number{
+    font-size:30px;
+    font-weight:bold;
+    color:#0369a1;
+}
+
+.section{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.section h3{
+    color:#0369a1;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+label{
+    font-size:13px;
+    font-weight:bold;
+    display:block;
+    margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#0284c7;
+}
+
+button{
+    border:none;
+    border-radius:8px;
+    padding:9px 13px;
+    cursor:pointer;
+    font-weight:bold;
+    margin:2px;
+}
+
+.btn-primary{
+    background:#0369a1;
+    color:white;
+}
+
+.btn-green{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-orange{
+    background:#ea580c;
+    color:white;
+}
+
+.btn-red{
+    background:#dc2626;
+    color:white;
+}
+
+.btn-blue{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-purple{
+    background:#7c3aed;
+    color:white;
+}
+
+.btn-gray{
+    background:#64748b;
+    color:white;
+}
+
+.search-row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    background:#f0f9ff;
+    color:#075985;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.available{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.occupied{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.reserved{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.cleaning{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.maintenance{
+    background:#ede9fe;
+    color:#5b21b6;
+}
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:#64748b;
+}
+
+.ward-card{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:18px;
+}
+
+.ward-card h4{
+    color:#0369a1;
+    margin-bottom:10px;
+}
+
+.progress{
+    width:100%;
+    height:9px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+    margin:10px 0;
+}
+
+.progress-bar{
+    height:100%;
+    background:#0284c7;
+}
+
+.alert{
+    padding:14px;
+    border-radius:10px;
+    background:#fff7ed;
+    border-left:5px solid #f97316;
+    margin-bottom:10px;
+}
+
+.success-alert{
+    background:#ecfdf5;
+    border-left-color:#10b981;
+}
+
+.info-alert{
+    background:#eff6ff;
+    border-left-color:#3b82f6;
+}
+
+.danger-alert{
+    background:#fef2f2;
+    border-left-color:#ef4444;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:15px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.detail-row{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid #e5e7eb;
+}
+
+footer{
+    text-align:center;
+    padding:22px;
+    color:#64748b;
+    font-size:13px;
+}
+
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .search-row{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:210px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .staff-info{
+        display:none;
+    }
+
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+        gap:5px;
+        padding:10px;
+    }
+
+    .sidebar-title{
+        display:none;
+    }
+
+    .sidebar a{
+        white-space:nowrap;
+        margin:0;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .search-row{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        min-width:850px;
+    }
+
+    .section{
+        overflow-x:auto;
+    }
+
+}
+
+</style>
+
+<script>
+
+document.documentElement.style.visibility="hidden";
+
+async function verifyBedsAccess(){
+
+    const token=localStorage.getItem("gjh_token");
+
+    if(!token){
+        window.location.replace("login.html");
+        return;
+    }
+
+    try{
+
+        const response=await fetch(
+            "/api/private/beds",
+            {
+                headers:{
+                    "Authorization":"Bearer "+token
+                }
+            }
+        );
+
+        const data=await response.json();
+
+        if(
+            !response.ok ||
+            !data.success ||
+            !data.user ||
+            data.user.role!=="beds"
+        ){
+
+            localStorage.removeItem("gjh_token");
+            localStorage.removeItem("gjh_user");
+
+            alert(
+                "Access denied. Only authorized bed management staff can open this panel."
+            );
+
+            window.location.replace("login.html");
+            return;
+        }
+
+        document.documentElement.style.visibility="visible";
+
+    }catch(error){
+
+        alert("Unable to verify beds login.");
+        window.location.replace("login.html");
+
+    }
+
+}
+
+verifyBedsAccess();
+
+</script>
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+```
+<div class="brand">
+
+    <div class="logo">
+        GJ
+    </div>
+
+    <div>
+        <h1>Gopal Joshi Hospital</h1>
+        <p>Beds Management Portal</p>
+    </div>
+
+</div>
+
+<div class="staff">
+
+    <div class="staff-info">
+        <div class="staff-name" id="staffName">
+            Bed Management Staff
+        </div>
+        <div class="staff-role">
+            Bed Management Department
+        </div>
+    </div>
+
+    <div class="avatar">
+        B
+    </div>
+
+    <button
+        class="logout"
+        onclick="logout()"
+    >
+        Logout
+    </button>
+
+</div>
+```
+
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+```
+<div class="sidebar-title">
+    Bed Management
+</div>
+
+<a
+    class="active"
+    onclick="showPage('dashboard',this)"
+>
+    Dashboard
+</a>
+
+<a
+    onclick="showPage('beds',this)"
+>
+    All Beds
+</a>
+
+<a
+    onclick="showPage('wards',this)"
+>
+    Wards
+</a>
+
+<a
+    onclick="showPage('addBed',this)"
+>
+    Add Bed
+</a>
+
+<a
+    onclick="showPage('occupancy',this)"
+>
+    Occupancy
+</a>
+
+<a
+    onclick="showPage('emergency',this)"
+>
+    Emergency Beds
+</a>
+
+<a
+    onclick="showPage('history',this)"
+>
+    Bed History
+</a>
+```
+
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+
+<div
+    id="dashboard"
+    class="page active"
+>
+
+<div class="page-header">
+
+```
+<h2>Bed Management Dashboard</h2>
+
+<p>
+    Manage hospital beds, wards, occupancy,
+    reservations, cleaning and emergency availability.
+</p>
+```
+
+</div>
+
+<div class="cards">
+
+```
+<div class="card">
+    <h3>Total Beds</h3>
+    <div
+        class="number"
+        id="totalBeds"
+    >
+        0
+    </div>
+</div>
+
+<div class="card">
+    <h3>Available</h3>
+    <div
+        class="number"
+        id="availableCount"
+    >
+        0
+    </div>
+</div>
+
+<div class="card">
+    <h3>Occupied</h3>
+    <div
+        class="number"
+        id="occupiedCount"
+    >
+        0
+    </div>
+</div>
+
+<div class="card">
+    <h3>Reserved</h3>
+    <div
+        class="number"
+        id="reservedCount"
+    >
+        0
+    </div>
+</div>
+
+<div class="card">
+    <h3>Cleaning</h3>
+    <div
+        class="number"
+        id="cleaningCount"
+    >
+        0
+    </div>
+</div>
+```
+
+</div>
+
+<section class="section">
+
+```
+<h3>Bed Management Alerts</h3>
+
+<div id="dashboardAlerts"></div>
+```
+
+</section>
+
+<section class="section">
+
+```
+<h3>Ward Overview</h3>
+
+<div
+    class="grid-3"
+    id="dashboardWards"
+></div>
+```
+
+</section>
+
+</div>
+
+<!-- ALL BEDS -->
+
+<div
+    id="beds"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>All Hospital Beds</h2>
+
+<p>
+    Search and manage every hospital bed.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<div class="search-row">
+
+```
+<input
+    id="bedSearch"
+    placeholder="Search room, bed, patient or doctor..."
+>
+
+<select id="bedWardFilter">
+
+    <option value="">
+        All Wards
+    </option>
+
+</select>
+
+<select id="bedTypeFilter">
+
+    <option value="">
+        All Types
+    </option>
+
+    <option>
+        General
+    </option>
+
+    <option>
+        Private
+    </option>
+
+    <option>
+        ICU
+    </option>
+
+    <option>
+        Emergency
+    </option>
+
+    <option>
+        Pediatric
+    </option>
+
+    <option>
+        Maternity
+    </option>
+
+</select>
+
+<select id="bedStatusFilter">
+
+    <option value="">
+        All Status
+    </option>
+
+    <option>
+        Available
+    </option>
+
+    <option>
+        Occupied
+    </option>
+
+    <option>
+        Reserved
+    </option>
+
+    <option>
+        Cleaning
+    </option>
+
+    <option>
+        Maintenance
+    </option>
+
+</select>
+```
+
+</div>
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Room</th>
+<th>Bed</th>
+<th>Type</th>
+<th>Patient</th>
+<th>Doctor</th>
+<th>Status</th>
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody id="bedTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- WARDS -->
+
+<div
+    id="wards"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>Ward Management</h2>
+
+<p>
+    Monitor bed capacity and occupancy by ward.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<div
+    class="grid-3"
+    id="wardCards"
+></div>
+
+</section>
+
+</div>
+
+<!-- ADD BED -->
+
+<div
+    id="addBed"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>Add New Bed</h2>
+
+<p>
+    Create a new hospital bed record.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<form id="addBedForm">
+
+<div class="grid">
+
+<div>
+
+<label>
+Ward / Room
+</label>
+
+<input
+id="newRoom"
+placeholder="Example: General Ward"
+required
+
+>
+
+</div>
+
+<div>
+
+<label>
+Bed Number
+</label>
+
+<input
+id="newBed"
+placeholder="Example: G-15"
+required
+
+>
+
+</div>
+
+<div>
+
+<label>
+Bed Type
+</label>
+
+<select
+id="newType"
+required
+
+>
+
+<option value="">
+Select Type
+</option>
+
+<option>
+General
+</option>
+
+<option>
+Private
+</option>
+
+<option>
+ICU
+</option>
+
+<option>
+Emergency
+</option>
+
+<option>
+Pediatric
+</option>
+
+<option>
+Maternity
+</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>
+Initial Status
+</label>
+
+<select
+id="newStatus"
+
+>
+
+<option>
+Available
+</option>
+
+<option>
+Cleaning
+</option>
+
+<option>
+Maintenance
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn-primary"
+type="submit"
+
+>
+
+Add Bed </button>
+
+</form>
+
+</section>
+
+</div>
+
+<!-- OCCUPANCY -->
+
+<div
+    id="occupancy"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>Bed Occupancy</h2>
+
+<p>
+    Monitor current occupancy and patient allocation.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Occupancy Rate</h3>
+
+<div
+    class="number"
+    id="occupancyRate"
+>
+0%
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Occupied</h3>
+
+<div
+    class="number"
+    id="occupancyOccupied"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Available</h3>
+
+<div
+    class="number"
+    id="occupancyAvailable"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+<div
+    id="occupancyList"
+    class="grid-3"
+></div>
+
+</section>
+
+</div>
+
+<!-- EMERGENCY -->
+
+<div
+    id="emergency"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>Emergency Beds</h2>
+
+<p>
+    Quickly monitor beds reserved for emergency care.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<div
+    id="emergencyAlert"
+></div>
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Room</th>
+<th>Bed</th>
+<th>Status</th>
+<th>Patient</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="emergencyTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- HISTORY -->
+
+<div
+    id="history"
+    class="page"
+>
+
+<div class="page-header">
+
+```
+<h2>Bed History</h2>
+
+<p>
+    Track important bed status changes.
+</p>
+```
+
+</div>
+
+<section class="section">
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>Bed</th>
+<th>Room</th>
+<th>Action</th>
+<th>Patient</th>
+<th>Details</th>
+
+</tr>
+
+</thead>
+
+<tbody id="historyTable"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<footer>
+
+Gopal Joshi Hospital © 2026 |
+Beds Management Portal - Demo Project
+
+</footer>
+
+<!-- BED DETAIL MODAL -->
+
+<div
+    class="modal"
+    id="bedModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+Bed Details
+</h2>
+
+<button
+class="close"
+onclick="closeModal()"
+
+>
+
+Close </button>
+
+</div>
+
+<div id="bedDetails"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let beds=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_beds_data"
+    ) || "[]"
+);
+
+let bedHistory=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_beds_history"
+    ) || "[]"
+);
+
+
+function saveData(){
+
+    localStorage.setItem(
+        "gjh_beds_data",
+        JSON.stringify(beds)
+    );
+
+    localStorage.setItem(
+        "gjh_beds_history",
+        JSON.stringify(bedHistory)
+    );
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function createDemoBeds(){
+
+    if(beds.length>0){
+        return;
+    }
+
+    beds=[
+
+        {
+            id:1,
+            room:"General Ward",
+            bed:"G-01",
+            type:"General",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:2,
+            room:"General Ward",
+            bed:"G-02",
+            type:"General",
+            status:"Occupied",
+            patient:"Demo Patient 1",
+            patientId:"GJH-P1001",
+            doctor:"Dr. Demo Physician"
+        },
+
+        {
+            id:3,
+            room:"General Ward",
+            bed:"G-03",
+            type:"General",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:4,
+            room:"General Ward",
+            bed:"G-04",
+            type:"General",
+            status:"Reserved",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:5,
+            room:"Private Room",
+            bed:"P-01",
+            type:"Private",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:6,
+            room:"Private Room",
+            bed:"P-02",
+            type:"Private",
+            status:"Occupied",
+            patient:"Demo Patient 2",
+            patientId:"GJH-P1002",
+            doctor:"Dr. Demo Cardiologist"
+        },
+
+        {
+            id:7,
+            room:"ICU",
+            bed:"ICU-01",
+            type:"ICU",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:8,
+            room:"ICU",
+            bed:"ICU-02",
+            type:"ICU",
+            status:"Occupied",
+            patient:"Demo Patient 3",
+            patientId:"GJH-P1003",
+            doctor:"Dr. Demo Specialist"
+        },
+
+        {
+            id:9,
+            room:"Emergency",
+            bed:"E-01",
+            type:"Emergency",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:10,
+            room:"Emergency",
+            bed:"E-02",
+            type:"Emergency",
+            status:"Available",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:11,
+            room:"Pediatric Ward",
+            bed:"PED-01",
+            type:"Pediatric",
+            status:"Cleaning",
+            patient:"",
+            patientId:"",
+            doctor:""
+        },
+
+        {
+            id:12,
+            room:"Maternity Ward",
+            bed:"MAT-01",
+            type:"Maternity",
+            status:"Maintenance",
+            patient:"",
+            patientId:"",
+            doctor:""
+        }
+
+    ];
+
+    saveData();
+
+}
+
+
+function statusBadge(status){
+
+    let cls="available";
+
+    if(status==="Occupied"){
+        cls="occupied";
+    }
+
+    if(status==="Reserved"){
+        cls="reserved";
+    }
+
+    if(status==="Cleaning"){
+        cls="cleaning";
+    }
+
+    if(status==="Maintenance"){
+        cls="maintenance";
+    }
+
+    return `
+        <span class="badge ${cls}">
+            ${escapeHTML(status)}
+        </span>
+    `;
+
+}
+
+
+function showPage(id,link){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(
+        p=>p.classList.remove("active")
+    );
+
+    document
+    .querySelectorAll(".sidebar a")
+    .forEach(
+        a=>a.classList.remove("active")
+    );
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    link.classList.add("active");
+
+    if(id==="dashboard"){
+        renderDashboard();
+    }
+
+    if(id==="beds"){
+        renderBeds();
+    }
+
+    if(id==="wards"){
+        renderWards();
+    }
+
+    if(id==="occupancy"){
+        renderOccupancy();
+    }
+
+    if(id==="emergency"){
+        renderEmergency();
+    }
+
+    if(id==="history"){
+        renderHistory();
+    }
+
+}
+
+
+function renderDashboard(){
+
+    const total=beds.length;
+
+    const available=
+    beds.filter(
+        b=>b.status==="Available"
+    ).length;
+
+    const occupied=
+    beds.filter(
+        b=>b.status==="Occupied"
+    ).length;
+
+    const reserved=
+    beds.filter(
+        b=>b.status==="Reserved"
+    ).length;
+
+    const cleaning=
+    beds.filter(
+        b=>b.status==="Cleaning"
+    ).length;
+
+    document.getElementById("totalBeds")
+    .textContent=total;
+
+    document.getElementById("availableCount")
+    .textContent=available;
+
+    document.getElementById("occupiedCount")
+    .textContent=occupied;
+
+    document.getElementById("reservedCount")
+    .textContent=reserved;
+
+    document.getElementById("cleaningCount")
+    .textContent=cleaning;
+
+    const alerts=[];
+
+    if(available===0){
+
+        alerts.push(`
+            <div class="alert danger-alert">
+                <strong>Critical:</strong>
+                No beds are currently available.
+            </div>
+        `);
+
+    }
+
+    if(cleaning>0){
+
+        alerts.push(`
+            <div class="alert">
+                <strong>Cleaning Required:</strong>
+                ${cleaning} bed(s) waiting for cleaning.
+            </div>
+        `);
+
+    }
+
+    if(
+        beds.filter(
+            b=>b.status==="Maintenance"
+        ).length>0
+    ){
+
+        alerts.push(`
+            <div class="alert">
+                <strong>Maintenance:</strong>
+                Some beds are under maintenance.
+            </div>
+        `);
+
+    }
+
+    if(alerts.length===0){
+
+        alerts.push(`
+            <div class="alert success-alert">
+                All bed management operations are normal.
+            </div>
+        `);
+
+    }
+
+    document.getElementById(
+        "dashboardAlerts"
+    ).innerHTML=alerts.join("");
+
+    renderDashboardWards();
+
+}
+
+
+function getWards(){
+
+    return [
+        ...new Set(
+            beds.map(
+                b=>b.room
+            )
+        )
+    ];
+
+}
+
+
+function renderDashboardWards(){
+
+    const box=
+    document.getElementById(
+        "dashboardWards"
+    );
+
+    const wards=getWards();
+
+    box.innerHTML=
+    wards.map(
+        ward=>{
+
+            const list=
+            beds.filter(
+                b=>b.room===ward
+            );
+
+            const occupied=
+            list.filter(
+                b=>b.status==="Occupied"
+            ).length;
+
+            const percent=
+            list.length
+            ?
+            Math.round(
+                occupied/list.length*100
+            )
+            :
+            0;
+
+            return `
+
+            <div class="ward-card">
+
+                <h4>
+                    ${escapeHTML(ward)}
+                </h4>
+
+                <p>
+                    Total Beds:
+                    <strong>${list.length}</strong>
+                </p>
+
+                <p>
+                    Occupied:
+                    <strong>${occupied}</strong>
+                </p>
+
+                <p>
+                    Available:
+                    <strong>
+                        ${
+                            list.filter(
+                                b=>b.status==="Available"
+                            ).length
+                        }
+                    </strong>
+                </p>
+
+                <div class="progress">
+                    <div
+                        class="progress-bar"
+                        style="width:${percent}%"
+                    ></div>
+                </div>
+
+                <small>
+                    Occupancy: ${percent}%
+                </small>
+
+            </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+function populateFilters(){
+
+    const wardSelect=
+    document.getElementById(
+        "bedWardFilter"
+    );
+
+    const wards=getWards();
+
+    wardSelect.innerHTML=
+    `<option value="">
+        All Wards
+    </option>`+
+    wards.map(
+        ward=>`
+        <option value="${escapeHTML(ward)}">
+            ${escapeHTML(ward)}
+        </option>
+        `
+    ).join("");
+
+}
+
+
+function renderBeds(){
+
+    const tbody=
+    document.getElementById(
+        "bedTable"
+    );
+
+    const query=
+    document.getElementById(
+        "bedSearch"
+    ).value
+    .toLowerCase()
+    .trim();
+
+    const ward=
+    document.getElementById(
+        "bedWardFilter"
+    ).value;
+
+    const type=
+    document.getElementById(
+        "bedTypeFilter"
+    ).value;
+
+    const status=
+    document.getElementById(
+        "bedStatusFilter"
+    ).value;
+
+    const filtered=
+    beds.filter(
+        b=>{
+
+            const text=`
+                ${b.room}
+                ${b.bed}
+                ${b.patient}
+                ${b.patientId}
+                ${b.doctor}
+            `.toLowerCase();
+
+            return (
+                text.includes(query) &&
+                (!ward || b.room===ward) &&
+                (!type || b.type===type) &&
+                (!status || b.status===status)
+            );
+
+        }
+    );
+
+    if(filtered.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="7"
+                    class="empty"
+                >
+                    No beds found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML=
+    filtered.map(
+        b=>`
+
+        <tr>
+
+            <td>
+                ${escapeHTML(b.room)}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(b.bed)}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(b.type)}
+            </td>
+
+            <td>
+                ${
+                    b.patient
+                    ?
+                    escapeHTML(b.patient)
+                    :
+                    "—"
+                }
+            </td>
+
+            <td>
+                ${
+                    b.doctor
+                    ?
+                    escapeHTML(b.doctor)
+                    :
+                    "—"
+                }
+            </td>
+
+            <td>
+                ${statusBadge(b.status)}
+            </td>
+
+            <td>
+
+                <button
+                    class="btn-blue"
+                    onclick="viewBed(${b.id})"
+                >
+                    View
+                </button>
+
+                ${
+                    b.status==="Available"
+                    ?
+                    `
+                    <button
+                        class="btn-orange"
+                        onclick="reserveBed(${b.id})"
+                    >
+                        Reserve
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    b.status==="Reserved"
+                    ?
+                    `
+                    <button
+                        class="btn-green"
+                        onclick="makeAvailable(${b.id})"
+                    >
+                        Available
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    b.status==="Occupied"
+                    ?
+                    `
+                    <button
+                        class="btn-gray"
+                        onclick="startCleaning(${b.id})"
+                    >
+                        Cleaning
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                ${
+                    b.status==="Cleaning"
+                    ?
+                    `
+                    <button
+                        class="btn-green"
+                        onclick="makeAvailable(${b.id})"
+                    >
+                        Ready
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+function viewBed(id){
+
+    const bed=
+    beds.find(
+        b=>b.id===id
+    );
+
+    if(!bed)return;
+
+    document.getElementById(
+        "bedDetails"
+    ).innerHTML=`
+
+        <div class="detail-row">
+            <strong>Room</strong>
+            <span>${escapeHTML(bed.room)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Bed Number</strong>
+            <span>${escapeHTML(bed.bed)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Type</strong>
+            <span>${escapeHTML(bed.type)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Status</strong>
+            <span>${statusBadge(bed.status)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Patient</strong>
+            <span>${escapeHTML(bed.patient || "Not Assigned")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Patient ID</strong>
+            <span>${escapeHTML(bed.patientId || "—")}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Doctor</strong>
+            <span>${escapeHTML(bed.doctor || "Not Assigned")}</span>
+        </div>
+
+    `;
+
+    document
+    .getElementById("bedModal")
+    .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+    .getElementById("bedModal")
+    .classList.remove("show");
+
+}
+
+
+function addHistory(
+    bed,
+    action,
+    details=""
+){
+
+    bedHistory.push({
+
+        date:new Date().toLocaleString(),
+
+        bed:bed.bed,
+
+        room:bed.room,
+
+        action,
+
+        patient:bed.patient || "None",
+
+        details
+
+    });
+
+    saveData();
+
+}
+
+
+function reserveBed(id){
+
+    const bed=
+    beds.find(
+        b=>b.id===id
+    );
+
+    if(!bed)return;
+
+    if(bed.status!=="Available"){
+
+        alert(
+            "Only available beds can be reserved."
+        );
+
+        return;
+    }
+
+    bed.status="Reserved";
+
+    addHistory(
+        bed,
+        "Reserved",
+        "Bed reserved for patient admission."
+    );
+
+    renderAll();
+
+    alert(
+        "Bed reserved successfully."
+    );
+
+}
+
+
+function makeAvailable(id){
+
+    const bed=
+    beds.find(
+        b=>b.id===id
+    );
+
+    if(!bed)return;
+
+    bed.status="Available";
+
+    bed.patient="";
+    bed.patientId="";
+    bed.doctor="";
+
+    addHistory(
+        bed,
+        "Available",
+        "Bed marked available."
+    );
+
+    renderAll();
+
+    alert(
+        "Bed is now available."
+    );
+
+}
+
+
+function startCleaning(id){
+
+    const bed=
+    beds.find(
+        b=>b.id===id
+    );
+
+    if(!bed)return;
+
+    if(bed.status!=="Occupied"){
+
+        alert(
+            "Only occupied beds can be sent for cleaning."
+        );
+
+        return;
+    }
+
+    const oldPatient=
+    bed.patient;
+
+    bed.status="Cleaning";
+
+    bed.patient="";
+    bed.patientId="";
+    bed.doctor="";
+
+    addHistory(
+        bed,
+        "Cleaning",
+        "Bed released after patient discharge: "+
+        oldPatient
+    );
+
+    renderAll();
+
+    alert(
+        "Bed moved to cleaning status."
+    );
+
+}
+
+
+document
+.getElementById("addBedForm")
+.addEventListener(
+"submit",
+function(e){
+
+    e.preventDefault();
+
+    const room=
+    document.getElementById(
+        "newRoom"
+    ).value.trim();
+
+    const bedNumber=
+    document.getElementById(
+        "newBed"
+    ).value.trim();
+
+    const type=
+    document.getElementById(
+        "newType"
+    ).value;
+
+    const status=
+    document.getElementById(
+        "newStatus"
+    ).value;
+
+    if(
+        beds.some(
+            b=>
+                b.bed.toLowerCase()===
+                bedNumber.toLowerCase()
+        )
+    ){
+
+        alert(
+            "This bed number already exists."
+        );
+
+        return;
+    }
+
+    const bed={
+
+        id:
+        Date.now(),
+
+        room,
+
+        bed:
+        bedNumber,
+
+        type,
+
+        status,
+
+        patient:"",
+
+        patientId:"",
+
+        doctor:""
+
+    };
+
+    beds.push(bed);
+
+    addHistory(
+        bed,
+        "Created",
+        "New bed added to hospital."
+    );
+
+    this.reset();
+
+    renderAll();
+
+    alert(
+        "New bed added successfully."
+    );
+
+});
+
+
+function renderWards(){
+
+    const box=
+    document.getElementById(
+        "wardCards"
+    );
+
+    const wards=getWards();
+
+    box.innerHTML=
+    wards.map(
+        ward=>{
+
+            const list=
+            beds.filter(
+                b=>b.room===ward
+            );
+
+            const available=
+            list.filter(
+                b=>b.status==="Available"
+            ).length;
+
+            const occupied=
+            list.filter(
+                b=>b.status==="Occupied"
+            ).length;
+
+            const reserved=
+            list.filter(
+                b=>b.status==="Reserved"
+            ).length;
+
+            const cleaning=
+            list.filter(
+                b=>b.status==="Cleaning"
+            ).length;
+
+            const rate=
+            list.length
+            ?
+            Math.round(
+                occupied/list.length*100
+            )
+            :
+            0;
+
+            return `
+
+            <div class="ward-card">
+
+                <h4>
+                    ${escapeHTML(ward)}
+                </h4>
+
+                <p>
+                    Total:
+                    <strong>${list.length}</strong>
+                </p>
+
+                <p>
+                    Available:
+                    <strong>${available}</strong>
+                </p>
+
+                <p>
+                    Occupied:
+                    <strong>${occupied}</strong>
+                </p>
+
+                <p>
+                    Reserved:
+                    <strong>${reserved}</strong>
+                </p>
+
+                <p>
+                    Cleaning:
+                    <strong>${cleaning}</strong>
+                </p>
+
+                <div class="progress">
+                    <div
+                        class="progress-bar"
+                        style="width:${rate}%"
+                    ></div>
+                </div>
+
+                <small>
+                    Occupancy Rate: ${rate}%
+                </small>
+
+            </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+function renderOccupancy(){
+
+    const total=beds.length;
+
+    const occupied=
+    beds.filter(
+        b=>b.status==="Occupied"
+    ).length;
+
+    const available=
+    beds.filter(
+        b=>b.status==="Available"
+    ).length;
+
+    const rate=
+    total
+    ?
+    Math.round(
+        occupied/total*100
+    )
+    :
+    0;
+
+    document.getElementById(
+        "occupancyRate"
+    ).textContent=
+    rate+"%";
+
+    document.getElementById(
+        "occupancyOccupied"
+    ).textContent=
+    occupied;
+
+    document.getElementById(
+        "occupancyAvailable"
+    ).textContent=
+    available;
+
+    const box=
+    document.getElementById(
+        "occupancyList"
+    );
+
+    const wards=getWards();
+
+    box.innerHTML=
+    wards.map(
+        ward=>{
+
+            const list=
+            beds.filter(
+                b=>b.room===ward
+            );
+
+            const occupied=
+            list.filter(
+                b=>b.status==="Occupied"
+            ).length;
+
+            const percent=
+            list.length
+            ?
+            Math.round(
+                occupied/list.length*100
+            )
+            :
+            0;
+
+            return `
+
+            <div class="ward-card">
+
+                <h4>
+                    ${escapeHTML(ward)}
+                </h4>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width:${percent}%"
+                    ></div>
+
+                </div>
+
+                <p>
+                    ${occupied}
+                    occupied /
+                    ${list.length}
+                    total
+                </p>
+
+            </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+function renderEmergency(){
+
+    const emergencyBeds=
+    beds.filter(
+        b=>
+            b.type==="Emergency"
+    );
+
+    const available=
+    emergencyBeds.filter(
+        b=>b.status==="Available"
+    ).length;
+
+    const box=
+    document.getElementById(
+        "emergencyAlert"
+    );
+
+    if(available===0){
+
+        box.innerHTML=`
+            <div class="alert danger-alert">
+                <strong>Emergency Warning:</strong>
+                No emergency bed is currently available.
+            </div>
+        `;
+
+    }else{
+
+        box.innerHTML=`
+            <div class="alert success-alert">
+                <strong>Emergency Availability:</strong>
+                ${available} emergency bed(s) available.
+            </div>
+        `;
+
+    }
+
+    const tbody=
+    document.getElementById(
+        "emergencyTable"
+    );
+
+    if(emergencyBeds.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="5"
+                    class="empty"
+                >
+                    No emergency beds configured.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML=
+    emergencyBeds.map(
+        b=>`
+
+        <tr>
+
+            <td>
+                ${escapeHTML(b.room)}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(b.bed)}
+                </strong>
+            </td>
+
+            <td>
+                ${statusBadge(b.status)}
+            </td>
+
+            <td>
+                ${escapeHTML(b.patient || "None")}
+            </td>
+
+            <td>
+
+                ${
+                    b.status==="Available"
+                    ?
+                    `
+                    <button
+                        class="btn-orange"
+                        onclick="reserveBed(${b.id})"
+                    >
+                        Reserve
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+                <button
+                    class="btn-blue"
+                    onclick="viewBed(${b.id})"
+                >
+                    View
+                </button>
+
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+function renderHistory(){
+
+    const tbody=
+    document.getElementById(
+        "historyTable"
+    );
+
+    if(bedHistory.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    No bed history available.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    tbody.innerHTML=
+    [...bedHistory]
+    .reverse()
+    .map(
+        h=>`
+
+        <tr>
+
+            <td>
+                ${escapeHTML(h.date)}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(h.bed)}
+                </strong>
+            </td>
+
+            <td>
+                ${escapeHTML(h.room)}
+            </td>
+
+            <td>
+                ${escapeHTML(h.action)}
+            </td>
+
+            <td>
+                ${escapeHTML(h.patient)}
+            </td>
+
+            <td>
+                ${escapeHTML(h.details)}
+            </td>
+
+        </tr>
+
+        `
+    ).join("");
+
+}
+
+
+function renderAll(){
+
+    populateFilters();
+
+    renderDashboard();
+
+    renderBeds();
+
+    renderWards();
+
+    renderOccupancy();
+
+    renderEmergency();
+
+    renderHistory();
+
+}
+
+
+document
+.getElementById("bedSearch")
+.addEventListener(
+"input",
+renderBeds
+);
+
+document
+.getElementById("bedWardFilter")
+.addEventListener(
+"change",
+renderBeds
+);
+
+document
+.getElementById("bedTypeFilter")
+.addEventListener(
+"change",
+renderBeds
+);
+
+document
+.getElementById("bedStatusFilter")
+.addEventListener(
+"change",
+renderBeds
+);
+
+
+function logout(){
+
+    localStorage.removeItem(
+        "gjh_token"
+    );
+
+    localStorage.removeItem(
+        "gjh_user"
+    );
+
+    window.location.replace(
+        "login.html"
+    );
+
+}
+
+
+createDemoBeds();
+
+renderAll();
+
+</script>
+
+</body>
+</html>

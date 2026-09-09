@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manager Login - Gopal Joshi Hospital</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ede7f6, #e3f2fd);
+        }
+
+        .login-box {
+            width: 390px;
+            max-width: 92%;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4527a0;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4527a0;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #4527a0;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #311b92;
+        }
+
+        .message {
+            margin-top: 15px;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        .demo {
+            margin-top: 20px;
+            padding: 12px;
+            background: #f3efff;
+            border-radius: 9px;
+            font-size: 13px;
+            color: #444;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4527a0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">👨‍💼</div>
+
+    <h1>Manager Login</h1>
+
+    <p class="subtitle">
+        Gopal Joshi Hospital
+    </p>
+
+    <form id="loginForm">
+
+        <label for="username">Username</label>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+
+        <label for="password">Password</label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <div class="demo">
+        <strong>Demo Login</strong><br><br>
+        Username: manager<br>
+        Password: manager123
+    </div>
+
+    <a href="../index.html" class="back">
+        ← Back to Hospital Home
+    </a>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const username =
+            document.getElementById("username").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("message");
+
+        message.style.color = "#666";
+        message.textContent = "Checking login...";
+
+        try {
+
+            const response = await fetch(
+                "/api/auth/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+
+                message.style.color = "#d32f2f";
+
+                message.textContent =
+                    data.message ||
+                    "Invalid username or password";
+
+                return;
+            }
+
+            if (
+                !data.user ||
+                data.user.role !== "manager"
+            ) {
+
+                message.style.color = "#d32f2f";
+
+                message.textContent =
+                    "This account is not authorized for Manager Panel.";
+
+                return;
+            }
+
+            localStorage.setItem(
+                "gjh_token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "gjh_user",
+                JSON.stringify(data.user)
+            );
+
+            message.style.color = "#4527a0";
+
+            message.textContent =
+                "Login successful. Opening Manager Panel...";
+
+            setTimeout(function() {
+
+                window.location.href = "index.html";
+
+            }, 500);
+
+        } catch (error) {
+
+            message.style.color = "#d32f2f";
+
+            message.textContent =
+                "Server connection failed. Start the hospital server first.";
+
+            console.error(error);
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

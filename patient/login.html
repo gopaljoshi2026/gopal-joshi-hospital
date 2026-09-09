@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Patient Login - Gopal Joshi Hospital</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0f766e, #2563eb);
+        padding: 20px;
+    }
+
+    .login-box {
+        width: 100%;
+        max-width: 420px;
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.2);
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .logo h1 {
+        color: #0f766e;
+        font-size: 27px;
+    }
+
+    .logo p {
+        color: #6b7280;
+        margin-top: 6px;
+    }
+
+    .notice {
+        background: #ecfeff;
+        border-left: 4px solid #0891b2;
+        padding: 12px;
+        border-radius: 7px;
+        margin-bottom: 20px;
+        color: #155e75;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .form-group {
+        margin-bottom: 17px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 7px;
+        font-weight: bold;
+        color: #374151;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 15px;
+        outline: none;
+    }
+
+    input:focus {
+        border-color: #2563eb;
+    }
+
+    .login-btn {
+        width: 100%;
+        border: none;
+        background: #2563eb;
+        color: white;
+        padding: 13px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .demo {
+        margin-top: 18px;
+        background: #f3f4f6;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        color: #374151;
+    }
+
+    .demo strong {
+        color: #111827;
+    }
+
+    .back {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    #message {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+```
+<div class="logo">
+    <h1>Gopal Joshi Hospital</h1>
+    <p>Patient Login</p>
+</div>
+
+<div class="notice">
+    Patient access allows you to view your own appointments,
+    prescriptions, reports, bills and follow-up information.
+</div>
+
+<form id="loginForm">
+
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input
+            type="text"
+            id="username"
+            placeholder="Enter username"
+            required
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+        >
+    </div>
+
+    <button type="submit" class="login-btn">
+        Patient Login
+    </button>
+
+</form>
+
+<div id="message"></div>
+
+<div class="demo">
+    <strong>Demo Patient Account</strong><br><br>
+    Username: patient<br>
+    Password: patient123
+</div>
+
+<a href="../index.html" class="back">
+    ← Back to Hospital
+</a>
+```
+
+</div>
+
+<script>
+
+const loginForm = document.getElementById("loginForm");
+const message = document.getElementById("message");
+
+loginForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    message.textContent = "Checking login...";
+    message.style.color = "#2563eb";
+
+    try {
+
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            message.textContent =
+                data.message || "Invalid username or password.";
+
+            message.style.color = "#dc2626";
+            return;
+        }
+
+        if (!data.user || data.user.role !== "patient") {
+
+            message.textContent =
+                "Access denied. This account is not a patient account.";
+
+            message.style.color = "#dc2626";
+            return;
+        }
+
+        localStorage.setItem("gjh_token", data.token);
+        localStorage.setItem(
+            "gjh_user",
+            JSON.stringify(data.user)
+        );
+
+        message.textContent = "Login successful. Opening Patient Panel...";
+        message.style.color = "#16a34a";
+
+        setTimeout(function() {
+            window.location.href = "index.html";
+        }, 500);
+
+    } catch (error) {
+
+        message.textContent =
+            "Server connection failed. Please start the hospital server.";
+
+        message.style.color = "#dc2626";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

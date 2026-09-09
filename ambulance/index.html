@@ -1,0 +1,3050 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ambulance Management - Gopal Joshi Hospital</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1f2937;
+}
+
+.topbar{
+    height:72px;
+    background:linear-gradient(135deg,#b91c1c,#ef4444);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:12px;
+    background:white;
+    color:#b91c1c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.brand h1{
+    font-size:20px;
+}
+
+.brand p{
+    font-size:12px;
+    opacity:.85;
+}
+
+.staff{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.staff-info{
+    text-align:right;
+}
+
+.staff-name{
+    font-weight:bold;
+}
+
+.staff-role{
+    font-size:12px;
+    opacity:.85;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:white;
+    color:#b91c1c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.logout{
+    border:none;
+    background:#7f1d1d;
+    color:white;
+    padding:9px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 72px);
+}
+
+.sidebar{
+    width:245px;
+    background:#111827;
+    color:white;
+    padding:22px 14px;
+    flex-shrink:0;
+}
+
+.sidebar-title{
+    font-size:12px;
+    color:#9ca3af;
+    padding:0 12px 10px;
+    text-transform:uppercase;
+}
+
+.sidebar a{
+    display:block;
+    color:#d1d5db;
+    text-decoration:none;
+    padding:12px 14px;
+    border-radius:9px;
+    margin-bottom:5px;
+    font-size:14px;
+    cursor:pointer;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#b91c1c;
+    color:white;
+}
+
+.main{
+    flex:1;
+    padding:28px;
+    overflow:hidden;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+.page-header{
+    margin-bottom:22px;
+}
+
+.page-header h2{
+    color:#111827;
+    margin-bottom:6px;
+}
+
+.page-header p{
+    color:#64748b;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.card h3{
+    color:#64748b;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.number{
+    font-size:30px;
+    font-weight:bold;
+    color:#b91c1c;
+}
+
+.section{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    margin-bottom:22px;
+    box-shadow:0 4px 15px rgba(0,0,0,.06);
+}
+
+.section h3{
+    color:#b91c1c;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.grid-3{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+label{
+    font-size:13px;
+    font-weight:bold;
+    display:block;
+    margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#ef4444;
+}
+
+button{
+    border:none;
+    border-radius:8px;
+    padding:9px 13px;
+    cursor:pointer;
+    font-weight:bold;
+    margin:2px;
+}
+
+.btn-primary{
+    background:#b91c1c;
+    color:white;
+}
+
+.btn-green{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-orange{
+    background:#ea580c;
+    color:white;
+}
+
+.btn-red{
+    background:#dc2626;
+    color:white;
+}
+
+.btn-blue{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-purple{
+    background:#7c3aed;
+    color:white;
+}
+
+.btn-gray{
+    background:#64748b;
+    color:white;
+}
+
+.search-row{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    background:#fef2f2;
+    color:#991b1b;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.available{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.busy{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.enroute{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.maintenance{
+    background:#ede9fe;
+    color:#5b21b6;
+}
+
+.offline{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.completed{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.empty{
+    text-align:center;
+    padding:25px;
+    color:#64748b;
+}
+
+.ambulance-card{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:18px;
+}
+
+.ambulance-card h4{
+    color:#b91c1c;
+    margin-bottom:10px;
+}
+
+.ambulance-icon{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.alert{
+    padding:14px;
+    border-radius:10px;
+    background:#fff7ed;
+    border-left:5px solid #f97316;
+    margin-bottom:10px;
+}
+
+.success-alert{
+    background:#ecfdf5;
+    border-left-color:#10b981;
+}
+
+.info-alert{
+    background:#eff6ff;
+    border-left-color:#3b82f6;
+}
+
+.danger-alert{
+    background:#fef2f2;
+    border-left-color:#ef4444;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:500;
+    padding:20px;
+}
+
+.modal.show{
+    display:flex;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:15px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.detail-row{
+    display:grid;
+    grid-template-columns:160px 1fr;
+    gap:10px;
+    padding:10px 0;
+    border-bottom:1px solid #e5e7eb;
+}
+
+footer{
+    text-align:center;
+    padding:22px;
+    color:#64748b;
+    font-size:13px;
+}
+
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:800px){
+
+    .sidebar{
+        width:210px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .topbar{
+        padding:0 12px;
+    }
+
+    .brand h1{
+        font-size:16px;
+    }
+
+    .staff-info{
+        display:none;
+    }
+
+    .layout{
+        display:block;
+    }
+
+    .sidebar{
+        width:100%;
+        display:flex;
+        overflow-x:auto;
+        gap:5px;
+        padding:10px;
+    }
+
+    .sidebar-title{
+        display:none;
+    }
+
+    .sidebar a{
+        white-space:nowrap;
+        margin:0;
+    }
+
+    .main{
+        padding:15px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .search-row{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        min-width:900px;
+    }
+
+    .section{
+        overflow-x:auto;
+    }
+
+}
+
+</style>
+
+<script>
+
+document.documentElement.style.visibility="hidden";
+
+async function verifyAmbulanceAccess(){
+
+    const token=
+        localStorage.getItem("gjh_token");
+
+    if(!token){
+
+        window.location.replace("login.html");
+
+        return;
+    }
+
+    try{
+
+        const response=
+            await fetch(
+                "/api/private/ambulance",
+                {
+                    headers:{
+                        "Authorization":
+                        "Bearer "+token
+                    }
+                }
+            );
+
+        const data=
+            await response.json();
+
+        if(
+            !response.ok ||
+            !data.success ||
+            !data.user ||
+            data.user.role!=="ambulance"
+        ){
+
+            localStorage.removeItem("gjh_token");
+            localStorage.removeItem("gjh_user");
+
+            alert(
+                "Access denied. Only authorized ambulance staff can open this panel."
+            );
+
+            window.location.replace("login.html");
+
+            return;
+        }
+
+        const savedUser=
+            JSON.parse(
+                localStorage.getItem("gjh_user") || "{}"
+            );
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            ()=>{
+                document.getElementById(
+                    "staffName"
+                ).textContent=
+                    savedUser.name ||
+                    data.user.name ||
+                    "Ambulance Staff";
+            }
+        );
+
+        document.documentElement.style.visibility="visible";
+
+    }catch(error){
+
+        alert(
+            "Unable to verify ambulance login."
+        );
+
+        window.location.replace("login.html");
+
+    }
+
+}
+
+verifyAmbulanceAccess();
+
+</script>
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+<div class="brand">
+
+```
+<div class="logo">
+    GJ
+</div>
+
+<div>
+    <h1>
+        Gopal Joshi Hospital
+    </h1>
+
+    <p>
+        Ambulance Management Portal
+    </p>
+</div>
+```
+
+</div>
+
+<div class="staff">
+
+```
+<div class="staff-info">
+
+    <div
+        class="staff-name"
+        id="staffName"
+    >
+        Ambulance Staff
+    </div>
+
+    <div class="staff-role">
+        Emergency Transport Department
+    </div>
+
+</div>
+
+<div class="avatar">
+    A
+</div>
+
+<button
+    class="logout"
+    onclick="logout()"
+>
+    Logout
+</button>
+```
+
+</div>
+
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+<div class="sidebar-title">
+    Ambulance Management
+</div>
+
+<a
+class="active"
+onclick="showPage('dashboard',this)"
+
+>
+
+```
+Dashboard
+```
+
+</a>
+
+<a
+onclick="showPage('ambulances',this)"
+
+>
+
+```
+Ambulances
+```
+
+</a>
+
+<a
+onclick="showPage('requests',this)"
+
+>
+
+```
+Emergency Requests
+```
+
+</a>
+
+<a
+onclick="showPage('dispatch',this)"
+
+>
+
+```
+Dispatch
+```
+
+</a>
+
+<a
+onclick="showPage('drivers',this)"
+
+>
+
+```
+Drivers
+```
+
+</a>
+
+<a
+onclick="showPage('maintenance',this)"
+
+>
+
+```
+Maintenance
+```
+
+</a>
+
+<a
+onclick="showPage('history',this)"
+
+>
+
+```
+Trip History
+```
+
+</a>
+
+</aside>
+
+<main class="main">
+
+<!-- DASHBOARD -->
+
+<div
+    id="dashboard"
+    class="page active"
+>
+
+<div class="page-header">
+
+<h2>
+    Ambulance Dashboard
+</h2>
+
+<p>
+    Manage ambulance availability, emergency requests,
+    dispatch operations and transport records.
+</p>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>
+    Total Ambulances
+</h3>
+
+<div
+    class="number"
+    id="totalAmbulances"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+    Available
+</h3>
+
+<div
+    class="number"
+    id="availableAmbulances"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+    En Route
+</h3>
+
+<div
+    class="number"
+    id="enrouteAmbulances"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+    Busy
+</h3>
+
+<div
+    class="number"
+    id="busyAmbulances"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+    Emergency Requests
+</h3>
+
+<div
+    class="number"
+    id="pendingRequests"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+<section class="section">
+
+<h3>
+    Emergency Alerts
+</h3>
+
+<div id="dashboardAlerts"></div>
+
+</section>
+
+<section class="section">
+
+<h3>
+    Ambulance Fleet
+</h3>
+
+<div
+    class="grid-3"
+    id="dashboardFleet"
+></div>
+
+</section>
+
+</div>
+
+<!-- AMBULANCES -->
+
+<div
+    id="ambulances"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Ambulance Fleet
+</h2>
+
+<p>
+    View and manage all hospital ambulances.
+</p>
+
+</div>
+
+<section class="section">
+
+<div class="search-row">
+
+<input
+id="ambulanceSearch"
+placeholder="Search ambulance, driver, location..."
+
+>
+
+<select id="ambulanceTypeFilter">
+
+<option value="">
+    All Types
+</option>
+
+<option>
+    Basic Life Support
+</option>
+
+<option>
+    Advanced Life Support
+</option>
+
+<option>
+    ICU Ambulance
+</option>
+
+<option>
+    Patient Transport
+</option>
+
+</select>
+
+<select id="ambulanceStatusFilter">
+
+<option value="">
+    All Status
+</option>
+
+<option>
+    Available
+</option>
+
+<option>
+    En Route
+</option>
+
+<option>
+    Busy
+</option>
+
+<option>
+    Maintenance
+</option>
+
+<option>
+    Offline
+</option>
+
+</select>
+
+</div>
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+    Ambulance
+</th>
+
+<th>
+    Type
+</th>
+
+<th>
+    Driver
+</th>
+
+<th>
+    Location
+</th>
+
+<th>
+    Status
+</th>
+
+<th>
+    Actions
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="ambulanceTable"
+></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- REQUESTS -->
+
+<div
+    id="requests"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Emergency Requests
+</h2>
+
+<p>
+    Receive and manage emergency ambulance requests.
+</p>
+
+</div>
+
+<section class="section">
+
+<form id="requestForm">
+
+<div class="grid">
+
+<div>
+
+<label>
+Patient Name
+</label>
+
+<input
+id="requestPatient"
+required
+placeholder="Patient name"
+
+>
+
+</div>
+
+<div>
+
+<label>
+Contact Number
+</label>
+
+<input
+id="requestPhone"
+required
+placeholder="Contact number"
+
+>
+
+</div>
+
+<div>
+
+<label>
+Pickup Location
+</label>
+
+<input
+id="pickupLocation"
+required
+placeholder="Pickup location"
+
+>
+
+</div>
+
+<div>
+
+<label>
+Destination
+</label>
+
+<input
+id="destination"
+required
+placeholder="Hospital / destination"
+
+>
+
+</div>
+
+<div>
+
+<label>
+Priority
+</label>
+
+<select id="requestPriority">
+
+<option>
+    Critical
+</option>
+
+<option>
+    High
+</option>
+
+<option>
+    Normal
+</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>
+Required Ambulance
+</label>
+
+<select id="requestType">
+
+<option>
+    Basic Life Support
+</option>
+
+<option>
+    Advanced Life Support
+</option>
+
+<option>
+    ICU Ambulance
+</option>
+
+<option>
+    Patient Transport
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+type="submit"
+class="btn-red"
+
+>
+
+Create Emergency Request </button>
+
+</form>
+
+</section>
+
+<section class="section">
+
+<h3>
+    Active Requests
+</h3>
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+    Patient
+</th>
+
+<th>
+    Pickup
+</th>
+
+<th>
+    Destination
+</th>
+
+<th>
+    Priority
+</th>
+
+<th>
+    Status
+</th>
+
+<th>
+    Actions
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="requestTable"
+></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- DISPATCH -->
+
+<div
+    id="dispatch"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Ambulance Dispatch
+</h2>
+
+<p>
+    Dispatch available ambulances for active emergency requests.
+</p>
+
+</div>
+
+<section class="section">
+
+<div
+    id="dispatchList"
+></div>
+
+</section>
+
+</div>
+
+<!-- DRIVERS -->
+
+<div
+    id="drivers"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Driver Management
+</h2>
+
+<p>
+    Manage ambulance drivers and their assignments.
+</p>
+
+</div>
+
+<section class="section">
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+    Driver
+</th>
+
+<th>
+    License
+</th>
+
+<th>
+    Phone
+</th>
+
+<th>
+    Assigned Ambulance
+</th>
+
+<th>
+    Shift
+</th>
+
+<th>
+    Status
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="driverTable"
+></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- MAINTENANCE -->
+
+<div
+    id="maintenance"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Ambulance Maintenance
+</h2>
+
+<p>
+    Track servicing, maintenance and vehicle readiness.
+</p>
+
+</div>
+
+<section class="section">
+
+<div class="grid">
+
+<div>
+
+<label>
+Ambulance
+</label>
+
+<select id="maintenanceAmbulance"></select>
+
+</div>
+
+<div>
+
+<label>
+Maintenance Type
+</label>
+
+<select id="maintenanceType">
+
+<option>
+    Routine Service
+</option>
+
+<option>
+    Emergency Repair
+</option>
+
+<option>
+    Medical Equipment Check
+</option>
+
+<option>
+    Cleaning
+</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>
+Date
+</label>
+
+<input
+type="date"
+id="maintenanceDate"
+
+>
+
+</div>
+
+<div>
+
+<label>
+Notes
+</label>
+
+<input
+id="maintenanceNotes"
+placeholder="Maintenance details"
+
+>
+
+</div>
+
+</div>
+
+<br>
+
+<button
+class="btn-primary"
+onclick="addMaintenance()"
+
+>
+
+Add Maintenance Record </button>
+
+</section>
+
+<section class="section">
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+    Date
+</th>
+
+<th>
+    Ambulance
+</th>
+
+<th>
+    Type
+</th>
+
+<th>
+    Notes
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="maintenanceTable"
+></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+<!-- HISTORY -->
+
+<div
+    id="history"
+    class="page"
+>
+
+<div class="page-header">
+
+<h2>
+    Trip History
+</h2>
+
+<p>
+    Track completed ambulance trips.
+</p>
+
+</div>
+
+<section class="section">
+
+<div style="overflow-x:auto;">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+    Date
+</th>
+
+<th>
+    Patient
+</th>
+
+<th>
+    Ambulance
+</th>
+
+<th>
+    Driver
+</th>
+
+<th>
+    Pickup
+</th>
+
+<th>
+    Destination
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+    id="historyTable"
+></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+<footer>
+
+Gopal Joshi Hospital © 2026 |
+Ambulance Management Portal - Demo Project
+
+</footer>
+
+<!-- MODAL -->
+
+<div
+    class="modal"
+    id="ambulanceModal"
+>
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h2>
+    Ambulance Details
+</h2>
+
+<button
+class="close"
+onclick="closeModal()"
+
+>
+
+```
+Close
+```
+
+</button>
+
+</div>
+
+<div id="ambulanceDetails"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let ambulances=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_ambulances"
+    ) || "[]"
+);
+
+let requests=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_ambulance_requests"
+    ) || "[]"
+);
+
+let drivers=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_ambulance_drivers"
+    ) || "[]"
+);
+
+let maintenance=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_ambulance_maintenance"
+    ) || "[]"
+);
+
+let tripHistory=
+JSON.parse(
+    localStorage.getItem(
+        "gjh_ambulance_history"
+    ) || "[]"
+);
+
+
+function saveData(){
+
+    localStorage.setItem(
+        "gjh_ambulances",
+        JSON.stringify(ambulances)
+    );
+
+    localStorage.setItem(
+        "gjh_ambulance_requests",
+        JSON.stringify(requests)
+    );
+
+    localStorage.setItem(
+        "gjh_ambulance_drivers",
+        JSON.stringify(drivers)
+    );
+
+    localStorage.setItem(
+        "gjh_ambulance_maintenance",
+        JSON.stringify(maintenance)
+    );
+
+    localStorage.setItem(
+        "gjh_ambulance_history",
+        JSON.stringify(tripHistory)
+    );
+
+}
+
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function createDemoData(){
+
+    if(ambulances.length===0){
+
+        ambulances=[
+
+            {
+                id:1,
+                number:"GJH-AMB-01",
+                type:"Basic Life Support",
+                driver:"Amit Kumar",
+                location:"Hospital Campus",
+                status:"Available"
+            },
+
+            {
+                id:2,
+                number:"GJH-AMB-02",
+                type:"Advanced Life Support",
+                driver:"Rahul Singh",
+                location:"City Center",
+                status:"Available"
+            },
+
+            {
+                id:3,
+                number:"GJH-AMB-03",
+                type:"ICU Ambulance",
+                driver:"Vikas Sharma",
+                location:"Hospital Campus",
+                status:"Busy"
+            },
+
+            {
+                id:4,
+                number:"GJH-AMB-04",
+                type:"Patient Transport",
+                driver:"Suresh Kumar",
+                location:"Railway Road",
+                status:"En Route"
+            },
+
+            {
+                id:5,
+                number:"GJH-AMB-05",
+                type:"Basic Life Support",
+                driver:"Rohit Verma",
+                location:"Hospital Campus",
+                status:"Maintenance"
+            },
+
+            {
+                id:6,
+                number:"GJH-AMB-06",
+                type:"Advanced Life Support",
+                driver:"Anil Yadav",
+                location:"City Center",
+                status:"Available"
+            }
+
+        ];
+
+    }
+
+
+    if(drivers.length===0){
+
+        drivers=[
+
+            {
+                id:1,
+                name:"Amit Kumar",
+                license:"DL-GJH-1001",
+                phone:"9000000001",
+                ambulance:"GJH-AMB-01",
+                shift:"Morning",
+                status:"Available"
+            },
+
+            {
+                id:2,
+                name:"Rahul Singh",
+                license:"DL-GJH-1002",
+                phone:"9000000002",
+                ambulance:"GJH-AMB-02",
+                shift:"Evening",
+                status:"Available"
+            },
+
+            {
+                id:3,
+                name:"Vikas Sharma",
+                license:"DL-GJH-1003",
+                phone:"9000000003",
+                ambulance:"GJH-AMB-03",
+                shift:"Night",
+                status:"Busy"
+            },
+
+            {
+                id:4,
+                name:"Suresh Kumar",
+                license:"DL-GJH-1004",
+                phone:"9000000004",
+                ambulance:"GJH-AMB-04",
+                shift:"Morning",
+                status:"On Duty"
+            },
+
+            {
+                id:5,
+                name:"Rohit Verma",
+                license:"DL-GJH-1005",
+                phone:"9000000005",
+                ambulance:"GJH-AMB-05",
+                shift:"Evening",
+                status:"Off Duty"
+            },
+
+            {
+                id:6,
+                name:"Anil Yadav",
+                license:"DL-GJH-1006",
+                phone:"9000000006",
+                ambulance:"GJH-AMB-06",
+                shift:"Night",
+                status:"Available"
+            }
+
+        ];
+
+    }
+
+    saveData();
+
+}
+
+
+function statusBadge(status){
+
+    let cls="available";
+
+    if(status==="Busy"){
+        cls="busy";
+    }
+
+    if(status==="En Route"){
+        cls="enroute";
+    }
+
+    if(status==="Maintenance"){
+        cls="maintenance";
+    }
+
+    if(status==="Offline"){
+        cls="offline";
+    }
+
+    if(status==="Pending"){
+        cls="pending";
+    }
+
+    if(status==="Completed"){
+        cls="completed";
+    }
+
+    return `
+        <span class="badge ${cls}">
+            ${escapeHTML(status)}
+        </span>
+    `;
+
+}
+
+
+function showPage(id,link){
+
+    document
+    .querySelectorAll(".page")
+    .forEach(
+        p=>p.classList.remove("active")
+    );
+
+    document
+    .querySelectorAll(".sidebar a")
+    .forEach(
+        a=>a.classList.remove("active")
+    );
+
+    document
+    .getElementById(id)
+    .classList.add("active");
+
+    link.classList.add("active");
+
+    if(id==="dashboard"){
+        renderDashboard();
+    }
+
+    if(id==="ambulances"){
+        renderAmbulances();
+    }
+
+    if(id==="requests"){
+        renderRequests();
+    }
+
+    if(id==="dispatch"){
+        renderDispatch();
+    }
+
+    if(id==="drivers"){
+        renderDrivers();
+    }
+
+    if(id==="maintenance"){
+        populateMaintenanceAmbulances();
+        renderMaintenance();
+    }
+
+    if(id==="history"){
+        renderHistory();
+    }
+
+}
+
+
+function renderDashboard(){
+
+    const total=ambulances.length;
+
+    const available=
+        ambulances.filter(
+            a=>a.status==="Available"
+        ).length;
+
+    const enroute=
+        ambulances.filter(
+            a=>a.status==="En Route"
+        ).length;
+
+    const busy=
+        ambulances.filter(
+            a=>a.status==="Busy"
+        ).length;
+
+    const pending=
+        requests.filter(
+            r=>r.status==="Pending"
+        ).length;
+
+    document.getElementById(
+        "totalAmbulances"
+    ).textContent=total;
+
+    document.getElementById(
+        "availableAmbulances"
+    ).textContent=available;
+
+    document.getElementById(
+        "enrouteAmbulances"
+    ).textContent=enroute;
+
+    document.getElementById(
+        "busyAmbulances"
+    ).textContent=busy;
+
+    document.getElementById(
+        "pendingRequests"
+    ).textContent=pending;
+
+
+    const alerts=[];
+
+
+    if(pending>0){
+
+        alerts.push(`
+            <div class="alert danger-alert">
+                <strong>Emergency:</strong>
+                ${pending} pending ambulance request(s) require attention.
+            </div>
+        `);
+
+    }
+
+
+    if(available===0){
+
+        alerts.push(`
+            <div class="alert danger-alert">
+                <strong>Critical:</strong>
+                No ambulance is currently available.
+            </div>
+        `);
+
+    }
+
+
+    if(available>0){
+
+        alerts.push(`
+            <div class="alert success-alert">
+                <strong>Available:</strong>
+                ${available} ambulance(s) ready for dispatch.
+            </div>
+        `);
+
+    }
+
+
+    if(alerts.length===0){
+
+        alerts.push(`
+            <div class="alert info-alert">
+                Ambulance operations are normal.
+            </div>
+        `);
+
+    }
+
+
+    document.getElementById(
+        "dashboardAlerts"
+    ).innerHTML=
+        alerts.join("");
+
+
+    const fleet=
+        document.getElementById(
+            "dashboardFleet"
+        );
+
+    fleet.innerHTML=
+        ambulances.map(
+            a=>`
+
+            <div class="ambulance-card">
+
+                <div class="ambulance-icon">
+                    🚑
+                </div>
+
+                <h4>
+                    ${escapeHTML(a.number)}
+                </h4>
+
+                <p>
+                    ${escapeHTML(a.type)}
+                </p>
+
+                <p>
+                    Driver:
+                    ${escapeHTML(a.driver)}
+                </p>
+
+                <p>
+                    Location:
+                    ${escapeHTML(a.location)}
+                </p>
+
+                <br>
+
+                ${statusBadge(a.status)}
+
+            </div>
+
+            `
+        ).join("");
+
+}
+
+
+function populateAmbulanceFilters(){
+
+    const type=
+        document.getElementById(
+            "ambulanceTypeFilter"
+        );
+
+}
+
+
+function renderAmbulances(){
+
+    const query=
+        document.getElementById(
+            "ambulanceSearch"
+        ).value
+        .toLowerCase()
+        .trim();
+
+    const type=
+        document.getElementById(
+            "ambulanceTypeFilter"
+        ).value;
+
+    const status=
+        document.getElementById(
+            "ambulanceStatusFilter"
+        ).value;
+
+    const filtered=
+        ambulances.filter(
+            a=>{
+
+                const text=`
+                    ${a.number}
+                    ${a.type}
+                    ${a.driver}
+                    ${a.location}
+                `.toLowerCase();
+
+                return(
+                    text.includes(query) &&
+                    (!type || a.type===type) &&
+                    (!status || a.status===status)
+                );
+
+            }
+        );
+
+
+    const tbody=
+        document.getElementById(
+            "ambulanceTable"
+        );
+
+
+    if(filtered.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    No ambulances found.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=
+        filtered.map(
+            a=>`
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(a.number)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(a.type)}
+                </td>
+
+                <td>
+                    ${escapeHTML(a.driver)}
+                </td>
+
+                <td>
+                    ${escapeHTML(a.location)}
+                </td>
+
+                <td>
+                    ${statusBadge(a.status)}
+                </td>
+
+                <td>
+
+                    <button
+                        class="btn-blue"
+                        onclick="viewAmbulance(${a.id})"
+                    >
+                        View
+                    </button>
+
+                    ${
+                        a.status==="Available"
+                        ?
+                        `
+                        <button
+                            class="btn-orange"
+                            onclick="setEnRoute(${a.id})"
+                        >
+                            Dispatch
+                        </button>
+                        `
+                        :
+                        ""
+                    }
+
+                    ${
+                        a.status==="Maintenance"
+                        ?
+                        `
+                        <button
+                            class="btn-green"
+                            onclick="setAvailable(${a.id})"
+                        >
+                            Ready
+                        </button>
+                        `
+                        :
+                        ""
+                    }
+
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+}
+
+
+function viewAmbulance(id){
+
+    const a=
+        ambulances.find(
+            item=>item.id===id
+        );
+
+    if(!a)return;
+
+    document.getElementById(
+        "ambulanceDetails"
+    ).innerHTML=`
+
+        <div class="detail-row">
+            <strong>Ambulance</strong>
+            <span>${escapeHTML(a.number)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Type</strong>
+            <span>${escapeHTML(a.type)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Driver</strong>
+            <span>${escapeHTML(a.driver)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Location</strong>
+            <span>${escapeHTML(a.location)}</span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Status</strong>
+            <span>${statusBadge(a.status)}</span>
+        </div>
+
+    `;
+
+    document
+    .getElementById("ambulanceModal")
+    .classList.add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+    .getElementById("ambulanceModal")
+    .classList.remove("show");
+
+}
+
+
+function setEnRoute(id){
+
+    const a=
+        ambulances.find(
+            item=>item.id===id
+        );
+
+    if(!a)return;
+
+    if(a.status!=="Available"){
+
+        alert(
+            "Only available ambulances can be dispatched."
+        );
+
+        return;
+
+    }
+
+    a.status="En Route";
+
+    saveData();
+
+    renderAll();
+
+    alert(
+        a.number+
+        " has been dispatched."
+    );
+
+}
+
+
+function setAvailable(id){
+
+    const a=
+        ambulances.find(
+            item=>item.id===id
+        );
+
+    if(!a)return;
+
+    a.status="Available";
+
+    saveData();
+
+    renderAll();
+
+    alert(
+        a.number+
+        " is now available."
+    );
+
+}
+
+
+document
+.getElementById("requestForm")
+.addEventListener(
+"submit",
+function(e){
+
+    e.preventDefault();
+
+    const request={
+
+        id:Date.now(),
+
+        patient:
+            document.getElementById(
+                "requestPatient"
+            ).value.trim(),
+
+        phone:
+            document.getElementById(
+                "requestPhone"
+            ).value.trim(),
+
+        pickup:
+            document.getElementById(
+                "pickupLocation"
+            ).value.trim(),
+
+        destination:
+            document.getElementById(
+                "destination"
+            ).value.trim(),
+
+        priority:
+            document.getElementById(
+                "requestPriority"
+            ).value,
+
+        type:
+            document.getElementById(
+                "requestType"
+            ).value,
+
+        status:"Pending",
+
+        ambulance:"",
+
+        driver:"",
+
+        createdAt:
+            new Date().toLocaleString()
+
+    };
+
+    requests.push(request);
+
+    saveData();
+
+    this.reset();
+
+    renderAll();
+
+    alert(
+        "Emergency ambulance request created."
+    );
+
+});
+
+
+function renderRequests(){
+
+    const tbody=
+        document.getElementById(
+            "requestTable"
+        );
+
+    if(requests.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    No emergency requests yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=
+        [...requests]
+        .reverse()
+        .map(
+            r=>`
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(r.patient)}
+                    </strong>
+                    <br>
+                    <small>
+                        ${escapeHTML(r.phone)}
+                    </small>
+                </td>
+
+                <td>
+                    ${escapeHTML(r.pickup)}
+                </td>
+
+                <td>
+                    ${escapeHTML(r.destination)}
+                </td>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(r.priority)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${statusBadge(r.status)}
+                </td>
+
+                <td>
+
+                    ${
+                        r.status==="Pending"
+                        ?
+                        `
+                        <button
+                            class="btn-blue"
+                            onclick="openDispatch(${r.id})"
+                        >
+                            Dispatch
+                        </button>
+                        `
+                        :
+                        ""
+                    }
+
+                    ${
+                        r.status==="Dispatched"
+                        ?
+                        `
+                        <button
+                            class="btn-green"
+                            onclick="completeRequest(${r.id})"
+                        >
+                            Complete
+                        </button>
+                        `
+                        :
+                        ""
+                    }
+
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+}
+
+
+function renderDispatch(){
+
+    const box=
+        document.getElementById(
+            "dispatchList"
+        );
+
+    const pending=
+        requests.filter(
+            r=>r.status==="Pending"
+        );
+
+    if(pending.length===0){
+
+        box.innerHTML=`
+            <div class="alert success-alert">
+                No pending emergency requests.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    box.innerHTML=
+        pending.map(
+            r=>`
+
+            <div class="ambulance-card">
+
+                <h4>
+                    Emergency Request
+                </h4>
+
+                <p>
+                    <strong>Patient:</strong>
+                    ${escapeHTML(r.patient)}
+                </p>
+
+                <p>
+                    <strong>Pickup:</strong>
+                    ${escapeHTML(r.pickup)}
+                </p>
+
+                <p>
+                    <strong>Destination:</strong>
+                    ${escapeHTML(r.destination)}
+                </p>
+
+                <p>
+                    <strong>Priority:</strong>
+                    ${escapeHTML(r.priority)}
+                </p>
+
+                <br>
+
+                <button
+                    class="btn-red"
+                    onclick="openDispatch(${r.id})"
+                >
+                    Dispatch Ambulance
+                </button>
+
+            </div>
+
+            <br>
+
+            `
+        ).join("");
+
+}
+
+
+function openDispatch(requestId){
+
+    const request=
+        requests.find(
+            r=>r.id===requestId
+        );
+
+    if(!request)return;
+
+    const available=
+        ambulances.filter(
+            a=>
+                a.status==="Available" &&
+                (
+                    !request.type ||
+                    a.type===request.type
+                )
+        );
+
+    if(available.length===0){
+
+        alert(
+            "No matching ambulance is currently available."
+        );
+
+        return;
+
+    }
+
+
+    let choices=
+        available
+        .map(
+            a=>
+                `${a.id}: ${a.number} - ${a.type} - Driver: ${a.driver}`
+        )
+        .join("\n");
+
+
+    const selected=
+        prompt(
+            "Enter ambulance ID to dispatch:\n\n"+
+            choices
+        );
+
+
+    if(!selected)return;
+
+    const id=
+        Number(selected);
+
+    const ambulance=
+        available.find(
+            a=>a.id===id
+        );
+
+    if(!ambulance){
+
+        alert(
+            "Invalid ambulance ID."
+        );
+
+        return;
+
+    }
+
+
+    ambulance.status="En Route";
+
+    ambulance.location=
+        request.pickup;
+
+
+    request.status="Dispatched";
+
+    request.ambulance=
+        ambulance.number;
+
+    request.driver=
+        ambulance.driver;
+
+    saveData();
+
+    renderAll();
+
+    alert(
+        ambulance.number+
+        " dispatched successfully."
+    );
+
+}
+
+
+function completeRequest(requestId){
+
+    const request=
+        requests.find(
+            r=>r.id===requestId
+        );
+
+    if(!request)return;
+
+    const ambulance=
+        ambulances.find(
+            a=>a.number===request.ambulance
+        );
+
+    if(ambulance){
+
+        ambulance.status="Available";
+
+        ambulance.location=
+            "Hospital Campus";
+
+    }
+
+
+    request.status="Completed";
+
+    tripHistory.push({
+
+        date:
+            new Date().toLocaleString(),
+
+        patient:
+            request.patient,
+
+        ambulance:
+            request.ambulance,
+
+        driver:
+            request.driver,
+
+        pickup:
+            request.pickup,
+
+        destination:
+            request.destination
+
+    });
+
+    saveData();
+
+    renderAll();
+
+    alert(
+        "Ambulance trip completed."
+    );
+
+}
+
+
+function renderDrivers(){
+
+    const tbody=
+        document.getElementById(
+            "driverTable"
+        );
+
+    if(drivers.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    No drivers available.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=
+        drivers.map(
+            d=>`
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${escapeHTML(d.name)}
+                    </strong>
+                </td>
+
+                <td>
+                    ${escapeHTML(d.license)}
+                </td>
+
+                <td>
+                    ${escapeHTML(d.phone)}
+                </td>
+
+                <td>
+                    ${escapeHTML(d.ambulance)}
+                </td>
+
+                <td>
+                    ${escapeHTML(d.shift)}
+                </td>
+
+                <td>
+                    ${statusBadge(
+                        d.status==="On Duty"
+                        ?
+                        "En Route"
+                        :
+                        d.status
+                    )}
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+}
+
+
+function populateMaintenanceAmbulances(){
+
+    const select=
+        document.getElementById(
+            "maintenanceAmbulance"
+        );
+
+    select.innerHTML=
+        ambulances.map(
+            a=>`
+
+            <option value="${a.id}">
+                ${escapeHTML(a.number)}
+            </option>
+
+            `
+        ).join("");
+
+}
+
+
+function addMaintenance(){
+
+    const id=
+        Number(
+            document.getElementById(
+                "maintenanceAmbulance"
+            ).value
+        );
+
+    const ambulance=
+        ambulances.find(
+            a=>a.id===id
+        );
+
+    if(!ambulance)return;
+
+    const record={
+
+        date:
+            document.getElementById(
+                "maintenanceDate"
+            ).value ||
+            new Date()
+            .toISOString()
+            .split("T")[0],
+
+        ambulance:
+            ambulance.number,
+
+        type:
+            document.getElementById(
+                "maintenanceType"
+            ).value,
+
+        notes:
+            document.getElementById(
+                "maintenanceNotes"
+            ).value.trim()
+
+    };
+
+    maintenance.push(record);
+
+    ambulance.status="Maintenance";
+
+    saveData();
+
+    document.getElementById(
+        "maintenanceNotes"
+    ).value="";
+
+    renderAll();
+
+    alert(
+        "Maintenance record added."
+    );
+
+}
+
+
+function renderMaintenance(){
+
+    const tbody=
+        document.getElementById(
+            "maintenanceTable"
+        );
+
+    if(maintenance.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="4"
+                    class="empty"
+                >
+                    No maintenance records yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=
+        [...maintenance]
+        .reverse()
+        .map(
+            m=>`
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(m.date)}
+                </td>
+
+                <td>
+                    ${escapeHTML(m.ambulance)}
+                </td>
+
+                <td>
+                    ${escapeHTML(m.type)}
+                </td>
+
+                <td>
+                    ${escapeHTML(m.notes || "—")}
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+}
+
+
+function renderHistory(){
+
+    const tbody=
+        document.getElementById(
+            "historyTable"
+        );
+
+    if(tripHistory.length===0){
+
+        tbody.innerHTML=`
+            <tr>
+                <td
+                    colspan="6"
+                    class="empty"
+                >
+                    No completed trips yet.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML=
+        [...tripHistory]
+        .reverse()
+        .map(
+            h=>`
+
+            <tr>
+
+                <td>
+                    ${escapeHTML(h.date)}
+                </td>
+
+                <td>
+                    ${escapeHTML(h.patient)}
+                </td>
+
+                <td>
+                    ${escapeHTML(h.ambulance)}
+                </td>
+
+                <td>
+                    ${escapeHTML(h.driver)}
+                </td>
+
+                <td>
+                    ${escapeHTML(h.pickup)}
+                </td>
+
+                <td>
+                    ${escapeHTML(h.destination)}
+                </td>
+
+            </tr>
+
+            `
+        ).join("");
+
+}
+
+
+function renderAll(){
+
+    populateMaintenanceAmbulances();
+
+    renderDashboard();
+
+    renderAmbulances();
+
+    renderRequests();
+
+    renderDispatch();
+
+    renderDrivers();
+
+    renderMaintenance();
+
+    renderHistory();
+
+}
+
+
+document
+.getElementById("ambulanceSearch")
+.addEventListener(
+    "input",
+    renderAmbulances
+);
+
+document
+.getElementById("ambulanceTypeFilter")
+.addEventListener(
+    "change",
+    renderAmbulances
+);
+
+document
+.getElementById("ambulanceStatusFilter")
+.addEventListener(
+    "change",
+    renderAmbulances
+);
+
+
+function logout(){
+
+    localStorage.removeItem(
+        "gjh_token"
+    );
+
+    localStorage.removeItem(
+        "gjh_user"
+    );
+
+    window.location.replace(
+        "login.html"
+    );
+
+}
+
+
+createDemoData();
+
+renderAll();
+
+</script>
+
+</body>
+</html>
