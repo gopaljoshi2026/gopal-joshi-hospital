@@ -1,429 +1,397 @@
-const express = require("express");
+﻿const express = require("express");
+const cors = require("cors");
 const path = require("path");
 
 const app = express();
+
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json());
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
+
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Frontend files
-app.use(express.static(path.join(__dirname, "..")));
+const ROOT_DIR = path.join(__dirname, "..");
 
-// ================================
-// AUTHENTICATION
-// ================================
+app.use(express.static(ROOT_DIR));
 
-const authRoutes = require("./routes/auth");
+/* =========================================================
+   ROUTE REGISTRATION HELPER
+========================================================= */
 
-app.use("/api/auth", authRoutes);
+function registerRoute(app, basePath, candidates, label) {
+    for (const candidate of candidates) {
+        try {
+            const router = require(candidate);
 
+            app.use(basePath, router);
 
-// ================================
-// DEMO ROLE AUTHENTICATION
-// ================================
+            console.log(
+                label +
+                " registered from " +
+                candidate +
+                "!"
+            );
 
-// Demo token ko read karke user identify karega.
-// Final production version me proper session/JWT + database use karenge.
+            return true;
+        } catch (error) {
+            if (
+                error.code === "MODULE_NOT_FOUND" &&
+                error.message.includes(candidate)
+            ) {
+                continue;
+            }
 
-const { users } = require("./data/users");
+            console.error(
+                label +
+                " failed from " +
+                candidate +
+                ":"
+            );
 
-function getUserFromToken(req) {
-    const header = req.headers.authorization || "";
+            console.error(error.message);
 
-    if (!header.startsWith("Bearer ")) {
-        return null;
-    }
-
-    const token = header.replace("Bearer ", "").trim();
-
-    if (!token) {
-        return null;
-    }
-
-    try {
-        const decoded = Buffer
-            .from(token, "base64")
-            .toString("utf8");
-
-        const parts = decoded.split(":");
-
-        const userId = Number(parts[0]);
-        const role = parts[1];
-
-        if (!userId || !role) {
-            return null;
+            return false;
         }
-
-        const user = users.find(
-            item =>
-                item.id === userId &&
-                item.role === role
-        );
-
-        if (!user) {
-            return null;
-        }
-
-       return {
-    id: user.id,
-    name: user.name,
-    username: user.username,
-    role: user.role,
-    email: user.email || "",
-    phone: user.phone || ""
-};
-
-    } catch (error) {
-        return null;
     }
+
+    console.log(
+        label +
+        " skipped - route file not found."
+    );
+
+    return false;
 }
 
+/* =========================================================
+   BASIC API
+========================================================= */
 
-// Attach logged-in user to request
-app.use("/api/private", (req, res, next) => {
+app.get("/api/health", function(req, res) {
+    res.json({
+        success: true,
+        message: "Gopal Joshi Hospital SaaS API is running",
+        server: "Gopal Joshi Hospital",
+        version: "1.0.0",
+        environment: process.env.NODE_ENV || "development",
+        timestamp: new Date().toISOString()
+    });
+});
 
-    const user = getUserFromToken(req);
+app.get("/api", function(req, res) {
+    res.json({
+        success: true,
+        message: "Gopal Joshi Hospital SaaS API",
+        version: "1.0.0",
+        modules: [
+            "authentication",
+            "hospital",
+            "users",
+            "command-center",
+            "appointments",
+            "consultation",
+            "laboratory",
+            "pharmacy",
+            "billing"
+        ]
+    });
+});
 
-    if (!user) {
-        return res.status(401).json({
-            success: false,
-            message: "Login required"
-        });
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/auth",
+    [
+        "./routes/auth"
+    ],
+    "Authentication API"
+);
+
+/* =========================================================
+   SAAS HOSPITAL
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/saas/hospitals",
+    [
+        "./routes/saas/hospitals"
+    ],
+    "SaaS Hospital API"
+);
+
+/* =========================================================
+   SAAS USERS
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/saas/users",
+    [
+        "./routes/saas/users"
+    ],
+    "SaaS User API"
+);
+
+/* =========================================================
+   HOSPITAL COMMAND CENTER
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/saas/command-center",
+    [
+        "./routes/saas/command-center"
+    ],
+    "Hospital Command Center API"
+);
+registerRoute(
+    app,
+    "/api/saas/patients",
+    [
+        "./routes/saas/patients"
+    ],
+    "SaaS Patient API"
+);
+/* =========================================================
+   APPOINTMENTS
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/appointments",
+    [
+        "./routes/appointments"
+    ],
+    "Appointment API"
+);
+
+/* =========================================================
+   CONSULTATION
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/consultation",
+    [
+        "./routes/clinical/consultation",
+        "./routes/clinical/consultations",
+        "./routes/consultation",
+        "./routes/consultations"
+    ],
+    "Consultation API"
+);
+
+/* =========================================================
+   LABORATORY
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/laboratory",
+    [
+        "./routes/laboratory/tests",
+        "./routes/laboratory"
+    ],
+    "Laboratory API"
+);
+
+/* =========================================================
+   PHARMACY
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/pharmacy/medicines",
+    [
+        "./routes/pharmacy/medicines"
+    ],
+    "Pharmacy API"
+);
+
+/* =========================================================
+   BILLING
+========================================================= */
+
+registerRoute(
+    app,
+    "/api/billing",
+    [
+        "./routes/billing/bills",
+        "./routes/billing"
+    ],
+    "Billing API"
+);
+
+/* =========================================================
+   API 404
+========================================================= */
+
+app.use("/api", function(req, res) {
+    res.status(404).json({
+        success: false,
+        message: "API endpoint not found",
+        path: req.originalUrl
+    });
+});
+
+/* =========================================================
+   WEBSITE FALLBACK
+========================================================= */
+
+app.use(function(req, res, next) {
+    if (req.method !== "GET") {
+        return next();
     }
 
-    req.user = user;
+    if (req.path.startsWith("/api")) {
+        return next();
+    }
+
+    const requestedPath = path.normalize(
+        path.join(ROOT_DIR, req.path)
+    );
+
+    if (
+        requestedPath.startsWith(ROOT_DIR) &&
+        path.extname(requestedPath) === ""
+    ) {
+        return res.sendFile(
+            path.join(ROOT_DIR, "index.html")
+        );
+    }
 
     next();
 });
 
+/* =========================================================
+   GLOBAL ERROR HANDLER
+========================================================= */
 
-// ================================
-// ROLE CHECK
-// ================================
+app.use(function(error, req, res, next) {
+    console.error("GLOBAL SERVER ERROR:");
+    console.error(error);
 
-function allowRoles(...roles) {
+    if (res.headersSent) {
+        return next(error);
+    }
 
-    return (req, res, next) => {
+    res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error:
+            process.env.NODE_ENV === "development"
+                ? error.message
+                : "Server error"
+    });
+});
 
-        if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: "Login required"
-            });
+/* =========================================================
+   START SERVER
+========================================================= */
+
+registerRoute(app, "/api/saas/os", ["./routes/saas/hospital-os"], "Hospital OS");
+
+app.listen(PORT, "0.0.0.0", function() {
+    try {
+        const os = require("os");
+        const interfaces = os.networkInterfaces();
+
+        for (const name of Object.keys(interfaces)) {
+            for (const net of interfaces[name] || []) {
+                if (net.family === "IPv4" && !net.internal) {
+                    console.log(
+                        "LAN Website: http://" +
+                        net.address +
+                        ":" +
+                        PORT
+                    );
+                }
+            }
         }
-
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({
-                success: false,
-                message: "Access denied for this role"
-            });
-        }
-
-        next();
-    };
-}
-
-
-// ================================
-// PRIVATE USER INFO
-// ================================
-
-app.get(
-    "/api/private/me",
-    (req, res) => {
-
-        res.json({
-            success: true,
-            user: req.user
-        });
-
+    } catch (e) {
+        console.log("LAN address detection unavailable.");
     }
-);
 
+    console.log("");
+    console.log("======================================");
+    console.log("       GOPAL JOSHI HOSPITAL");
+    console.log("======================================");
+    console.log(
+        "Website: http://localhost:" +
+        PORT
+    );
+    console.log(
+        "API:     http://localhost:" +
+        PORT +
+        "/api"
+    );
+    console.log("");
 
-// ================================
-// DOCTOR PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/doctor",
-    allowRoles("doctor"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Doctor Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// PHARMACY PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/pharmacy",
-    allowRoles("pharmacy"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Pharmacy Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// LABORATORY PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/laboratory",
-    allowRoles("laboratory"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Laboratory Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// NURSE PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/nurse",
-    allowRoles("nurse"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Nurse Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// RECEPTION PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/reception",
-    allowRoles("reception"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Reception Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// BED MANAGEMENT PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/beds",
-    allowRoles("beds"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Bed Management Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// AMBULANCE PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/ambulance",
-    allowRoles("ambulance"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Ambulance Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// MANAGER PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/manager",
-    allowRoles("manager"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Manager Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// ADMIN PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/admin",
-    allowRoles("admin"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Admin Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// PATIENT PRIVATE API
-// ================================
-
-app.get(
-    "/api/private/patient",
-    allowRoles("patient"),
-    (req, res) => {
-
-        res.json({
-            success: true,
-            message: "Patient Panel Access Granted",
-            user: req.user
-        });
-
-    }
-);
-
-
-// ================================
-// APPOINTMENT ROUTES
-// ================================
-
-const appointmentRoutes =
-    require("./routes/appointments");
-
-app.use(
-    "/api/appointments",
-    appointmentRoutes
-);
-
-
-// ================================
-// HOME PAGE
-// ================================
-
-app.get("/", (req, res) => {
-
-    res.sendFile(
-        path.join(__dirname, "..", "index.html")
+    console.log(
+        "Authentication system ready!"
     );
 
+    console.log(
+        "Role based access system ready!"
+    );
+
+    console.log(
+        "SaaS Hospital system ready!"
+    );
+
+    console.log(
+        "SaaS User system ready!"
+    );
+
+    console.log(
+        "Hospital Command Center ready!"
+    );
+
+    console.log(
+        "Appointment system ready!"
+    );
+
+    console.log(
+        "Consultation system checked!"
+    );
+
+    console.log(
+        "Laboratory system ready!"
+    );
+
+    console.log(
+        "Pharmacy system ready!"
+    );
+
+    console.log(
+        "Billing system ready!"
+    );
+
+    console.log("======================================");
+    console.log("");
 });
 
 
-// ================================
-// HEALTH CHECK
-// ================================
+/* =========================================================
+   HOSPITAL MASTER CONTROL / RBAC / SECURITY
+========================================================= */
 
-app.get("/api/health", (req, res) => {
-
-    res.json({
-        success: true,
-        message:
-            "Gopal Joshi Hospital Backend is running"
-    });
-
-});
-
-
-// ================================
-// 404 HANDLER
-// ================================
-
-app.use((req, res) => {
-
-    res.status(404).json({
-        success: false,
-        message: "API route not found"
-    });
-
-});
-
-
-// ================================
-// START SERVER
-// ================================
-
-app.listen(
-    PORT,
-    "0.0.0.0",
-    () => {
-
-        console.log(
-            "------------------------------------"
-        );
-
-        console.log(
-            "Gopal Joshi Hospital Started!"
-        );
-
-        console.log(
-            `Website: http://localhost:${PORT}`
-        );
-
-        console.log(
-            `API: http://localhost:${PORT}/api`
-        );
-
-        console.log(
-            "Authentication system ready!"
-        );
-
-        console.log(
-            "Role based access system ready!"
-        );
-
-        console.log(
-            "------------------------------------"
-        );
-
-    }
+registerRoute(
+    app,
+    "/api/saas/control",
+    [
+        "./routes/saas/hospital-control"
+    ],
+    "Hospital Control API"
 );
+

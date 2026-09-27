@@ -1,0 +1,124 @@
+[
+  {
+    "id": "PAT-00001",
+    "hospitalId": "HOSP-TEST-001",
+    "uhid": "GJH-26-00001",
+    "registrationNumber": null,
+    "name": "Amit Kumar",
+    "firstName": "",
+    "lastName": "",
+    "gender": "Male",
+    "dateOfBirth": "2002-05-15",
+    "age": 24,
+    "bloodGroup": "B+",
+    "maritalStatus": "Single",
+    "phone": "9876543210",
+    "alternatePhone": "",
+    "email": "amit@example.com",
+    "address": {
+      "line1": "Main Road",
+      "city": "",
+      "state": "",
+      "pincode": "",
+      "country": "India"
+    },
+    "emergencyContact": {
+      "name": "Raj Kumar",
+      "relationship": "",
+      "phone": "9876500000"
+    },
+    "allergies": [
+      "Dust"
+    ],
+    "medicalHistory": [
+      "No major previous illness"
+    ],
+    "currentMedications": [],
+    "chronicConditions": [],
+    "documents": [],
+    "insurance": {
+      "provider": "",
+      "policyNumber": "",
+      "validTill": ""
+    },
+    "portal": {
+      "enabled": false,
+      "username": null
+    },
+    "stats": {
+      "totalVisits": 0,
+      "totalAppointments": 0,
+      "totalAdmissions": 0,
+      "totalBills": 0,
+      "totalLabOrders": 0,
+      "totalPrescriptions": 0
+    },
+    "status": "active",
+    "tags": [
+      "New Patient"
+    ],
+    "notes": "Registered through hospital reception.",
+    "createdAt": "2026-09-23T02:56:21.475Z",
+    "updatedAt": "2026-09-23T02:56:21.475Z",
+    "lastVisitAt": null
+  },
+  {
+    "id": "PAT-00002",
+    "hospitalId": "HOSP-TEST-001",
+    "uhid": "GJH-26-00002",
+    "registrationNumber": null,
+    "name": "shree ram",
+    "firstName": "",
+    "lastName": "",
+    "gender": "Male",
+    "dateOfBirth": "2026-09-15",
+    "age": 0,
+    "bloodGroup": "B+",
+    "maritalStatus": "Single",
+    "phone": "6398790897",
+    "alternatePhone": "",
+    "email": "mohansharma.in20@gmail.com",
+    "address": {
+      "line1": "mukhrai radhakud",
+      "city": "mathura",
+      "state": "Uttar Pradesh",
+      "pincode": "281504",
+      "country": "India"
+    },
+    "emergencyContact": {
+      "name": "",
+      "relationship": "",
+      "phone": ""
+    },
+    "allergies": [],
+    "medicalHistory": [],
+    "currentMedications": [],
+    "chronicConditions": [],
+    "documents": [],
+    "insurance": {
+      "provider": "",
+      "policyNumber": "",
+      "validTill": ""
+    },
+    "portal": {
+      "enabled": false,
+      "username": null
+    },
+    "stats": {
+      "totalVisits": 0,
+      "totalAppointments": 0,
+      "totalAdmissions": 0,
+      "totalBills": 0,
+      "totalLabOrders": 0,
+      "totalPrescriptions": 0
+    },
+    "status": "active",
+    "tags": [
+      "New Patient"
+    ],
+    "notes": "",
+    "createdAt": "2026-09-26T10:43:17.800Z",
+    "updatedAt": "2026-09-26T10:43:17.800Z",
+    "lastVisitAt": null
+  }
+]

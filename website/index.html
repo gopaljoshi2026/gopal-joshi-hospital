@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HospitalOS | Complete Hospital Operating System</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;color:#0f172a;background:#f8fafc}
+nav{padding:18px 7%;display:flex;justify-content:space-between;align-items:center;background:white;border-bottom:1px solid #e2e8f0}
+.logo{font-size:24px;font-weight:bold}
+.navbtn{background:#2563eb;color:white;border:0;padding:11px 17px;border-radius:8px;cursor:pointer}
+.hero{padding:85px 7%;background:linear-gradient(135deg,#eff6ff,#ffffff)}
+.hero h1{font-size:50px;max-width:850px;margin:0 0 20px}
+.hero p{font-size:19px;line-height:1.6;color:#475569;max-width:750px}
+.cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.btn{padding:14px 20px;border:0;border-radius:9px;cursor:pointer;font-weight:bold}
+.primary{background:#2563eb;color:white}
+.secondary{background:#0f172a;color:white}
+section{padding:65px 7%}
+h2{font-size:34px;margin-bottom:12px}
+.sub{color:#64748b;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:22px}
+.card h3{margin:10px 0}
+.card p{color:#64748b;line-height:1.5}
+.demo{background:#0f172a;color:white;border-radius:20px;padding:45px}
+footer{background:#0f172a;color:#cbd5e1;padding:35px 7%}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:38px}}
+@media(max-width:550px){.grid{grid-template-columns:1fr}.hero{padding:55px 6%}.hero h1{font-size:32px}}
+</style>
+</head>
+
+<body>
+
+<nav>
+ <div class="logo">HospitalOS</div>
+ <button class="navbtn" onclick="location.href='/hospital-admin/login.html'">
+  Login / Live Demo
+ </button>
+</nav>
+
+<div class="hero">
+
+ <h1>One Connected Operating System for the Entire Hospital.</h1>
+
+ <p>
+ HospitalOS connects patient care, doctors, reception,
+ laboratory, pharmacy, billing, IPD, emergency, inventory,
+ staff, reporting and hospital administration in one platform.
+ </p>
+
+ <div class="cta">
+  <button class="btn primary"
+   onclick="location.href='/hospital-admin/login.html'">
+   Start Live Demo
+  </button>
+
+  <button class="btn secondary"
+   onclick="document.getElementById('features').scrollIntoView()">
+   Explore Platform
+  </button>
+ </div>
+
+</div>
+
+<section id="features">
+
+ <h2>Complete Hospital Platform</h2>
+
+ <div class="sub">
+  Designed as a connected Hospital SaaS rather than isolated department software.
+ </div>
+
+ <div class="grid">
+
+  <div class="card">👤<h3>Patient Management</h3><p>Registration, records, history and patient workflow.</p></div>
+  <div class="card">🩺<h3>Doctor & Consultation</h3><p>Appointments, consultation, diagnosis and prescriptions.</p></div>
+  <div class="card">🧪<h3>Laboratory</h3><p>Orders, samples, results and reports.</p></div>
+  <div class="card">💊<h3>Pharmacy</h3><p>Medicines, prescriptions, dispensing and stock.</p></div>
+  <div class="card">💳<h3>Billing</h3><p>Charges, invoices, payments and financial records.</p></div>
+  <div class="card">🏥<h3>IPD & Beds</h3><p>Admissions, wards, occupancy and discharge.</p></div>
+  <div class="card">🚨<h3>Emergency</h3><p>Emergency cases, triage and ambulance workflow.</p></div>
+  <div class="card">📦<h3>Inventory</h3><p>Stock, suppliers, purchases and consumption.</p></div>
+  <div class="card">👥<h3>HR & Staff</h3><p>Hospital staff, departments and roles.</p></div>
+  <div class="card">🩸<h3>Blood Bank</h3><p>Blood groups, components and availability.</p></div>
+  <div class="card">📈<h3>Reports</h3><p>Operational and management analytics.</p></div>
+  <div class="card">🔐<h3>Security & Audit</h3><p>Roles, permissions and activity records.</p></div>
+
+ </div>
+
+</section>
+
+<section>
+
+ <div class="demo">
+
+  <h2>Hospital Command Center</h2>
+
+  <p>
+   See hospital operations from one screen and drill into
+   departments, records and operational activity.
+  </p>
+
+  <button class="btn primary"
+   onclick="location.href='/hospital-os/'">
+   Open Command Center Demo
+  </button>
+
+ </div>
+
+</section>
+
+<footer>
+
+ <strong>HospitalOS</strong>
+
+ <p>
+ Complete Hospital SaaS platform for connected hospital operations.
+ </p>
+
+ <button class="btn primary"
+ onclick="location.href='/hospital-admin/login.html'">
+ Request / Start Demo
+ </button>
+
+</footer>
+
+</body>
+</html>

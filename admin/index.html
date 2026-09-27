@@ -1,1676 +1,1226 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Panel - Gopal Joshi Hospital</title>
-
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-body{
-    background:#f4f7fb;
-    color:#1e293b;
-}
-
-.topbar{
-    height:70px;
-    background:linear-gradient(135deg,#312e81,#4f46e5);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 25px;
-    position:sticky;
-    top:0;
-    z-index:100;
-}
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo{
-    width:45px;
-    height:45px;
-    border-radius:12px;
-    background:white;
-    color:#3730a3;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-    font-size:20px;
-}
-
-.brand h2{
-    font-size:19px;
-}
-
-.brand p{
-    font-size:12px;
-    opacity:.85;
-    margin-top:3px;
-}
-
-.admin-info{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.avatar{
-    width:40px;
-    height:40px;
-    border-radius:50%;
-    background:white;
-    color:#3730a3;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:bold;
-}
-
-.logout{
-    background:#ef4444;
-    border:none;
-    color:white;
-    padding:9px 15px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.layout{
-    display:flex;
-    min-height:calc(100vh - 70px);
-}
-
-.sidebar{
-    width:245px;
-    background:white;
-    border-right:1px solid #e5e7eb;
-    padding:20px 12px;
-    position:sticky;
-    top:70px;
-    height:calc(100vh - 70px);
-}
-
-.sidebar h3{
-    font-size:12px;
-    color:#94a3b8;
-    padding:10px 12px;
-    text-transform:uppercase;
-}
-
-.nav-btn{
-    width:100%;
-    padding:12px 14px;
-    border:none;
-    background:transparent;
-    text-align:left;
-    border-radius:8px;
-    cursor:pointer;
-    margin-bottom:5px;
-    color:#475569;
-    font-size:14px;
-}
-
-.nav-btn:hover,
-.nav-btn.active{
-    background:#eef2ff;
-    color:#4338ca;
-    font-weight:bold;
-}
-
-.main{
-    flex:1;
-    padding:25px;
-    max-width:1600px;
-}
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
-
-.page-title{
-    margin-bottom:22px;
-}
-
-.page-title h1{
-    font-size:28px;
-    margin-bottom:6px;
-}
-
-.page-title p{
-    color:#64748b;
-    font-size:14px;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:18px;
-    margin-bottom:25px;
-}
-
-.stat{
-    background:white;
-    border:1px solid #e5e7eb;
-    border-radius:14px;
-    padding:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.04);
-}
-
-.stat h4{
-    color:#64748b;
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-.stat strong{
-    font-size:28px;
-}
-
-.stat span{
-    display:block;
-    margin-top:8px;
-    font-size:12px;
-    color:#16a34a;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:20px;
-}
-
-.card{
-    background:white;
-    border:1px solid #e5e7eb;
-    border-radius:14px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 3px 12px rgba(0,0,0,.04);
-}
-
-.card h2{
-    font-size:18px;
-    margin-bottom:18px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,td{
-    padding:13px 10px;
-    border-bottom:1px solid #e5e7eb;
-    text-align:left;
-    font-size:13px;
-}
-
-th{
-    background:#f8fafc;
-    color:#64748b;
-    font-size:12px;
-}
-
-.badge{
-    padding:5px 9px;
-    border-radius:20px;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.green{
-    background:#dcfce7;
-    color:#15803d;
-}
-
-.blue{
-    background:#dbeafe;
-    color:#1d4ed8;
-}
-
-.orange{
-    background:#ffedd5;
-    color:#c2410c;
-}
-
-.red{
-    background:#fee2e2;
-    color:#b91c1c;
-}
-
-.purple{
-    background:#f3e8ff;
-    color:#7e22ce;
-}
-
-.alert{
-    padding:14px;
-    border-radius:10px;
-    margin-bottom:12px;
-    font-size:13px;
-}
-
-.alert.info{
-    background:#eff6ff;
-    color:#1e40af;
-    border:1px solid #bfdbfe;
-}
-
-.alert.warning{
-    background:#fff7ed;
-    color:#9a3412;
-    border:1px solid #fed7aa;
-}
-
-.alert.danger{
-    background:#fef2f2;
-    color:#991b1b;
-    border:1px solid #fecaca;
-}
-
-.quick-actions{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:12px;
-}
-
-.action{
-    border:1px solid #e5e7eb;
-    background:white;
-    border-radius:10px;
-    padding:15px;
-    cursor:pointer;
-    text-align:left;
-}
-
-.action:hover{
-    background:#eef2ff;
-    border-color:#818cf8;
-}
-
-.action strong{
-    display:block;
-    margin-bottom:5px;
-}
-
-.action span{
-    font-size:12px;
-    color:#64748b;
-}
-
-.form-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.form-group label{
-    display:block;
-    font-size:13px;
-    font-weight:bold;
-    margin-bottom:7px;
-}
-
-input,select,textarea{
-    width:100%;
-    padding:11px;
-    border:1px solid #cbd5e1;
-    border-radius:8px;
-    outline:none;
-}
-
-textarea{
-    min-height:100px;
-    resize:vertical;
-}
-
-.full{
-    grid-column:1/-1;
-}
-
-.btn{
-    background:#4f46e5;
-    color:white;
-    border:none;
-    padding:11px 18px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.btn:hover{
-    background:#3730a3;
-}
-
-.btn-danger{
-    background:#dc2626;
-}
-
-.btn-small{
-    border:none;
-    padding:7px 10px;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:11px;
-    font-weight:bold;
-    background:#e0e7ff;
-    color:#3730a3;
-}
-
-.department-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
-
-.department{
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    padding:18px;
-    background:#fafafa;
-}
-
-.department h3{
-    margin-bottom:8px;
-}
-
-.department p{
-    color:#64748b;
-    font-size:13px;
-}
-
-.department strong{
-    display:block;
-    margin-top:10px;
-    font-size:20px;
-}
-
-.security-box{
-    padding:18px;
-    border:1px solid #e5e7eb;
-    border-radius:12px;
-    margin-bottom:15px;
-}
-
-.security-box h3{
-    margin-bottom:8px;
-}
-
-.security-box p{
-    color:#64748b;
-    font-size:13px;
-    margin-bottom:12px;
-}
-
-.progress{
-    height:9px;
-    background:#e5e7eb;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-.progress div{
-    height:100%;
-    border-radius:10px;
-}
-
-.bluebar{
-    background:#4f46e5;
-}
-
-.greenbar{
-    background:#16a34a;
-}
-
-.orangebar{
-    background:#f97316;
-}
-
-.redbar{
-    background:#dc2626;
-}
-
-.footer{
-    text-align:center;
-    padding:25px;
-    color:#94a3b8;
-    font-size:12px;
-}
-
-@media(max-width:1100px){
-    .stats{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .department-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:800px){
-    .sidebar{
-        width:70px;
-    }
-
-    .sidebar h3{
-        display:none;
-    }
-
-    .nav-btn{
-        font-size:0;
-        text-align:center;
-    }
-
-    .nav-btn::first-letter{
-        font-size:20px;
-    }
-
-    .main{
-        padding:15px;
-    }
-
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .form-grid,
-    .department-grid{
-        grid-template-columns:1fr;
-    }
-
-    .brand p{
-        display:none;
-    }
-
-    .admin-info > div:first-child{
-        display:none;
-    }
-}
-
-@media(max-width:550px){
-    .stats{
-        grid-template-columns:1fr;
-    }
-
-    .topbar{
-        padding:0 12px;
-    }
-
-    .brand h2{
-        font-size:15px;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hospital Command Center</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 245px;
+            background: #0b1f3a;
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            padding: 22px 15px;
+            z-index: 100;
+        }
+
+        .brand {
+            padding: 5px 10px 25px;
+            border-bottom: 1px solid rgba(255,255,255,.12);
+            margin-bottom: 18px;
+        }
+
+        .brand h2 {
+            font-size: 20px;
+        }
+
+        .brand p {
+            color: #9eb0c8;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .menu-title {
+            color: #7185a2;
+            font-size: 11px;
+            text-transform: uppercase;
+            margin: 20px 10px 8px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #c9d5e5;
+            text-decoration: none;
+            padding: 12px 11px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #17365f;
+            color: white;
+        }
+
+        .logout {
+            margin-top: 25px;
+            border-top: 1px solid rgba(255,255,255,.1);
+            padding-top: 15px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 245px;
+            width: calc(100% - 245px);
+        }
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e4e9f1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+        }
+
+        .topbar small {
+            color: #7c8799;
+        }
+
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #1664d9;
+            color: white;
+            display: grid;
+            place-items: center;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 28px;
+        }
+
+        /* HOSPITAL HEADER */
+
+        .hospital-card {
+            background: linear-gradient(135deg, #0b1f3a, #1768d1);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(15,60,120,.15);
+        }
+
+        .hospital-card h2 {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .hospital-card p {
+            color: #dce9fa;
+            font-size: 13px;
+        }
+
+        .status {
+            background: #d8f8e6;
+            color: #08753b;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 17px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: white;
+            border: 1px solid #e7ebf2;
+            border-radius: 13px;
+            padding: 20px;
+            box-shadow: 0 5px 18px rgba(20,40,80,.04);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-title {
+            color: #758196;
+            font-size: 13px;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: #edf4ff;
+            color: #1768d1;
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+        }
+
+        .stat h2 {
+            font-size: 27px;
+            margin-top: 13px;
+        }
+
+        .stat small {
+            display: block;
+            margin-top: 6px;
+            color: #8792a5;
+        }
+
+        /* GRID */
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e7ebf2;
+            border-radius: 13px;
+            padding: 20px;
+            box-shadow: 0 5px 18px rgba(20,40,80,.04);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-header h3 {
+            font-size: 17px;
+        }
+
+        .card-header span {
+            color: #7c8799;
+            font-size: 12px;
+        }
+
+        /* BED */
+
+        .bed-box {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+        }
+
+        .bed-item {
+            padding: 18px;
+            border-radius: 10px;
+            background: #f7f9fc;
+            text-align: center;
+        }
+
+        .bed-item strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .bed-item span {
+            color: #7c8799;
+            font-size: 12px;
+        }
+
+        .occupied strong {
+            color: #e14d4d;
+        }
+
+        .available strong {
+            color: #16864a;
+        }
+
+        .maintenance strong {
+            color: #e49b18;
+        }
+
+        /* OCCUPANCY */
+
+        .occupancy {
+            margin-top: 22px;
+        }
+
+        .occupancy-head {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 10px;
+            background: #edf0f5;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #1768d1;
+            transition: .5s;
+        }
+
+        /* ALERTS */
+
+        .alert {
+            padding: 13px;
+            border-radius: 9px;
+            margin-bottom: 9px;
+            background: #f7f9fc;
+            border-left: 4px solid #1768d1;
+        }
+
+        .alert.warning {
+            border-left-color: #e49b18;
+            background: #fffaf0;
+        }
+
+        .alert.danger {
+            border-left-color: #df4b4b;
+            background: #fff5f5;
+        }
+
+        .alert-title {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .alert-message {
+            color: #727d90;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .no-alert {
+            color: #7d8797;
+            text-align: center;
+            padding: 30px 10px;
+            font-size: 13px;
+        }
+
+        /* QUICK ACTIONS */
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 13px;
+        }
+
+        .action {
+            border: 1px solid #e4e9f1;
+            background: #fff;
+            border-radius: 10px;
+            padding: 17px;
+            text-decoration: none;
+            color: #172033;
+            transition: .2s;
+        }
+
+        .action:hover {
+            border-color: #1768d1;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(20,70,140,.08);
+        }
+
+        .action-icon {
+            font-size: 23px;
+            margin-bottom: 9px;
+        }
+
+        .action strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .action span {
+            color: #7c8799;
+            font-size: 11px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* OPERATION */
+
+        .operations {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 13px;
+        }
+
+        .operation {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 10px;
+        }
+
+        .operation strong {
+            display: block;
+            font-size: 22px;
+        }
+
+        .operation span {
+            color: #7c8799;
+            font-size: 12px;
+        }
+
+        /* LOADING */
+
+        .loading {
+            color: #7d8797;
+            font-size: 13px;
+        }
+
+        .error {
+            color: #d33b3b;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:1100px) {
+            .stats {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .actions,
+            .operations {
+                grid-template-columns: repeat(2,1fr);
+            }
+        }
+
+        @media(max-width:850px) {
+            .sidebar {
+                width: 70px;
+                padding: 15px 8px;
+            }
+
+            .brand h2,
+            .brand p,
+            .menu-title,
+            .menu a span {
+                display: none;
+            }
+
+            .menu a {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+            .content {
+                padding: 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .actions,
+            .operations {
+                grid-template-columns: 1fr;
+            }
+
+            .hospital-card {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .topbar h1 {
+                font-size: 17px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header class="topbar">
+<div class="app">
 
-<div class="brand">
+    <!-- SIDEBAR -->
 
-<div class="logo">GJ</div>
+    <aside class="sidebar">
 
-<div>
-<h2>Gopal Joshi Hospital</h2>
-<p>Administration & Security Portal</p>
-</div>
+        <div class="brand">
+            <h2>Gopal Joshi</h2>
+            <p>Hospital Management</p>
+        </div>
 
-</div>
+        <div class="menu-title">Main</div>
 
-<div class="admin-info">
+        <div class="menu">
 
-<div>
-<strong>Hospital Admin</strong><br>
-<small>System Administration</small>
-</div>
+            <a href="index.html" class="active">
+                <b>⌂</b>
+                <span>Command Center</span>
+            </a>
 
-<div class="avatar">A</div>
+            <a href="patients.html">
+                <b>♙</b>
+                <span>Patients</span>
+            </a>
 
-<button class="logout" onclick="logout()">Logout</button>
+            <a href="appointments.html">
+                <b>▣</b>
+                <span>Appointments</span>
+            </a>
 
-</div>
+            <a href="consultation.html">
+                <b>✚</b>
+                <span>Consultation</span>
+            </a>
 
-</header>
+        </div>
 
+        <div class="menu-title">Operations</div>
 
-<div class="layout">
+        <div class="menu">
 
-<aside class="sidebar">
+            <a href="../doctor/index.html">
+                <b>⚕</b>
+                <span>Doctors</span>
+            </a>
 
-<h3>Administration</h3>
+            <a href="../nurse/index.html">
+                <b>♟</b>
+                <span>Nurses</span>
+            </a>
 
-<button class="nav-btn active" onclick="showPage('dashboard',this)">
-📊 Dashboard
-</button>
+            <a href="../beds/index.html">
+                <b>▦</b>
+                <span>Beds & IPD</span>
+            </a>
 
-<button class="nav-btn" onclick="showPage('users',this)">
-👥 Users
-</button>
+            <a href="../laboratory/index.html">
+                <b>⚗</b>
+                <span>Laboratory</span>
+            </a>
 
-<button class="nav-btn" onclick="showPage('roles',this)">
-🔐 Roles & Access
-</button>
+            <a href="../pharmacy/index.html">
+                <b>▤</b>
+                <span>Pharmacy</span>
+            </a>
 
-<button class="nav-btn" onclick="showPage('departments',this)">
-🏥 Departments
-</button>
+            <a href="../ambulance/index.html">
+                <b>🚑</b>
+                <span>Ambulance</span>
+            </a>
 
-<button class="nav-btn" onclick="showPage('security',this)">
-🛡️ Security
-</button>
+        </div>
 
-<button class="nav-btn" onclick="showPage('audit',this)">
-📋 Audit Logs
-</button>
+        <div class="menu-title">Finance</div>
 
-<button class="nav-btn" onclick="showPage('system',this)">
-⚙️ System
-</button>
+        <div class="menu">
 
-</aside>
+            <a href="#">
+                <b>₹</b>
+                <span>Billing</span>
+            </a>
 
+            <a href="#">
+                <b>▤</b>
+                <span>Reports</span>
+            </a>
 
-<main class="main">
+        </div>
 
+        <div class="logout">
 
-<!-- DASHBOARD -->
+            <div class="menu">
+                <a href="#" onclick="logout()">
+                    <b>↪</b>
+                    <span>Logout</span>
+                </a>
+            </div>
 
-<section id="dashboard" class="page active">
+        </div>
 
-<div class="page-title">
+    </aside>
 
-<h1>Admin Dashboard</h1>
 
-<p>Complete control and monitoring of Gopal Joshi Hospital.</p>
+    <!-- MAIN -->
 
-</div>
+    <main class="main">
 
+        <header class="topbar">
 
-<div class="stats">
+            <div>
+                <h1>Command Center</h1>
+                <small>Hospital Operations Dashboard</small>
+            </div>
 
-<div class="stat">
-<h4>Total Users</h4>
-<strong id="totalUsers">10</strong>
-<span>Registered system users</span>
-</div>
+            <div class="admin-info">
 
-<div class="stat">
-<h4>Active Departments</h4>
-<strong>10</strong>
-<span>All departments operational</span>
-</div>
+                <div>
+                    <strong id="adminName">Hospital Admin</strong>
+                    <small style="display:block;text-align:right;">Administrator</small>
+                </div>
 
-<div class="stat">
-<h4>Security Status</h4>
-<strong>100%</strong>
-<span>System security active</span>
-</div>
+                <div class="avatar" id="avatar">
+                    A
+                </div>
 
-<div class="stat">
-<h4>System Uptime</h4>
-<strong>99.9%</strong>
-<span>System operational</span>
-</div>
+            </div>
 
-</div>
+        </header>
 
 
-<div class="grid">
+        <section class="content">
 
-<div>
+            <!-- HOSPITAL -->
 
-<div class="card">
+            <div class="hospital-card">
 
-<h2>System Overview</h2>
+                <div>
+                    <h2 id="hospitalName">Gopal Joshi Hospital</h2>
+                    <p>
+                        Hospital Code:
+                        <strong id="hospitalCode">GJH001</strong>
+                    </p>
+                </div>
 
-<table>
+                <div class="status" id="hospitalStatus">
+                    ● ACTIVE
+                </div>
 
-<thead>
+            </div>
 
-<tr>
-<th>Module</th>
-<th>Status</th>
-<th>Access</th>
-<th>Last Check</th>
-</tr>
 
-</thead>
+            <!-- STATS -->
 
-<tbody>
+            <div class="stats">
 
-<tr>
-<td>Patient Management</td>
-<td><span class="badge green">Online</span></td>
-<td>Patient</td>
-<td>Just now</td>
-</tr>
+                <div class="stat">
 
-<tr>
-<td>Doctor Management</td>
-<td><span class="badge green">Online</span></td>
-<td>Doctor</td>
-<td>Just now</td>
-</tr>
+                    <div class="stat-top">
+                        <span class="stat-title">Total Patients</span>
+                        <div class="stat-icon">♙</div>
+                    </div>
 
-<tr>
-<td>Pharmacy</td>
-<td><span class="badge green">Online</span></td>
-<td>Pharmacy</td>
-<td>Just now</td>
-</tr>
+                    <h2 id="patients">0</h2>
+                    <small>Registered patients</small>
 
-<tr>
-<td>Laboratory</td>
-<td><span class="badge green">Online</span></td>
-<td>Laboratory</td>
-<td>Just now</td>
-</tr>
+                </div>
 
-<tr>
-<td>Emergency Services</td>
-<td><span class="badge green">Online</span></td>
-<td>Ambulance</td>
-<td>Just now</td>
-</tr>
 
-</tbody>
+                <div class="stat">
 
-</table>
+                    <div class="stat-top">
+                        <span class="stat-title">Doctors</span>
+                        <div class="stat-icon">⚕</div>
+                    </div>
 
-</div>
+                    <h2 id="doctors">0</h2>
+                    <small>Active doctors</small>
 
+                </div>
 
-<div class="card">
 
-<h2>Recent Admin Activity</h2>
+                <div class="stat">
 
-<table>
+                    <div class="stat-top">
+                        <span class="stat-title">Today's Appointments</span>
+                        <div class="stat-icon">▣</div>
+                    </div>
 
-<thead>
+                    <h2 id="appointments">0</h2>
+                    <small>Appointments today</small>
 
-<tr>
-<th>Activity</th>
-<th>User</th>
-<th>Status</th>
-<th>Time</th>
-</tr>
+                </div>
 
-</thead>
 
-<tbody>
+                <div class="stat">
 
-<tr>
-<td>Admin login</td>
-<td>Hospital Admin</td>
-<td><span class="badge green">Success</span></td>
-<td>Now</td>
-</tr>
+                    <div class="stat-top">
+                        <span class="stat-title">Today's Revenue</span>
+                        <div class="stat-icon">₹</div>
+                    </div>
 
-<tr>
-<td>Doctor panel accessed</td>
-<td>Dr. Rajesh Sharma</td>
-<td><span class="badge blue">Accessed</span></td>
-<td>10 min ago</td>
-</tr>
+                    <h2 id="revenue">₹0</h2>
+                    <small>Collected today</small>
 
-<tr>
-<td>Pharmacy inventory updated</td>
-<td>Pharmacy Staff</td>
-<td><span class="badge blue">Updated</span></td>
-<td>25 min ago</td>
-</tr>
+                </div>
 
-<tr>
-<td>Ambulance dispatched</td>
-<td>Ambulance Staff</td>
-<td><span class="badge orange">Active</span></td>
-<td>40 min ago</td>
-</tr>
+            </div>
 
-</tbody>
 
-</table>
+            <!-- BED + ALERT -->
 
-</div>
+            <div class="grid">
 
-</div>
+                <div class="card">
 
+                    <div class="card-header">
+                        <h3>Bed Management</h3>
+                        <span id="occupancyText">0% Occupancy</span>
+                    </div>
 
-<div>
+                    <div class="bed-box">
 
-<div class="card">
+                        <div class="bed-item occupied">
+                            <strong id="occupiedBeds">0</strong>
+                            <span>Occupied</span>
+                        </div>
 
-<h2>Security Alerts</h2>
+                        <div class="bed-item available">
+                            <strong id="availableBeds">0</strong>
+                            <span>Available</span>
+                        </div>
 
-<div class="alert info">
-Authentication system is active.
-</div>
+                        <div class="bed-item maintenance">
+                            <strong id="maintenanceBeds">0</strong>
+                            <span>Maintenance</span>
+                        </div>
 
-<div class="alert warning">
-Regular password review is recommended.
-</div>
+                    </div>
 
-<div class="alert danger">
-Production system should use HTTPS and secure sessions.
-</div>
+                    <div class="occupancy">
 
-</div>
+                        <div class="occupancy-head">
+                            <span>Bed Occupancy</span>
+                            <strong id="occupancyPercent">0%</strong>
+                        </div>
 
+                        <div class="progress">
+                            <div class="progress-bar" id="occupancyBar"></div>
+                        </div>
 
-<div class="card">
+                    </div>
 
-<h2>Quick Actions</h2>
+                </div>
 
-<div class="quick-actions">
 
-<button class="action" onclick="showPage('users')">
-<strong>👥 Manage Users</strong>
-<span>Add and manage users</span>
-</button>
+                <div class="card">
 
-<button class="action" onclick="showPage('roles')">
-<strong>🔐 Manage Roles</strong>
-<span>Review access permissions</span>
-</button>
+                    <div class="card-header">
+                        <h3>Important Alerts</h3>
+                        <span id="alertCount">0 alerts</span>
+                    </div>
 
-<button class="action" onclick="showPage('security')">
-<strong>🛡️ Security</strong>
-<span>Check security settings</span>
-</button>
+                    <div id="alerts">
 
-<button class="action" onclick="showPage('audit')">
-<strong>📋 Audit Logs</strong>
-<span>View system activity</span>
-</button>
+                        <div class="no-alert">
+                            Loading alerts...
+                        </div>
 
-</div>
+                    </div>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-</div>
 
-</section>
+            <!-- OPERATIONS -->
 
+            <div class="card" style="margin-bottom:20px;">
 
-<!-- USERS -->
+                <div class="card-header">
+                    <h3>Live Operations</h3>
+                    <span>Real-time hospital activity</span>
+                </div>
 
-<section id="users" class="page">
+                <div class="operations">
 
-<div class="page-title">
+                    <div class="operation">
+                        <strong id="admissions">0</strong>
+                        <span>Active Admissions</span>
+                    </div>
 
-<h1>User Management</h1>
+                    <div class="operation">
+                        <strong id="emergency">0</strong>
+                        <span>Emergency Cases</span>
+                    </div>
 
-<p>Manage hospital system users and their departments.</p>
+                    <div class="operation">
+                        <strong id="ambulances">0</strong>
+                        <span>Active Ambulances</span>
+                    </div>
 
-</div>
+                    <div class="operation">
+                        <strong id="labTasks">0</strong>
+                        <span>Pending Lab Tasks</span>
+                    </div>
 
+                </div>
 
-<div class="stats">
+            </div>
 
-<div class="stat">
-<h4>Total Users</h4>
-<strong id="userCount">10</strong>
-</div>
 
-<div class="stat">
-<h4>Active Users</h4>
-<strong>10</strong>
-</div>
+            <!-- QUICK ACTIONS -->
 
-<div class="stat">
-<h4>Admin Users</h4>
-<strong>1</strong>
-</div>
+            <div class="card" style="margin-bottom:20px;">
 
-<div class="stat">
-<h4>Department Users</h4>
-<strong>9</strong>
-</div>
+                <div class="card-header">
+                    <h3>Quick Actions</h3>
+                    <span>Common hospital operations</span>
+                </div>
 
-</div>
+                <div class="actions">
 
+                    <a href="patients.html" class="action">
+                        <div class="action-icon">♙</div>
+                        <strong>Register Patient</strong>
+                        <span>Add new patient</span>
+                    </a>
 
-<div class="card">
+                    <a href="appointments.html" class="action">
+                        <div class="action-icon">▣</div>
+                        <strong>New Appointment</strong>
+                        <span>Book OPD appointment</span>
+                    </a>
 
-<h2>User Directory</h2>
+                    <a href="consultation.html" class="action">
+                        <div class="action-icon">⚕</div>
+                        <strong>Consultation</strong>
+                        <span>Start doctor consultation</span>
+                    </a>
 
-<table>
+                    <a href="../beds/index.html" class="action">
+                        <div class="action-icon">▦</div>
+                        <strong>Manage Beds</strong>
+                        <span>View IPD beds</span>
+                    </a>
 
-<thead>
+                </div>
 
-<tr>
-<th>Name</th>
-<th>Username</th>
-<th>Role</th>
-<th>Department</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
+            </div>
 
-</thead>
 
-<tbody>
+            <!-- BILLING -->
 
-<tr>
-<td>Hospital Admin</td>
-<td>admin</td>
-<td>Admin</td>
-<td>Administration</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+            <div class="card">
 
-<tr>
-<td>Dr. Rajesh Sharma</td>
-<td>doctor</td>
-<td>Doctor</td>
-<td>Medical</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                <div class="card-header">
+                    <h3>Billing Overview</h3>
+                    <span>Today's financial status</span>
+                </div>
 
-<tr>
-<td>Pharmacy Staff</td>
-<td>pharmacy</td>
-<td>Pharmacy</td>
-<td>Pharmacy</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                <div class="operations">
 
-<tr>
-<td>Laboratory Staff</td>
-<td>laboratory</td>
-<td>Laboratory</td>
-<td>Laboratory</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                    <div class="operation">
+                        <strong id="totalBills">0</strong>
+                        <span>Total Bills</span>
+                    </div>
 
-<tr>
-<td>Nurse Staff</td>
-<td>nurse</td>
-<td>Nurse</td>
-<td>Nursing</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                    <div class="operation">
+                        <strong id="pendingBilling">₹0</strong>
+                        <span>Pending Amount</span>
+                    </div>
 
-<tr>
-<td>Reception Staff</td>
-<td>reception</td>
-<td>Reception</td>
-<td>Reception</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                    <div class="operation">
+                        <strong id="todayRevenue2">₹0</strong>
+                        <span>Today's Revenue</span>
+                    </div>
 
-<tr>
-<td>Bed Management Staff</td>
-<td>beds</td>
-<td>Beds</td>
-<td>Bed Management</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                    <div class="operation">
+                        <strong id="activeAdmissions2">0</strong>
+                        <span>Active Admissions</span>
+                    </div>
 
-<tr>
-<td>Ambulance Staff</td>
-<td>ambulance</td>
-<td>Ambulance</td>
-<td>Emergency Transport</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+                </div>
 
-<tr>
-<td>Hospital Manager</td>
-<td>manager</td>
-<td>Manager</td>
-<td>Management</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+            </div>
 
-<tr>
-<td>Patient Demo</td>
-<td>patient</td>
-<td>Patient</td>
-<td>Patient Services</td>
-<td><span class="badge green">Active</span></td>
-<td><button class="btn-small">View</button></td>
-</tr>
+        </section>
 
-</tbody>
-
-</table>
-
-</div>
-
-
-<div class="card">
-
-<h2>Add System User</h2>
-
-<div class="form-grid">
-
-<div class="form-group">
-<label>Full Name</label>
-<input id="newName" placeholder="Enter full name">
-</div>
-
-<div class="form-group">
-<label>Username</label>
-<input id="newUsername" placeholder="Enter username">
-</div>
-
-<div class="form-group">
-<label>Role</label>
-
-<select id="newRole">
-
-<option>Doctor</option>
-<option>Pharmacy</option>
-<option>Laboratory</option>
-<option>Nurse</option>
-<option>Reception</option>
-<option>Beds</option>
-<option>Ambulance</option>
-<option>Manager</option>
-<option>Patient</option>
-
-</select>
-
-</div>
-
-<div class="form-group">
-<label>Status</label>
-
-<select>
-<option>Active</option>
-<option>Inactive</option>
-</select>
-
-</div>
-
-<div class="full">
-
-<button class="btn" onclick="addUser()">
-Add User
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ROLES -->
-
-<section id="roles" class="page">
-
-<div class="page-title">
-
-<h1>Roles & Access Control</h1>
-
-<p>Review role-based permissions for every hospital department.</p>
-
-</div>
-
-
-<div class="card">
-
-<h2>Role Permissions</h2>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Role</th>
-<th>Dashboard</th>
-<th>Patient Data</th>
-<th>Management</th>
-<th>System Admin</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-<td>Admin</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge green">Full</span></td>
-</tr>
-
-<tr>
-<td>Manager</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Limited</span></td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Doctor</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge green">Clinical</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Nurse</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Care</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Pharmacy</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Medicine</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Laboratory</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Tests</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Reception</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Registration</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-<tr>
-<td>Ambulance</td>
-<td><span class="badge green">Full</span></td>
-<td><span class="badge blue">Emergency</span></td>
-<td><span class="badge red">No</span></td>
-<td><span class="badge red">No</span></td>
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<div class="card">
-
-<h2>Access Principle</h2>
-
-<div class="alert info">
-Each department should only access the data and operations required for its role.
-</div>
-
-<div class="alert warning">
-Admin access should be limited to authorized hospital administrators.
-</div>
-
-</div>
-
-</section>
-
-
-<!-- DEPARTMENTS -->
-
-<section id="departments" class="page">
-
-<div class="page-title">
-
-<h1>Department Management</h1>
-
-<p>Manage hospital departments and their operational status.</p>
-
-</div>
-
-
-<div class="department-grid">
-
-<div class="department">
-<h3>👨‍⚕️ Doctor</h3>
-<p>Medical consultation and clinical management</p>
-<strong>12 Staff</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>💊 Pharmacy</h3>
-<p>Medicine inventory and dispensing</p>
-<strong>4 Staff</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>🧪 Laboratory</h3>
-<p>Diagnostic tests and reports</p>
-<strong>5 Staff</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>👩‍⚕️ Nursing</h3>
-<p>Patient care and ward operations</p>
-<strong>10 Staff</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>🧾 Reception</h3>
-<p>Registration and appointments</p>
-<strong>3 Staff</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>🛏️ Beds</h3>
-<p>Bed allocation and occupancy</p>
-<strong>12 Beds</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>🚑 Ambulance</h3>
-<p>Emergency transport management</p>
-<strong>6 Ambulances</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>📊 Management</h3>
-<p>Hospital administration and monitoring</p>
-<strong>1 Manager</strong>
-<span class="badge green">Active</span>
-</div>
-
-<div class="department">
-<h3>🛡️ Administration</h3>
-<p>System security and user management</p>
-<strong>1 Admin</strong>
-<span class="badge green">Active</span>
-</div>
-
-</div>
-
-</section>
-
-
-<!-- SECURITY -->
-
-<section id="security" class="page">
-
-<div class="page-title">
-
-<h1>Security Center</h1>
-
-<p>Monitor authentication, access control and system security.</p>
-
-</div>
-
-
-<div class="card">
-
-<h2>Security Status</h2>
-
-<div class="security-box">
-
-<h3>Authentication</h3>
-
-<p>Hospital authentication service is currently operational.</p>
-
-<div class="progress">
-<div class="greenbar" style="width:100%"></div>
-</div>
-
-</div>
-
-
-<div class="security-box">
-
-<h3>Role Based Access</h3>
-
-<p>Department-level access restrictions are enabled.</p>
-
-<div class="progress">
-<div class="bluebar" style="width:100%"></div>
-</div>
-
-</div>
-
-
-<div class="security-box">
-
-<h3>Session Security</h3>
-
-<p>Demo authentication token system is currently active.</p>
-
-<div class="progress">
-<div class="orangebar" style="width:75%"></div>
-</div>
-
-</div>
-
-
-<div class="security-box">
-
-<h3>Production Security</h3>
-
-<p>HTTPS, secure sessions, password hashing and database security should be configured before real-world deployment.</p>
-
-<div class="progress">
-<div class="redbar" style="width:45%"></div>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>Security Actions</h2>
-
-<button class="btn" onclick="securityCheck()">
-Run Security Check
-</button>
-
-</div>
-
-</section>
-
-
-<!-- AUDIT -->
-
-<section id="audit" class="page">
-
-<div class="page-title">
-
-<h1>Audit Logs</h1>
-
-<p>Track important system activities and administrative events.</p>
-
-</div>
-
-
-<div class="card">
-
-<h2>System Activity</h2>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Date & Time</th>
-<th>User</th>
-<th>Action</th>
-<th>Module</th>
-<th>Status</th>
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-<td>Today 10:10</td>
-<td>Hospital Admin</td>
-<td>Login</td>
-<td>Admin</td>
-<td><span class="badge green">Success</span></td>
-</tr>
-
-<tr>
-<td>Today 09:55</td>
-<td>Hospital Manager</td>
-<td>Dashboard Access</td>
-<td>Manager</td>
-<td><span class="badge green">Success</span></td>
-</tr>
-
-<tr>
-<td>Today 09:40</td>
-<td>Doctor</td>
-<td>Patient Record Access</td>
-<td>Doctor</td>
-<td><span class="badge blue">Allowed</span></td>
-</tr>
-
-<tr>
-<td>Today 09:20</td>
-<td>Pharmacy</td>
-<td>Inventory Update</td>
-<td>Pharmacy</td>
-<td><span class="badge blue">Updated</span></td>
-</tr>
-
-<tr>
-<td>Today 08:50</td>
-<td>Ambulance</td>
-<td>Emergency Dispatch</td>
-<td>Ambulance</td>
-<td><span class="badge orange">Active</span></td>
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-<!-- SYSTEM -->
-
-<section id="system" class="page">
-
-<div class="page-title">
-
-<h1>System Settings</h1>
-
-<p>Configure core hospital system settings.</p>
-
-</div>
-
-
-<div class="card">
-
-<h2>Hospital Information</h2>
-
-<div class="form-grid">
-
-<div class="form-group">
-<label>Hospital Name</label>
-<input value="Gopal Joshi Hospital">
-</div>
-
-<div class="form-group">
-<label>Hospital Status</label>
-
-<select>
-<option>Open</option>
-<option>Emergency Only</option>
-<option>Closed</option>
-</select>
-
-</div>
-
-<div class="form-group">
-<label>Contact Number</label>
-<input value="+91 9999999999">
-</div>
-
-<div class="form-group">
-<label>Email</label>
-<input value="info@gopaljoshi.com">
-</div>
-
-<div class="form-group full">
-
-<label>Address</label>
-
-<textarea>Gopal Joshi Hospital, India</textarea>
-
-</div>
-
-<div class="full">
-
-<button class="btn" onclick="saveSystemSettings()">
-Save Settings
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h2>System Services</h2>
-
-<table>
-
-<tr>
-<td>Backend Server</td>
-<td><span class="badge green">Running</span></td>
-</tr>
-
-<tr>
-<td>Authentication</td>
-<td><span class="badge green">Active</span></td>
-</tr>
-
-<tr>
-<td>Role Based Access</td>
-<td><span class="badge green">Enabled</span></td>
-</tr>
-
-<tr>
-<td>API Services</td>
-<td><span class="badge green">Available</span></td>
-</tr>
-
-<tr>
-<td>Emergency Services</td>
-<td><span class="badge green">Available</span></td>
-</tr>
-
-</table>
-
-</div>
-
-</section>
-
-
-<div class="footer">
-
-Gopal Joshi Hospital © 2026 |
-Administration & Security Portal - Demo Project
-
-</div>
-
-</main>
+    </main>
 
 </div>
 
 
 <script>
 
-function showPage(pageId,button){
+const API =
+    "http://localhost:5000/api/saas/command-center/dashboard";
 
-    document.querySelectorAll(".page").forEach(page=>{
-        page.classList.remove("active");
-    });
-
-    const page=document.getElementById(pageId);
-
-    if(page){
-        page.classList.add("active");
-    }
-
-    document.querySelectorAll(".nav-btn").forEach(btn=>{
-        btn.classList.remove("active");
-    });
-
-    if(button){
-        button.classList.add("active");
-    }
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-}
+const HOSPITAL_ID =
+    "HOSP-TEST-001";
 
 
-function addUser(){
+function money(value) {
 
-    const name=document.getElementById("newName").value.trim();
-
-    const username=document.getElementById("newUsername").value.trim();
-
-    const role=document.getElementById("newRole").value;
-
-    if(!name || !username){
-
-        alert("Please enter name and username.");
-
-        return;
-    }
-
-    const users=
-        JSON.parse(
-            localStorage.getItem("gjh_admin_users") || "[]"
-        );
-
-    users.push({
-        name:name,
-        username:username,
-        role:role,
-        status:"Active",
-        createdAt:new Date().toLocaleString()
-    });
-
-    localStorage.setItem(
-        "gjh_admin_users",
-        JSON.stringify(users)
-    );
-
-    document.getElementById("newName").value="";
-    document.getElementById("newUsername").value="";
-
-    alert(
-        "User added successfully.\\n\\n" +
-        "Note: This demo stores the record locally."
-    );
+    return "₹" + Number(value || 0).toLocaleString("en-IN");
 
 }
 
 
-function securityCheck(){
+async function loadDashboard() {
 
-    alert(
-        "Security Check Complete\\n\\n" +
-        "Authentication: Active\\n" +
-        "Role Access: Enabled\\n" +
-        "API: Available\\n" +
-        "Backend: Running\\n\\n" +
-        "Production reminder: use HTTPS, secure sessions, " +
-        "hashed passwords and a database."
-    );
+    try {
 
-}
-
-
-function saveSystemSettings(){
-
-    alert(
-        "System settings saved successfully."
-    );
-
-}
-
-
-function logout(){
-
-    localStorage.removeItem("gjh_token");
-
-    window.location.href="../index.html";
-
-}
-
-
-async function verifyAdminAccess(){
-
-    const token=
-        localStorage.getItem("gjh_token");
-
-    if(!token){
-
-        window.location.href="login.html";
-
-        return;
-    }
-
-    try{
-
-        const response=
+        const response =
             await fetch(
-                "/api/private/admin",
-                {
-                    headers:{
-                        "Authorization":
-                        "Bearer "+token
-                    }
-                }
+                `${API}?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
             );
 
-        if(!response.ok){
+        if (!response.ok) {
 
-            localStorage.removeItem("gjh_token");
+            throw new Error("Dashboard API failed");
 
-            window.location.href="login.html";
-
-            return;
         }
 
-    }catch(error){
+        const data =
+            await response.json();
 
-        console.log(
-            "Backend verification unavailable in demo mode."
-        );
+        if (!data.success) {
+
+            throw new Error(
+                data.message || "Dashboard data unavailable"
+            );
+
+        }
+
+        updateDashboard(data);
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("alerts").innerHTML = `
+            <div class="alert danger">
+                <div class="alert-title">
+                    Dashboard connection error
+                </div>
+
+                <div class="alert-message">
+                    Backend server check karo:
+                    http://localhost:5000
+                </div>
+            </div>
+        `;
 
     }
 
 }
 
 
-verifyAdminAccess();
+function updateDashboard(data) {
+
+    const hospital =
+        data.hospital || {};
+
+    const summary =
+        data.summary || {};
+
+    const billing =
+        data.billing || {};
+
+    const beds =
+        data.beds || {};
+
+    const operations =
+        data.operations || {};
+
+
+    /* HOSPITAL */
+
+    document.getElementById("hospitalName").textContent =
+        hospital.name || "Gopal Joshi Hospital";
+
+    document.getElementById("hospitalCode").textContent =
+        hospital.code || "GJH001";
+
+    document.getElementById("hospitalStatus").textContent =
+        hospital.status === "active"
+            ? "● ACTIVE"
+            : "● " + String(hospital.status || "UNKNOWN").toUpperCase();
+
+
+    /* STATS */
+
+    document.getElementById("patients").textContent =
+        summary.patients || 0;
+
+    document.getElementById("doctors").textContent =
+        summary.doctors || 0;
+
+    document.getElementById("appointments").textContent =
+        summary.appointmentsToday || 0;
+
+    document.getElementById("revenue").textContent =
+        money(summary.todayRevenue);
+
+
+    /* BEDS */
+
+    document.getElementById("occupiedBeds").textContent =
+        beds.occupied ?? summary.occupiedBeds ?? 0;
+
+    document.getElementById("availableBeds").textContent =
+        beds.available ?? summary.availableBeds ?? 0;
+
+    document.getElementById("maintenanceBeds").textContent =
+        beds.maintenance ?? summary.maintenanceBeds ?? 0;
+
+
+    const occupancy =
+        Number(
+            beds.occupancy ??
+            summary.occupancy ??
+            0
+        );
+
+
+    document.getElementById("occupancyText").textContent =
+        occupancy + "% Occupancy";
+
+    document.getElementById("occupancyPercent").textContent =
+        occupancy + "%";
+
+    document.getElementById("occupancyBar").style.width =
+        Math.min(100, Math.max(0, occupancy)) + "%";
+
+
+    /* OPERATIONS */
+
+    document.getElementById("admissions").textContent =
+        operations.admissions ??
+        summary.activeAdmissions ??
+        0;
+
+    document.getElementById("emergency").textContent =
+        operations.emergencies ??
+        summary.emergencyCases ??
+        0;
+
+    document.getElementById("ambulances").textContent =
+        operations.ambulances ??
+        summary.activeAmbulances ??
+        0;
+
+    document.getElementById("labTasks").textContent =
+        operations.pendingLabTasks ??
+        summary.pendingLabTasks ??
+        0;
+
+
+    /* BILLING */
+
+    document.getElementById("totalBills").textContent =
+        billing.totalBills ?? 0;
+
+    document.getElementById("pendingBilling").textContent =
+        money(
+            billing.pendingAmount ??
+            summary.pendingBilling ??
+            0
+        );
+
+    document.getElementById("todayRevenue2").textContent =
+        money(
+            billing.todayRevenue ??
+            summary.todayRevenue ??
+            0
+        );
+
+    document.getElementById("activeAdmissions2").textContent =
+        summary.activeAdmissions ?? 0;
+
+
+    /* ALERTS */
+
+    renderAlerts(data.alerts || []);
+
+}
+
+
+function renderAlerts(alerts) {
+
+    const container =
+        document.getElementById("alerts");
+
+    const count =
+        document.getElementById("alertCount");
+
+
+    count.textContent =
+        `${alerts.length} alert${alerts.length === 1 ? "" : "s"}`;
+
+
+    if (!alerts.length) {
+
+        container.innerHTML = `
+            <div class="no-alert">
+                ✓ No critical alerts right now
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        alerts.map(alert => {
+
+            const type =
+                alert.type === "danger"
+                    ? "danger"
+                    : alert.type === "warning"
+                        ? "warning"
+                        : "";
+
+            return `
+                <div class="alert ${type}">
+
+                    <div class="alert-title">
+                        ${escapeHTML(alert.title || "Alert")}
+                    </div>
+
+                    <div class="alert-message">
+                        ${escapeHTML(
+                            alert.message ||
+                            "Hospital attention required."
+                        )}
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function loadAdminInfo() {
+
+    try {
+
+        const savedUser =
+            localStorage.getItem("gjh_user");
+
+        if (!savedUser) return;
+
+        const user =
+            JSON.parse(savedUser);
+
+        const name =
+            user.name ||
+            user.fullName ||
+            user.username ||
+            "Hospital Admin";
+
+        document.getElementById("adminName").textContent =
+            name;
+
+        document.getElementById("avatar").textContent =
+            name.charAt(0).toUpperCase();
+
+    } catch (error) {
+
+        console.log("Admin info not found");
+
+    }
+
+}
+
+
+function logout() {
+
+    localStorage.removeItem("gjh_token");
+    localStorage.removeItem("gjh_user");
+    localStorage.removeItem("gjh_hospital");
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* AUTO REFRESH */
+
+loadAdminInfo();
+
+loadDashboard();
+
+setInterval(
+    loadDashboard,
+    30000
+);
 
 </script>
 
 </body>
 </html>
-```

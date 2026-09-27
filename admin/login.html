@@ -4,6 +4,7 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
@@ -36,18 +37,18 @@
 
         .login-box {
             width: 100%;
-            max-width: 430px;
+            max-width: 450px;
             background: white;
             padding: 35px;
-            border-radius: 15px;
+            border-radius: 18px;
             box-shadow:
-                0 15px 40px
-                rgba(0,0,0,.25);
+                0 20px 50px
+                rgba(0, 0, 0, 0.28);
         }
 
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             margin: 0 auto 18px;
             border-radius: 50%;
             background: #111827;
@@ -55,14 +56,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: 28px;
             font-weight: bold;
         }
 
         h1 {
             text-align: center;
             color: #111827;
-            font-size: 25px;
+            font-size: 26px;
         }
 
         .subtitle {
@@ -71,6 +72,22 @@
             margin-top: 8px;
             margin-bottom: 25px;
             font-size: 14px;
+        }
+
+        .hospital-info {
+            background: #f3f4f6;
+            border-radius: 9px;
+            padding: 12px;
+            margin-bottom: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: #374151;
+        }
+
+        .hospital-name {
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 4px;
         }
 
         .security {
@@ -92,7 +109,7 @@
 
         input {
             width: 100%;
-            padding: 12px;
+            padding: 13px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             margin-bottom: 17px;
@@ -102,22 +119,31 @@
 
         input:focus {
             border-color: #374151;
+            box-shadow:
+                0 0 0 3px
+                rgba(55, 65, 81, 0.10);
         }
 
         button {
             width: 100%;
             border: none;
-            padding: 13px;
+            padding: 14px;
             border-radius: 8px;
             background: #111827;
             color: white;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         button:hover {
             background: #374151;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
         }
 
         .message {
@@ -134,6 +160,11 @@
             color: #991b1b;
         }
 
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
         .demo {
             margin-top: 20px;
             padding: 13px;
@@ -141,6 +172,7 @@
             border-radius: 8px;
             font-size: 13px;
             color: #4b5563;
+            line-height: 1.7;
         }
 
         .back {
@@ -157,6 +189,14 @@
             text-decoration: underline;
         }
 
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 12px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
     </style>
 
 </head>
@@ -170,13 +210,28 @@
             GJ
         </div>
 
+
         <h1>
-            Admin Login
+            Hospital Admin Login
         </h1>
 
+
         <p class="subtitle">
-            Gopal Joshi Hospital
+            Gopal Joshi Hospital SaaS
         </p>
+
+
+        <div class="hospital-info">
+
+            <div class="hospital-name">
+                Gopal Joshi Hospital
+            </div>
+
+            <div>
+                Hospital Code: GJH001
+            </div>
+
+        </div>
 
 
         <div class="security">
@@ -219,7 +274,10 @@
             >
 
 
-            <button type="submit">
+            <button
+                type="submit"
+                id="loginButton"
+            >
                 Login as Admin
             </button>
 
@@ -227,8 +285,16 @@
 
 
         <div
+            id="loading"
+            class="loading"
+        >
+            Authenticating hospital account...
+        </div>
+
+
+        <div
             id="message"
-            class="message error"
+            class="message"
         ></div>
 
 
@@ -238,7 +304,7 @@
                 Demo Login
             </strong>
 
-            <br><br>
+            <br>
 
             Username:
             <strong>admin</strong>
@@ -269,11 +335,59 @@
             );
 
 
+        const usernameInput =
+            document.getElementById(
+                "username"
+            );
+
+
+        const passwordInput =
+            document.getElementById(
+                "password"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+
         const message =
             document.getElementById(
                 "message"
             );
 
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        /* =========================================
+           SHOW MESSAGE
+        ========================================= */
+
+        function showMessage(
+            text,
+            type = "error"
+        ) {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+
+            message.style.display =
+                "block";
+
+        }
+
+
+        /* =========================================
+           LOGIN
+        ========================================= */
 
         loginForm.addEventListener(
             "submit",
@@ -283,19 +397,44 @@
 
 
                 const username =
-                    document.getElementById(
-                        "username"
-                    ).value.trim();
+                    usernameInput
+                        .value
+                        .trim();
 
 
                 const password =
-                    document.getElementById(
-                        "password"
-                    ).value;
+                    passwordInput
+                        .value;
+
+
+                if (
+                    !username ||
+                    !password
+                ) {
+
+                    showMessage(
+                        "Username and password are required."
+                    );
+
+                    return;
+
+                }
 
 
                 message.style.display =
                     "none";
+
+
+                loginButton.disabled =
+                    true;
+
+
+                loginButton.textContent =
+                    "Signing in...";
+
+
+                loading.style.display =
+                    "block";
 
 
                 try {
@@ -304,7 +443,9 @@
                         await fetch(
                             "/api/auth/login",
                             {
-                                method: "POST",
+
+                                method:
+                                    "POST",
 
                                 headers: {
                                     "Content-Type":
@@ -313,9 +454,18 @@
 
                                 body:
                                     JSON.stringify({
-                                        username,
-                                        password
+
+                                        username:
+                                            username,
+
+                                        password:
+                                            password,
+
+                                        hospitalId:
+                                            "HOSP-TEST-001"
+
                                     })
+
                             }
                         );
 
@@ -324,17 +474,71 @@
                         await response.json();
 
 
+                    /* =================================
+                       API ERROR
+                    ================================= */
+
                     if (
                         !response.ok ||
                         !data.success
                     ) {
 
-                        message.textContent =
+                        showMessage(
                             data.message ||
-                            "Invalid login details.";
+                            "Login failed."
+                        );
 
-                        message.style.display =
-                            "block";
+                        return;
+
+                    }
+
+
+                    /* =================================
+                       USER CHECK
+                    ================================= */
+
+                    if (
+                        !data.user
+                    ) {
+
+                        showMessage(
+                            "User information was not returned by server."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =================================
+                       ADMIN ROLE CHECK
+                    ================================= */
+
+                    if (
+                        data.user.role !==
+                        "hospital_admin"
+                    ) {
+
+                        showMessage(
+                            "This account does not have Hospital Admin access."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =================================
+                       HOSPITAL CHECK
+                    ================================= */
+
+                    if (
+                        !data.hospital
+                    ) {
+
+                        showMessage(
+                            "Hospital information was not returned."
+                        );
 
                         return;
 
@@ -342,21 +546,22 @@
 
 
                     if (
-                        !data.user ||
-                        data.user.role !==
-                            "admin"
+                        data.hospital.status !==
+                        "active"
                     ) {
 
-                        message.textContent =
-                            "This account does not have Admin access.";
-
-                        message.style.display =
-                            "block";
+                        showMessage(
+                            "This hospital account is not active."
+                        );
 
                         return;
 
                     }
 
+
+                    /* =================================
+                       SAVE SAAS SESSION
+                    ================================= */
 
                     localStorage.setItem(
                         "gjh_token",
@@ -372,8 +577,81 @@
                     );
 
 
-                    window.location.href =
-                        "index.html";
+                    localStorage.setItem(
+                        "gjh_hospital",
+                        JSON.stringify(
+                            data.hospital
+                        )
+                    );
+
+
+                    localStorage.setItem(
+                        "gjh_subscription",
+                        JSON.stringify(
+                            data.subscription ||
+                            {}
+                        )
+                    );
+
+
+                    localStorage.setItem(
+                        "gjh_hospital_stats",
+                        JSON.stringify(
+                            data.hospitalStats ||
+                            {}
+                        )
+                    );
+
+
+                    /* =================================
+                       SAAS SESSION FLAGS
+                    ================================= */
+
+                    localStorage.setItem(
+                        "gjh_logged_in",
+                        "true"
+                    );
+
+
+                    localStorage.setItem(
+                        "gjh_hospital_id",
+                        data.user.hospitalId
+                    );
+
+
+                    localStorage.setItem(
+                        "gjh_role",
+                        data.user.role
+                    );
+
+
+                    /* =================================
+                       SUCCESS
+                    ================================= */
+
+                    showMessage(
+                        "Login successful. Opening Hospital Admin Dashboard...",
+                        "success"
+                    );
+
+
+                    loginButton.textContent =
+                        "Login Successful";
+
+
+                    /* =================================
+                       REDIRECT
+                    ================================= */
+
+                    setTimeout(
+                        function() {
+
+                            window.location.href =
+                                "index.html";
+
+                        },
+                        500
+                    );
 
                 } catch (error) {
 
@@ -383,16 +661,46 @@
                     );
 
 
-                    message.textContent =
-                        "Server connection failed. Please start the hospital server.";
+                    showMessage(
+                        "Server connection failed. Please make sure the hospital server is running on port 5000."
+                    );
 
-                    message.style.display =
-                        "block";
+                } finally {
+
+                    loading.style.display =
+                        "none";
+
+
+                    loginButton.disabled =
+                        false;
+
+
+                    if (
+                        loginButton.textContent !==
+                        "Login Successful"
+                    ) {
+
+                        loginButton.textContent =
+                            "Login as Admin";
+
+                    }
 
                 }
 
             }
         );
+
+
+        /* =========================================
+           AUTO FILL DEMO LOGIN
+        ========================================= */
+
+        usernameInput.value =
+            "admin";
+
+
+        passwordInput.value =
+            "admin123";
 
     </script>
 

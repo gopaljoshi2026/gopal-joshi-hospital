@@ -1,0 +1,78 @@
+[
+    {
+        "id": "HOSP-TEST-001",
+        "name": "Gopal Joshi Hospital",
+        "legalName": "Gopal Joshi Hospital & Healthcare Services",
+        "code": "GJH001",
+        "email": "admin@gopaljoshi-hospital.com",
+        "phone": "+91-0000000000",
+        "alternatePhone": "",
+        "address": {
+            "line1": "Main Hospital Road",
+            "line2": "",
+            "city": "Agra",
+            "state": "Uttar Pradesh",
+            "country": "India",
+            "pincode": ""
+        },
+        "logo": "",
+        "branding": {
+            "primaryColor": "#2563eb",
+            "secondaryColor": "#0f172a",
+            "accentColor": "#10b981",
+            "hospitalName": "Gopal Joshi Hospital"
+        },
+        "departments": [
+            "General Medicine",
+            "Cardiology",
+            "Orthopedics",
+            "Pediatrics",
+            "Gynecology",
+            "Dermatology",
+            "ENT",
+            "Neurology",
+            "General Surgery",
+            "Emergency",
+            "Pharmacy",
+            "Laboratory"
+        ],
+        "subscription": {
+            "plan": "professional",
+            "status": "active",
+            "maxUsers": 100,
+            "maxDoctors": 50,
+            "maxPatients": 10000,
+            "startDate": "2026-09-21T14:40:25.393Z",
+            "expiryDate": "",
+            "autoRenew": false
+        },
+        "features": {
+            "appointments": true,
+            "consultation": true,
+            "pharmacy": true,
+            "laboratory": true,
+            "billing": true,
+            "beds": true,
+            "ambulance": true,
+            "nursing": true,
+            "reports": true,
+            "analytics": true,
+            "notifications": true,
+            "auditLogs": true
+        },
+        "status": "active",
+        "settings": {
+            "timezone": "Asia/Kolkata",
+            "currency": "INR",
+            "dateFormat": "DD-MM-YYYY",
+            "timeFormat": "12-hour",
+            "appointmentDuration": 15,
+            "lowStockAlert": true,
+            "expiryAlert": true,
+            "emailNotifications": true,
+            "smsNotifications": false
+        },
+        "createdAt": "2026-09-21T14:40:25.394Z",
+        "updatedAt": "2026-09-21T14:40:25.394Z"
+    }
+]

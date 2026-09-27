@@ -1,0 +1,35 @@
+[
+  {
+    "id": "APT-26-00001",
+    "hospitalId": "HOSP-TEST-001",
+    "patientId": "PAT-00001",
+    "patientName": "Amit Kumar",
+    "patientPhone": "9876543210",
+    "doctorId": "DOC-001",
+    "doctorName": "Dr. Raj Sharma",
+    "department": "General Medicine",
+    "date": "2026-09-24",
+    "time": "10:30",
+    "type": "OPD",
+    "reason": "Fever and weakness",
+    "fee": 500,
+    "payment": {
+      "status": "Pending",
+      "amount": 500,
+      "paidAmount": 0,
+      "dueAmount": 500
+    },
+    "status": "In Consultation",
+    "consultation": {
+      "diagnosis": "",
+      "symptoms": [],
+      "vitals": {},
+      "notes": "",
+      "prescriptionId": null,
+      "labOrderId": null,
+      "followUpDate": null
+    },
+    "createdAt": "2026-09-23T03:52:59.588Z",
+    "updatedAt": "2026-09-23T05:12:37.302Z"
+  }
+]

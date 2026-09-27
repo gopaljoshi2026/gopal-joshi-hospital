@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HospitalOS - Hospital Admin</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f1f5f9;
+    color:#0f172a;
+}
+
+.header{
+    background:#0f172a;
+    color:white;
+    padding:18px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    font-size:14px;
+}
+
+.logout{
+    background:#ef4444;
+    color:white;
+    border:0;
+    padding:9px 15px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:30px 20px;
+}
+
+.welcome{
+    margin-bottom:25px;
+}
+
+.welcome h1{
+    margin:0 0 8px;
+    font-size:30px;
+}
+
+.welcome p{
+    margin:0;
+    color:#64748b;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.stat{
+    background:white;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 5px 18px rgba(15,23,42,.07);
+}
+
+.stat-title{
+    color:#64748b;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.stat-value{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.section-title{
+    font-size:21px;
+    margin:20px 0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:22px;
+    cursor:pointer;
+    box-shadow:0 5px 18px rgba(15,23,42,.07);
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(15,23,42,.12);
+}
+
+.icon{
+    font-size:30px;
+    margin-bottom:12px;
+}
+
+.card h3{
+    margin:0 0 8px;
+}
+
+.card p{
+    margin:0;
+    color:#64748b;
+    line-height:1.5;
+}
+
+@media(max-width:850px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:550px){
+    .header{align-items:flex-start;flex-direction:column}
+    .stats{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        HospitalOS
+    </div>
+
+    <div class="user-area">
+        <div>
+            <b id="topUser">Hospital Admin</b><br>
+            <span id="topRole">hospital_admin</span>
+        </div>
+
+        <button class="logout" onclick="logout()">
+            Logout
+        </button>
+    </div>
+
+</header>
+
+<main class="container">
+
+    <div class="welcome">
+        <h1>Hospital Admin Dashboard</h1>
+        <p id="hospitalName">Loading hospital...</p>
+    </div>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-title">Departments</div>
+            <div class="stat-value" id="departments">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">Enabled Features</div>
+            <div class="stat-value" id="features">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">Subscription</div>
+            <div class="stat-value" id="subscription">-</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-title">Max Users</div>
+            <div class="stat-value" id="maxUsers">0</div>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+        Hospital Operations
+    </div>
+
+    <div class="grid">
+
+        <div class="card" onclick="openPage('/command-center/')">
+            <div class="icon">📊</div>
+            <h3>Command Center</h3>
+            <p>Hospital-wide operational visibility and drill-down.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/admin/patients.html')">
+            <div class="icon">👤</div>
+            <h3>Patients</h3>
+            <p>Manage patient registration, records and history.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/admin/appointments.html')">
+            <div class="icon">📅</div>
+            <h3>Appointments</h3>
+            <p>Manage appointments and patient scheduling.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/admin/consultation.html')">
+            <div class="icon">🩺</div>
+            <h3>Consultation</h3>
+            <p>Clinical consultation and patient workflow.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/laboratory/')">
+            <div class="icon">🧪</div>
+            <h3>Laboratory</h3>
+            <p>Tests, samples, reports and results.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/pharmacy/')">
+            <div class="icon">💊</div>
+            <h3>Pharmacy</h3>
+            <p>Medicines, prescriptions, stock and sales.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/beds/')">
+            <div class="icon">🛏️</div>
+            <h3>Beds & IPD</h3>
+            <p>Bed occupancy, wards and admissions.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/ambulance/')">
+            <div class="icon">🚑</div>
+            <h3>Ambulance</h3>
+            <p>Emergency transport and ambulance operations.</p>
+        </div>
+
+        <div class="card" onclick="openPage('/audit-security/')">
+            <div class="icon">🔐</div>
+            <h3>Security & Audit</h3>
+            <p>Users, permissions, audit records and security events.</p>
+        </div>
+
+    </div>
+
+
+<div style="max-width:1250px;margin:0 auto 30px;padding:0 20px">
+<div style="background:#0f172a;color:white;border-radius:14px;padding:24px;display:flex;justify-content:space-between;align-items:center;gap:15px">
+<div>
+<div style="font-size:20px;font-weight:bold">HospitalOS Command System</div>
+<div style="color:#cbd5e1;margin-top:6px">Open the complete connected Hospital SaaS system.</div>
+</div>
+<button onclick="window.location.href='/hospital-os/'" style="background:#2563eb;color:white;border:0;border-radius:9px;padding:12px 18px;cursor:pointer;font-weight:bold">Open Full HospitalOS</button>
+</div>
+</div>
+</main>
+
+<script>
+
+function getJSON(key){
+    try{
+        return JSON.parse(localStorage.getItem(key) || "{}");
+    }catch(e){
+        return {};
+    }
+}
+
+function loadDashboard(){
+
+    const user = getJSON("hospitalos_user");
+    const hospital = getJSON("hospitalos_hospital");
+    const subscription = getJSON("hospitalos_subscription");
+
+    /*
+      Login response ka complete stats object agar save hua hai
+      to use karo.
+    */
+    const stats = getJSON("hospitalos_stats");
+
+    document.getElementById("topUser").textContent =
+        user.name || "Hospital Admin";
+
+    document.getElementById("topRole").textContent =
+        user.role || "hospital_admin";
+
+    document.getElementById("hospitalName").textContent =
+        stats.hospitalName ||
+        hospital.name ||
+        "Gopal Joshi Hospital";
+
+    document.getElementById("departments").textContent =
+        stats.departments !== undefined
+        ? stats.departments
+        : "12";
+
+    document.getElementById("features").textContent =
+        stats.enabledFeatures !== undefined
+        ? stats.enabledFeatures
+        : "12";
+
+    document.getElementById("subscription").textContent =
+        subscription.plan
+        ? subscription.plan.charAt(0).toUpperCase() +
+          subscription.plan.slice(1)
+        : "Professional";
+
+    document.getElementById("maxUsers").textContent =
+        subscription.maxUsers !== undefined
+        ? subscription.maxUsers
+        : "100";
+}
+
+function openPage(url){
+    window.location.href = url;
+}
+
+function logout(){
+
+    localStorage.removeItem("hospitalos_token");
+    localStorage.removeItem("hospitalos_user");
+    localStorage.removeItem("hospitalos_hospital");
+    localStorage.removeItem("hospitalos_subscription");
+    localStorage.removeItem("hospitalos_stats");
+
+    window.location.href="/hospital-admin/login.html";
+}
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>
+

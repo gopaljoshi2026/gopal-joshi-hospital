@@ -1,0 +1,132 @@
+===== HOSPITAL PROJECT MAP =====
+PROJECT ROOT: C:\Users\asus\OneDrive\Desktop\Gopal_Joshi_Hospital_FINAL\joshi g hospital
+
+===== ALL PROJECT FILES =====
+.github\workflows\static.yml
+admin\appointments.html
+admin\consultation.html
+admin\index.html
+admin\login.html
+admin\patients.html
+ambulance\index.html
+ambulance\login.html
+beds\index.html
+beds\login.html
+doctor\index.html
+doctor\login.html
+hospital_project_map.txt
+index.html
+laboratory\index.html
+laboratory\lab.css
+laboratory\lab.js
+laboratory\login.html
+manager\index.html
+manager\login.html
+nurse\index.html
+nurse\login.html
+patient\index.html
+patient\login.html
+pharmacy\index.html
+pharmacy\login.html
+pharmacy\pharmacy.js
+reception\index.html
+reception\login.html
+script.js
+server\data\appointments.js
+server\data\appointments.json
+server\data\bills.json
+server\data\command-center.json
+server\data\hospitals.json
+server\data\medicines.json
+server\data\patients.json
+server\data\sales.json
+server\data\stock-transactions.json
+server\data\users.js
+server\data\users.json
+server\middleware\auth.js
+server\models\Bill.js
+server\models\hospital.js
+server\models\medicine.js
+server\models\patient.js
+server\models\user.js
+server\package.json
+server\package-lock.json
+server\patient.js
+server\routes\appointments.js
+server\routes\auth.js
+server\routes\billing\bills.js
+server\routes\clinical\consultations.js
+server\routes\clinical\workflow.js
+server\routes\laboratory\tests.js
+server\routes\pharmacy\medicines.js
+server\routes\saas\command-center.js
+server\routes\saas\hospitals.js
+server\routes\saas\patients.js
+server\routes\saas\users.js
+server\server.js
+style.css
+
+===== PACKAGE.JSON FILES =====
+----- server\package.json -----
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "body-parser": "^2.3.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}
+
+===== SERVER ROUTES =====
+server\routes\appointments.js
+server\routes\auth.js
+server\routes\billing\bills.js
+server\routes\clinical\consultations.js
+server\routes\clinical\workflow.js
+server\routes\laboratory\tests.js
+server\routes\pharmacy\medicines.js
+server\routes\saas\command-center.js
+server\routes\saas\hospitals.js
+server\routes\saas\patients.js
+server\routes\saas\users.js
+
+===== FRONTEND FILES =====
+admin\appointments.html
+admin\consultation.html
+admin\index.html
+admin\login.html
+admin\patients.html
+ambulance\index.html
+ambulance\login.html
+beds\index.html
+beds\login.html
+doctor\index.html
+doctor\login.html
+index.html
+laboratory\index.html
+laboratory\lab.css
+laboratory\lab.js
+laboratory\login.html
+manager\index.html
+manager\login.html
+nurse\index.html
+nurse\login.html
+patient\index.html
+patient\login.html
+pharmacy\index.html
+pharmacy\login.html
+pharmacy\pharmacy.js
+reception\index.html
+reception\login.html
+script.js
+style.css

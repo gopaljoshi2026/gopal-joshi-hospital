@@ -1,0 +1,44 @@
+[
+  {
+    "id": "BILL-1789876791746-449",
+    "hospitalId": "HOSP-TEST-001",
+    "patientId": "",
+    "patientName": "hamsafar",
+    "items": [
+      {
+        "medicineId": "MED-003",
+        "medicineName": "Azithromycin 500mg",
+        "quantity": 3,
+        "price": 20,
+        "total": 60
+      }
+    ],
+    "subtotal": 60,
+    "discount": 0,
+    "tax": 0,
+    "total": 60,
+    "paymentMethod": "cash",
+    "paymentStatus": "pending",
+    "prescriptionRef": "",
+    "createdBy": "Pharmacy Staff",
+    "createdAt": "2026-09-20T03:59:51.746Z",
+    "updatedAt": "2026-09-20T03:59:51.746Z",
+    "status": "generated"
+  },
+  {
+    "id": "BILL-1789874759894-505",
+    "hospitalId": "HOSP-TEST-001",
+    "patientId": "",
+    "patientName": "pavan",
+    "medicineId": "",
+    "medicineName": "",
+    "quantity": 0,
+    "price": 0,
+    "total": 30,
+    "prescriptionRef": "",
+    "paymentStatus": "pending",
+    "createdBy": "Pharmacy Staff",
+    "createdAt": "2026-09-20T03:25:59.894Z",
+    "status": "generated"
+  }
+]

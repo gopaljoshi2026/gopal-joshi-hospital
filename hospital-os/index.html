@@ -1,0 +1,1099 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>HospitalOS - Hospital Operating System</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:#f1f5f9;
+ color:#0f172a;
+}
+
+button,input,select,textarea{font:inherit}
+
+.layout{
+ display:flex;
+ min-height:100vh;
+}
+
+.sidebar{
+ width:260px;
+ background:#0f172a;
+ color:white;
+ position:fixed;
+ left:0;
+ top:0;
+ bottom:0;
+ overflow-y:auto;
+ padding:20px 12px;
+ z-index:10;
+}
+
+.brand{
+ padding:10px 12px 22px;
+ border-bottom:1px solid #334155;
+ margin-bottom:15px;
+}
+
+.brand-title{
+ font-size:22px;
+ font-weight:bold;
+}
+
+.brand-sub{
+ font-size:12px;
+ color:#94a3b8;
+ margin-top:5px;
+}
+
+.nav-title{
+ color:#64748b;
+ font-size:11px;
+ text-transform:uppercase;
+ padding:15px 12px 7px;
+}
+
+.nav button{
+ width:100%;
+ text-align:left;
+ background:transparent;
+ border:0;
+ color:#cbd5e1;
+ padding:10px 12px;
+ border-radius:8px;
+ cursor:pointer;
+ margin:2px 0;
+}
+
+.nav button:hover,
+.nav button.active{
+ background:#1e3a8a;
+ color:white;
+}
+
+.main{
+ margin-left:260px;
+ width:calc(100% - 260px);
+ min-height:100vh;
+}
+
+.topbar{
+ background:white;
+ padding:15px 25px;
+ border-bottom:1px solid #e2e8f0;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ position:sticky;
+ top:0;
+ z-index:5;
+}
+
+.hospital-title{
+ font-weight:bold;
+}
+
+.user{
+ color:#64748b;
+ font-size:13px;
+}
+
+.content{
+ padding:25px;
+}
+
+.page-title{
+ font-size:27px;
+ font-weight:bold;
+ margin-bottom:5px;
+}
+
+.page-sub{
+ color:#64748b;
+ margin-bottom:22px;
+}
+
+.stats{
+ display:grid;
+ grid-template-columns:repeat(5,1fr);
+ gap:15px;
+ margin-bottom:22px;
+}
+
+.stat{
+ background:white;
+ border-radius:12px;
+ padding:18px;
+ box-shadow:0 3px 15px rgba(15,23,42,.06);
+}
+
+.stat-label{
+ color:#64748b;
+ font-size:13px;
+}
+
+.stat-value{
+ font-size:27px;
+ font-weight:bold;
+ margin-top:8px;
+}
+
+.panel{
+ background:white;
+ border-radius:12px;
+ padding:20px;
+ box-shadow:0 3px 15px rgba(15,23,42,.06);
+ margin-bottom:20px;
+}
+
+.panel-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin-bottom:15px;
+}
+
+.panel-head h2{
+ margin:0;
+ font-size:19px;
+}
+
+.btn{
+ border:0;
+ background:#2563eb;
+ color:white;
+ padding:10px 15px;
+ border-radius:8px;
+ cursor:pointer;
+}
+
+.btn.secondary{
+ background:#475569;
+}
+
+.btn.success{
+ background:#059669;
+}
+
+.btn.danger{
+ background:#dc2626;
+}
+
+.module-grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px;
+}
+
+.module{
+ border:1px solid #e2e8f0;
+ border-radius:11px;
+ padding:17px;
+ cursor:pointer;
+ transition:.15s;
+}
+
+.module:hover{
+ transform:translateY(-2px);
+ box-shadow:0 7px 20px rgba(15,23,42,.09);
+ border-color:#93c5fd;
+}
+
+.module-icon{
+ font-size:27px;
+ margin-bottom:10px;
+}
+
+.module-name{
+ font-weight:bold;
+}
+
+.module-info{
+ color:#64748b;
+ font-size:12px;
+ margin-top:5px;
+ line-height:1.4;
+}
+
+.table-wrap{
+ overflow-x:auto;
+}
+
+table{
+ width:100%;
+ border-collapse:collapse;
+}
+
+th,td{
+ padding:11px;
+ border-bottom:1px solid #e2e8f0;
+ text-align:left;
+ font-size:13px;
+}
+
+th{
+ background:#f8fafc;
+ color:#475569;
+}
+
+.form-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:15px;
+}
+
+.field label{
+ display:block;
+ font-size:13px;
+ font-weight:bold;
+ margin-bottom:6px;
+ color:#475569;
+}
+
+.field input,
+.field select,
+.field textarea{
+ width:100%;
+ padding:10px;
+ border:1px solid #cbd5e1;
+ border-radius:8px;
+}
+
+.field textarea{
+ min-height:90px;
+ resize:vertical;
+}
+
+.full{
+ grid-column:1/-1;
+}
+
+.modal{
+ position:fixed;
+ inset:0;
+ background:rgba(15,23,42,.55);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ z-index:50;
+}
+
+.modal-box{
+ width:100%;
+ max-width:650px;
+ max-height:90vh;
+ overflow:auto;
+ background:white;
+ border-radius:15px;
+ padding:22px;
+}
+
+.modal-head{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:20px;
+}
+
+.close{
+ border:0;
+ background:#e2e8f0;
+ border-radius:7px;
+ padding:7px 11px;
+ cursor:pointer;
+}
+
+.alert{
+ padding:12px;
+ border-radius:8px;
+ margin-bottom:15px;
+ background:#eff6ff;
+ color:#1e40af;
+ display:none;
+}
+
+.loading{
+ text-align:center;
+ padding:25px;
+ color:#64748b;
+}
+
+@media(max-width:1100px){
+ .stats{grid-template-columns:repeat(3,1fr)}
+ .module-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:800px){
+ .sidebar{
+  width:70px;
+ }
+ .brand-title,
+ .brand-sub,
+ .nav-title,
+ .nav button span{
+  display:none;
+ }
+ .nav button{
+  text-align:center;
+  font-size:20px;
+ }
+ .main{
+  margin-left:70px;
+  width:calc(100% - 70px);
+ }
+ .stats{grid-template-columns:repeat(2,1fr)}
+ .module-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:550px){
+ .content{padding:15px}
+ .stats{grid-template-columns:1fr}
+ .module-grid{grid-template-columns:1fr}
+ .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+ <div class="brand">
+  <div class="brand-title">HospitalOS</div>
+  <div class="brand-sub">Hospital Operating System</div>
+ </div>
+
+ <div class="nav">
+
+  <button onclick="showDashboard()" class="active">
+   📊 <span>Command Center</span>
+  </button>
+
+  <div class="nav-title">Clinical</div>
+
+  <button onclick="openModule('patients')">👤 <span>Patients</span></button>
+  <button onclick="openModule('appointments')">📅 <span>Appointments</span></button>
+  <button onclick="openModule('consultations')">🩺 <span>Consultation</span></button>
+  <button onclick="openModule('prescriptions')">💊 <span>Prescriptions</span></button>
+  <button onclick="openModule('laboratory')">🧪 <span>Laboratory</span></button>
+  <button onclick="openModule('pharmacy')">💊 <span>Pharmacy</span></button>
+
+  <div class="nav-title">Hospital Operations</div>
+
+  <button onclick="openModule('ipd')">🏥 <span>IPD / Admissions</span></button>
+  <button onclick="openModule('beds')">🛏️ <span>Beds & Wards</span></button>
+  <button onclick="openModule('nursing')">👩‍⚕️ <span>Nursing</span></button>
+  <button onclick="openModule('emergency')">🚨 <span>Emergency</span></button>
+  <button onclick="openModule('ambulance')">🚑 <span>Ambulance</span></button>
+  <button onclick="openModule('ot')">⚕️ <span>OT / Surgery</span></button>
+
+  <div class="nav-title">Business</div>
+
+  <button onclick="openModule('billing')">💳 <span>Billing</span></button>
+  <button onclick="openModule('accounts')">📒 <span>Accounts</span></button>
+  <button onclick="openModule('insurance')">🛡️ <span>Insurance / TPA</span></button>
+  <button onclick="openModule('inventory')">📦 <span>Inventory</span></button>
+  <button onclick="openModule('suppliers')">🚚 <span>Suppliers</span></button>
+  <button onclick="openModule('blood-bank')">🩸 <span>Blood Bank</span></button>
+
+  <div class="nav-title">Management</div>
+
+  <button onclick="openModule('staff')">👥 <span>Staff / HR</span></button>
+  <button onclick="openModule('reports')">📈 <span>Reports</span></button>
+  <button onclick="openModule('users')">🔐 <span>Users & Roles</span></button>
+  <button onclick="openModule('audit')">🛡️ <span>Audit & Security</span></button>
+
+ </div>
+
+</aside>
+
+<main class="main">
+
+ <div class="topbar">
+  <div>
+   <div class="hospital-title" id="hospitalName">HospitalOS</div>
+   <div class="user" id="roleInfo">Loading...</div>
+  </div>
+
+  <button class="btn danger" onclick="logout()">Logout</button>
+ </div>
+
+ <div class="content">
+
+  <div id="alert" class="alert"></div>
+
+  <div id="app"></div>
+
+ </div>
+
+</main>
+
+</div>
+
+<div class="modal" id="recordModal">
+
+ <div class="modal-box">
+
+  <div class="modal-head">
+   <h2 id="modalTitle">Add Record</h2>
+   <button class="close" onclick="closeModal()">✕</button>
+  </div>
+
+  <form id="recordForm">
+
+   <div id="formFields" class="form-grid"></div>
+
+   <div style="margin-top:20px;display:flex;gap:10px">
+    <button class="btn success" type="submit">Save Record</button>
+    <button class="btn secondary" type="button" onclick="closeModal()">Cancel</button>
+   </div>
+
+  </form>
+
+ </div>
+
+</div>
+
+<script>
+
+const token = localStorage.getItem("hospitalos_token");
+
+if(!token){
+ window.location.href="/hospital-admin/login.html";
+}
+
+const user = JSON.parse(
+ localStorage.getItem("hospitalos_user") || "{}"
+);
+
+const hospital = JSON.parse(
+ localStorage.getItem("hospitalos_hospital") || "{}"
+);
+
+document.getElementById("hospitalName").textContent =
+ hospital.name || "Gopal Joshi Hospital";
+
+document.getElementById("roleInfo").textContent =
+ (user.name || "Admin") + " • " + (user.role || "hospital_admin");
+
+const modules = {
+
+ patients:{
+  icon:"👤",
+  name:"Patients",
+  description:"Registration, demographics, medical records and patient history.",
+  fields:["name","age","gender","phone","address","bloodGroup","medicalHistory"]
+ },
+
+ appointments:{
+  icon:"📅",
+  name:"Appointments",
+  description:"Scheduling, doctor assignment and appointment status.",
+  fields:["patientId","doctor","date","time","status","reason"]
+ },
+
+ consultations:{
+  icon:"🩺",
+  name:"Consultations",
+  description:"Doctor consultation, diagnosis and clinical notes.",
+  fields:["patientId","doctor","symptoms","diagnosis","notes","followUp"]
+ },
+
+ prescriptions:{
+  icon:"💊",
+  name:"Prescriptions",
+  description:"Medicines, dosage and doctor instructions.",
+  fields:["patientId","doctor","medicine","dosage","duration","instructions"]
+ },
+
+ laboratory:{
+  icon:"🧪",
+  name:"Laboratory",
+  description:"Test orders, samples, results and report status.",
+  fields:["patientId","test","sample","result","status","doctor"]
+ },
+
+ pharmacy:{
+  icon:"💊",
+  name:"Pharmacy",
+  description:"Medicines, dispensing, sales and pharmacy records.",
+  fields:["patientId","medicine","quantity","price","status","prescriptionId"]
+ },
+
+ ipd:{
+  icon:"🏥",
+  name:"IPD / Admissions",
+  description:"Admissions, discharge and inpatient records.",
+  fields:["patientId","ward","doctor","admissionDate","dischargeDate","status"]
+ },
+
+ beds:{
+  icon:"🛏️",
+  name:"Beds & Wards",
+  description:"Bed occupancy, ward assignment and availability.",
+  fields:["ward","bedNumber","type","status","patientId"]
+ },
+
+ nursing:{
+  icon:"👩‍⚕️",
+  name:"Nursing",
+  description:"Nursing tasks, observations and patient care.",
+  fields:["patientId","nurse","task","observation","status"]
+ },
+
+ emergency:{
+  icon:"🚨",
+  name:"Emergency",
+  description:"Emergency cases, triage and urgent treatment.",
+  fields:["patientId","priority","arrivalTime","doctor","condition","status"]
+ },
+
+ ambulance:{
+  icon:"🚑",
+  name:"Ambulance",
+  description:"Ambulance requests, trips and emergency transport.",
+  fields:["patientId","vehicle","driver","pickup","destination","status"]
+ },
+
+ ot:{
+  icon:"⚕️",
+  name:"OT / Surgery",
+  description:"Surgery scheduling and operating theatre records.",
+  fields:["patientId","surgeon","procedure","date","theatre","status"]
+ },
+
+ billing:{
+  icon:"💳",
+  name:"Billing",
+  description:"Invoices, charges, payments and refunds.",
+  fields:["patientId","invoice","amount","paymentMethod","status","description"]
+ },
+
+ accounts:{
+  icon:"📒",
+  name:"Accounts",
+  description:"Hospital financial records and transactions.",
+  fields:["type","description","amount","date","reference","status"]
+ },
+
+ insurance:{
+  icon:"🛡️",
+  name:"Insurance / TPA",
+  description:"Insurance approvals, claims and settlement.",
+  fields:["patientId","provider","policyNumber","claimAmount","status","remarks"]
+ },
+
+ inventory:{
+  icon:"📦",
+  name:"Inventory",
+  description:"Stock, consumption, purchases and low-stock monitoring.",
+  fields:["item","category","quantity","unit","minimumStock","status"]
+ },
+
+ suppliers:{
+  icon:"🚚",
+  name:"Suppliers",
+  description:"Supplier records and procurement.",
+  fields:["supplier","contact","item","quantity","amount","status"]
+ },
+
+ "blood-bank":{
+  icon:"🩸",
+  name:"Blood Bank",
+  description:"Blood groups, units and availability.",
+  fields:["bloodGroup","component","units","expiry","status"]
+ },
+
+ staff:{
+  icon:"👥",
+  name:"Staff / HR",
+  description:"Hospital employees, departments and staff records.",
+  fields:["name","department","designation","phone","joiningDate","status"]
+ },
+
+ reports:{
+  icon:"📈",
+  name:"Reports",
+  description:"Operational and management reporting.",
+  fields:["reportType","period","description","status"]
+ },
+
+ users:{
+  icon:"🔐",
+  name:"Users & Roles",
+  description:"Users, roles and access management.",
+  fields:["name","username","role","department","status"]
+ },
+
+ audit:{
+  icon:"🛡️",
+  name:"Audit & Security",
+  description:"Security events and hospital activity trail.",
+  fields:["event","user","module","recordId","action","details"]
+ }
+
+};
+
+function showDashboard(){
+
+ document.querySelectorAll(".nav button").forEach(x=>{
+  x.classList.remove("active");
+ });
+
+ const app=document.getElementById("app");
+
+ app.innerHTML=`
+
+ <div class="page-title">Hospital Command Center</div>
+ <div class="page-sub">
+  Real-time operational view of the complete hospital.
+ </div>
+
+ <div class="stats">
+
+  <div class="stat">
+   <div class="stat-label">Patients</div>
+   <div class="stat-value" id="count-patients">0</div>
+  </div>
+
+  <div class="stat">
+   <div class="stat-label">Appointments</div>
+   <div class="stat-value" id="count-appointments">0</div>
+  </div>
+
+  <div class="stat">
+   <div class="stat-label">Pending Lab</div>
+   <div class="stat-value" id="count-laboratory">0</div>
+  </div>
+
+  <div class="stat">
+   <div class="stat-label">Beds</div>
+   <div class="stat-value" id="count-beds">0</div>
+  </div>
+
+  <div class="stat">
+   <div class="stat-label">Billing</div>
+   <div class="stat-value" id="count-billing">0</div>
+  </div>
+
+ </div>
+
+ <div class="panel">
+
+  <div class="panel-head">
+   <h2>Hospital Departments</h2>
+   <button class="btn" onclick="loadDashboardCounts()">Refresh</button>
+  </div>
+
+  <div class="module-grid">
+
+   ${Object.entries(modules).map(([key,m])=>`
+
+    <div class="module" onclick="openModule('${key}')">
+
+     <div class="module-icon">${m.icon}</div>
+
+     <div class="module-name">
+      ${m.name}
+     </div>
+
+     <div class="module-info">
+      ${m.description}
+     </div>
+
+    </div>
+
+   `).join("")}
+
+  </div>
+
+ </div>
+
+ <div class="panel">
+
+  <div class="panel-head">
+   <h2>Connected Hospital Workflow</h2>
+  </div>
+
+  <div style="line-height:2;color:#475569">
+
+   👤 Patient Registration
+   →
+   📅 Appointment
+   →
+   🩺 Doctor Consultation
+   →
+   💊 Prescription / 🧪 Lab
+   →
+   💊 Pharmacy / 🧪 Report
+   →
+   💳 Billing
+   →
+   ✅ Completed Visit
+
+  </div>
+
+ </div>
+
+ `;
+
+ loadDashboardCounts();
+}
+
+async function api(url,options={}){
+
+ options.headers = {
+  ...(options.headers || {}),
+  "Content-Type":"application/json",
+  "Authorization":"Bearer "+token
+ };
+
+ const response=await fetch(url,options);
+
+ let data={};
+
+ try{
+  data=await response.json();
+ }catch(e){}
+
+ if(!response.ok){
+  throw new Error(data.message || "API request failed");
+ }
+
+ return data;
+}
+
+async function loadDashboardCounts(){
+
+ for(const key of ["patients","appointments","laboratory","beds","billing"]){
+
+  try{
+
+   const data=await api(
+    "/api/saas/control/records/"+encodeURIComponent(key)
+   );
+
+   const records =
+    data.records ||
+    data.data ||
+    data.items ||
+    [];
+
+   const el=document.getElementById("count-"+key);
+
+   if(el){
+    el.textContent=Array.isArray(records)
+      ? records.length
+      : 0;
+   }
+
+  }catch(e){
+
+   const el=document.getElementById("count-"+key);
+
+   if(el){
+    el.textContent="0";
+   }
+
+  }
+ }
+}
+
+async function openModule(key){
+
+ const m=modules[key];
+
+ if(!m) return;
+
+ const app=document.getElementById("app");
+
+ app.innerHTML=`
+
+ <div class="page-title">
+  ${m.icon} ${m.name}
+ </div>
+
+ <div class="page-sub">
+  ${m.description}
+ </div>
+
+ <div class="panel">
+
+  <div class="panel-head">
+
+   <h2>${m.name} Records</h2>
+
+   <div>
+    <button class="btn" onclick="loadRecords('${key}')">
+     Refresh
+    </button>
+
+    <button class="btn success"
+     onclick="openRecordForm('${key}')">
+     + Add Record
+    </button>
+   </div>
+
+  </div>
+
+  <div id="records-${key}" class="loading">
+   Loading records...
+  </div>
+
+ </div>
+
+ `;
+
+ await loadRecords(key);
+}
+
+async function loadRecords(key){
+
+ const box=document.getElementById("records-"+key);
+
+ if(!box) return;
+
+ box.innerHTML='<div class="loading">Loading...</div>';
+
+ try{
+
+  const data=await api(
+   "/api/saas/control/records/"+encodeURIComponent(key)
+  );
+
+  const records =
+   data.records ||
+   data.data ||
+   data.items ||
+   [];
+
+  if(!Array.isArray(records) || records.length===0){
+
+   box.innerHTML=`
+    <div class="loading">
+     No ${modules[key].name.toLowerCase()} records found.
+     <br><br>
+     Use <b>+ Add Record</b> to create the first record.
+    </div>
+   `;
+
+   return;
+  }
+
+  const keys=[
+   ...new Set(
+    records.flatMap(x=>Object.keys(x || {}))
+   )
+  ].slice(0,8);
+
+  box.innerHTML=`
+
+  <div class="table-wrap">
+
+   <table>
+
+    <thead>
+     <tr>
+      ${keys.map(k=>`<th>${pretty(k)}</th>`).join("")}
+     </tr>
+    </thead>
+
+    <tbody>
+
+     ${records.map(r=>`
+
+      <tr>
+
+       ${keys.map(k=>`
+        <td>
+         ${escapeHtml(
+          typeof r[k]==="object"
+           ? JSON.stringify(r[k])
+           : String(r[k] ?? "")
+         )}
+        </td>
+       `).join("")}
+
+      </tr>
+
+     `).join("")}
+
+    </tbody>
+
+   </table>
+
+  </div>
+
+  `;
+
+ }catch(e){
+
+  box.innerHTML=`
+   <div class="loading">
+    Unable to load records: ${escapeHtml(e.message)}
+   </div>
+  `;
+ }
+}
+
+function pretty(value){
+
+ return value
+  .replace(/([A-Z])/g," $1")
+  .replace(/^./,x=>x.toUpperCase());
+
+}
+
+function escapeHtml(value){
+
+ return String(value)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+
+}
+
+function openRecordForm(key){
+
+ const m=modules[key];
+
+ document.getElementById("modalTitle").textContent=
+  "Add "+m.name+" Record";
+
+ const fields=document.getElementById("formFields");
+
+ fields.innerHTML=m.fields.map(field=>`
+
+  <div class="field">
+   <label>${pretty(field)}</label>
+
+   ${
+    field==="status"
+    ? `
+     <select name="${field}">
+      <option>active</option>
+      <option>pending</option>
+      <option>completed</option>
+      <option>cancelled</option>
+      <option>available</option>
+      <option>occupied</option>
+      <option>paid</option>
+      <option>unpaid</option>
+     </select>
+    `
+    :
+    `<input name="${field}" placeholder="Enter ${pretty(field)}">`
+   }
+
+  </div>
+
+ `).join("");
+
+ document.getElementById("recordForm").dataset.module=key;
+
+ document.getElementById("recordModal").style.display="flex";
+}
+
+function closeModal(){
+
+ document.getElementById("recordModal").style.display="none";
+
+ document.getElementById("recordForm").reset();
+}
+
+document.getElementById("recordForm").addEventListener(
+ "submit",
+ async function(e){
+
+  e.preventDefault();
+
+  const key=this.dataset.module;
+
+  const body={};
+
+  new FormData(this).forEach((value,name)=>{
+   body[name]=value;
+  });
+
+  body.hospitalId =
+   hospital.id ||
+   "HOSP-TEST-001";
+
+  body.createdBy =
+   user.id ||
+   "USR-001";
+
+  body.createdAt =
+   new Date().toISOString();
+
+  try{
+
+   await api(
+    "/api/saas/control/records/"+encodeURIComponent(key),
+    {
+     method:"POST",
+     body:JSON.stringify(body)
+    }
+   );
+
+   closeModal();
+
+   showMessage(
+    modules[key].name+" record created successfully."
+   );
+
+   await loadRecords(key);
+
+  }catch(e){
+
+   showMessage(
+    "Could not save record: "+e.message
+   );
+
+  }
+
+ }
+);
+
+function showMessage(message){
+
+ const alert=document.getElementById("alert");
+
+ alert.textContent=message;
+ alert.style.display="block";
+
+ setTimeout(()=>{
+  alert.style.display="none";
+ },3500);
+
+}
+
+function logout(){
+
+ localStorage.removeItem("hospitalos_token");
+ localStorage.removeItem("hospitalos_user");
+ localStorage.removeItem("hospitalos_hospital");
+ localStorage.removeItem("hospitalos_subscription");
+ localStorage.removeItem("hospitalos_stats");
+
+ window.location.href="/hospital-admin/login.html";
+}
+
+showDashboard();
+
+</script>
+
+</body>
+</html>

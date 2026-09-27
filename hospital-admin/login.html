@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HospitalOS - Admin Login</title>
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+.login-box{
+    width:100%;
+    max-width:430px;
+    background:white;
+    border-radius:20px;
+    padding:35px;
+    box-shadow:0 25px 60px rgba(0,0,0,.3);
+}
+.logo{
+    width:65px;
+    height:65px;
+    border-radius:16px;
+    background:#2563eb;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:bold;
+    margin:0 auto 18px;
+}
+h1{text-align:center;margin:0;color:#0f172a}
+.subtitle{text-align:center;color:#64748b;margin:8px 0 28px}
+label{
+    display:block;
+    font-weight:bold;
+    margin:15px 0 7px;
+    color:#334155;
+}
+input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    font-size:15px;
+}
+input:focus{
+    outline:none;
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+button{
+    width:100%;
+    margin-top:22px;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:hover{background:#1d4ed8}
+button:disabled{opacity:.6;cursor:not-allowed}
+.error{
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:9px;
+    background:#fee2e2;
+    color:#991b1b;
+    font-size:14px;
+}
+.info{
+    margin-top:20px;
+    padding:12px;
+    background:#f1f5f9;
+    border-radius:10px;
+    font-size:13px;
+    color:#475569;
+}
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#2563eb;
+    text-decoration:none;
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <div class="logo">H</div>
+
+    <h1>HospitalOS</h1>
+    <div class="subtitle">Secure Hospital Administration Login</div>
+
+    <form id="loginForm">
+
+        <label>Username</label>
+        <input
+            id="username"
+            type="text"
+            placeholder="Enter username"
+            autocomplete="username"
+            required
+        >
+
+        <label>Password</label>
+        <input
+            id="password"
+            type="password"
+            placeholder="Enter password"
+            autocomplete="current-password"
+            required
+        >
+
+        <label>Hospital ID</label>
+        <input
+            id="hospitalId"
+            type="text"
+            value="HOSP-TEST-001"
+            required
+        >
+
+        <button id="loginBtn" type="submit">
+            Login to HospitalOS
+        </button>
+
+        <div id="errorBox" class="error"></div>
+
+    </form>
+
+    <div class="info">
+        Demo Admin Login:<br>
+        Username: <b>admin</b><br>
+        Password: <b>admin123</b><br>
+        Hospital ID: <b>HOSP-TEST-001</b>
+    </div>
+
+    <a class="back" href="/">← Back to HospitalOS Website</a>
+
+</div>
+
+<script>
+const form = document.getElementById("loginForm");
+const button = document.getElementById("loginBtn");
+const errorBox = document.getElementById("errorBox");
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    errorBox.style.display = "none";
+    button.disabled = true;
+    button.textContent = "Logging in...";
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+    const hospitalId = document.getElementById("hospitalId").value.trim();
+
+    try {
+
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username,
+                password,
+                hospitalId
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || "Login failed");
+        }
+
+        localStorage.setItem("hospitalos_token", data.token);
+        localStorage.setItem("hospitalos_user", JSON.stringify(data.user));
+        localStorage.setItem("hospitalos_hospital", JSON.stringify(data.hospital));
+        localStorage.setItem("hospitalos_subscription", JSON.stringify(data.subscription));
+        localStorage.setItem("hospitalos_stats", JSON.stringify(data.hospitalStats || {}));
+
+        window.location.href = "/hospital-admin/";
+
+    } catch(error) {
+
+        errorBox.textContent = error.message || "Unable to login";
+        errorBox.style.display = "block";
+
+        button.disabled = false;
+        button.textContent = "Login to HospitalOS";
+    }
+
+});
+</script>
+
+</body>
+</html>
+

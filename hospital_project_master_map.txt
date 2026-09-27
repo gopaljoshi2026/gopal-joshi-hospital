@@ -1,0 +1,57 @@
+﻿HOSPITALOS COMPLETE SAAS MODULE MAP
+
+PLATFORM
+- Super Admin
+- Multi Hospital
+- Hospital Administration
+- Users
+- Roles
+- Permissions
+- Subscription
+
+CLINICAL
+- Patients
+- Appointments
+- Consultation
+- Prescriptions
+- Laboratory
+- Pharmacy
+
+HOSPITAL OPERATIONS
+- IPD
+- Beds
+- Wards
+- Nursing
+- Emergency
+- Ambulance
+- OT / Surgery
+- Discharge
+
+BUSINESS
+- Billing
+- Accounts
+- Insurance / TPA
+- Inventory
+- Suppliers
+- Blood Bank
+
+MANAGEMENT
+- HR / Staff
+- Reports
+- Analytics
+- Command Center
+- Audit
+- Security
+
+CORE WORKFLOW
+
+Patient
+ -> Appointment
+ -> Consultation
+ -> Prescription / Lab
+ -> Pharmacy / Laboratory
+ -> Billing
+ -> Completed Visit
+
+The master HospitalOS frontend connects these modules
+through the existing SaaS control API.

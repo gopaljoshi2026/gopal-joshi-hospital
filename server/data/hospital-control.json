@@ -1,0 +1,173 @@
+﻿{
+  "version": "2.0.0",
+  "system": {
+    "name": "Gopal Joshi Hospital SaaS",
+    "platform": "Hospital Operating System",
+    "multiHospital": true,
+    "auditEnabled": true,
+    "rbacEnabled": true
+  },
+  "roles": {
+    "super_admin": {
+      "label": "Super Admin",
+      "description": "SaaS platform owner",
+      "permissions": ["*"]
+    },
+    "hospital_admin": {
+      "label": "Hospital Admin",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "patients.create",
+        "patients.edit",
+        "appointments.view",
+        "appointments.create",
+        "consultation.view",
+        "laboratory.view",
+        "pharmacy.view",
+        "billing.view",
+        "ipd.view",
+        "beds.view",
+        "emergency.view",
+        "ambulance.view",
+        "ot.view",
+        "blood.view",
+        "inventory.view",
+        "suppliers.view",
+        "insurance.view",
+        "hr.view",
+        "accounts.view",
+        "reports.view",
+        "audit.view",
+        "users.manage",
+        "roles.manage",
+        "settings.manage"
+      ]
+    },
+    "doctor": {
+      "label": "Doctor",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "appointments.view",
+        "consultation.view",
+        "consultation.create",
+        "prescription.create",
+        "laboratory.create",
+        "reports.view"
+      ]
+    },
+    "nurse": {
+      "label": "Nurse",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "nursing.view",
+        "nursing.create",
+        "beds.view",
+        "ipd.view",
+        "emergency.view"
+      ]
+    },
+    "reception": {
+      "label": "Reception",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "patients.create",
+        "patients.edit",
+        "appointments.view",
+        "appointments.create",
+        "billing.view"
+      ]
+    },
+    "laboratory": {
+      "label": "Laboratory",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "laboratory.view",
+        "laboratory.create",
+        "laboratory.update",
+        "reports.view"
+      ]
+    },
+    "pharmacy": {
+      "label": "Pharmacy",
+      "permissions": [
+        "dashboard.view",
+        "patients.view",
+        "pharmacy.view",
+        "pharmacy.create",
+        "inventory.view",
+        "inventory.update",
+        "billing.view"
+      ]
+    },
+    "billing": {
+      "label": "Billing",
+      "permissions": [
+        "dashboard.view",
+        "billing.view",
+        "billing.create",
+        "billing.update",
+        "insurance.view",
+        "accounts.view"
+      ]
+    },
+    "hr": {
+      "label": "HR",
+      "permissions": [
+        "dashboard.view",
+        "hr.view",
+        "hr.create",
+        "hr.update"
+      ]
+    },
+    "accounts": {
+      "label": "Accounts",
+      "permissions": [
+        "dashboard.view",
+        "accounts.view",
+        "accounts.create",
+        "reports.view"
+      ]
+    },
+    "patient": {
+      "label": "Patient",
+      "permissions": [
+        "dashboard.view",
+        "appointments.view",
+        "appointments.create",
+        "prescription.view",
+        "laboratory.view",
+        "billing.view"
+      ]
+    }
+  },
+  "modules": [
+    {"id":"dashboard","name":"Command Center","path":"/command-center/","icon":"◈","roles":["super_admin","hospital_admin","doctor","nurse","reception","laboratory","pharmacy","billing","hr","accounts"]},
+    {"id":"patients","name":"Patient Management","path":"/hospital-admin/?module=patients","icon":"👤","roles":["super_admin","hospital_admin","doctor","nurse","reception","laboratory","pharmacy"]},
+    {"id":"reception","name":"Reception","path":"/reception/","icon":"🧾","roles":["hospital_admin","reception"]},
+    {"id":"doctor","name":"Doctor / Consultation","path":"/doctor/","icon":"🩺","roles":["hospital_admin","doctor"]},
+    {"id":"nurse","name":"Nursing","path":"/nurse/","icon":"👩‍⚕️","roles":["hospital_admin","nurse"]},
+    {"id":"laboratory","name":"Laboratory","path":"/laboratory/","icon":"🧪","roles":["hospital_admin","doctor","laboratory"]},
+    {"id":"pharmacy","name":"Pharmacy","path":"/pharmacy/","icon":"💊","roles":["hospital_admin","doctor","pharmacy"]},
+    {"id":"billing","name":"Billing","path":"/billing/","icon":"💳","roles":["hospital_admin","billing"]},
+    {"id":"ipd","name":"IPD / Admission","path":"/ipd/","icon":"🛏","roles":["hospital_admin","doctor","nurse"]},
+    {"id":"beds","name":"Beds & Wards","path":"/beds/","icon":"🛏","roles":["hospital_admin","nurse"]},
+    {"id":"emergency","name":"Emergency","path":"/emergency/","icon":"🚨","roles":["hospital_admin","doctor","nurse"]},
+    {"id":"ambulance","name":"Ambulance","path":"/ambulance/","icon":"🚑","roles":["hospital_admin"]},
+    {"id":"ot","name":"OT / Surgery","path":"/ot-surgery/","icon":"🏥","roles":["hospital_admin","doctor","nurse"]},
+    {"id":"blood","name":"Blood Bank","path":"/blood-bank/","icon":"🩸","roles":["hospital_admin"]},
+    {"id":"inventory","name":"Inventory","path":"/inventory/","icon":"📦","roles":["hospital_admin","pharmacy"]},
+    {"id":"suppliers","name":"Suppliers / Purchase","path":"/suppliers/","icon":"🚚","roles":["hospital_admin"]},
+    {"id":"insurance","name":"Insurance / TPA","path":"/insurance/","icon":"📑","roles":["hospital_admin","billing"]},
+    {"id":"hr","name":"HR / Staff","path":"/hr/","icon":"👥","roles":["super_admin","hospital_admin","hr"]},
+    {"id":"accounts","name":"Accounts","path":"/accounts/","icon":"💰","roles":["super_admin","hospital_admin","accounts"]},
+    {"id":"reports","name":"Reports & Analytics","path":"/reports/","icon":"📊","roles":["super_admin","hospital_admin","doctor","laboratory","accounts","hr"]},
+    {"id":"audit","name":"Audit & Security","path":"/audit-security/","icon":"🔐","roles":["super_admin","hospital_admin"]}
+  ],
+  "auditLogs": [],
+  "securityEvents": []
+}

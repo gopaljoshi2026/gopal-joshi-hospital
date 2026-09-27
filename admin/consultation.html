@@ -1,0 +1,2301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Consultation | Gopal Joshi Hospital</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
+
+button,input,textarea,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.layout{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:250px;
+    background:#0f172a;
+    color:#fff;
+    padding:20px 14px;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    overflow-y:auto;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 10px 22px;
+    border-bottom:1px solid rgba(255,255,255,.1);
+    margin-bottom:18px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+.brand-title{
+    font-size:15px;
+    font-weight:800;
+}
+
+.brand-sub{
+    font-size:11px;
+    color:#94a3b8;
+    margin-top:3px;
+}
+
+.section-title{
+    color:#64748b;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin:18px 10px 8px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#cbd5e1;
+    padding:11px 12px;
+    border-radius:9px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.nav a:hover{
+    background:#1e293b;
+    color:#fff;
+}
+
+.nav a.active{
+    background:#2563eb;
+    color:#fff;
+}
+
+/* MAIN */
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+}
+
+.topbar{
+    height:68px;
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+}
+
+.page-title{
+    font-size:20px;
+    font-weight:800;
+}
+
+.page-sub{
+    font-size:12px;
+    color:#64748b;
+    margin-top:3px;
+}
+
+.server{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+    color:#475569;
+}
+
+.dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+.content{
+    padding:24px;
+}
+
+/* PATIENT HEADER */
+.patient-header{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:18px;
+}
+
+.patient-main{
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.patient-avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    background:#dbeafe;
+    color:#1d4ed8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:800;
+}
+
+.patient-name{
+    font-size:20px;
+    font-weight:800;
+}
+
+.patient-id{
+    font-size:12px;
+    color:#64748b;
+    margin-top:4px;
+}
+
+.patient-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:14px;
+}
+
+.meta{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    padding:7px 11px;
+    border-radius:8px;
+    font-size:12px;
+}
+
+.meta strong{
+    color:#334155;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 350px;
+    gap:18px;
+}
+
+/* CARD */
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    margin-bottom:18px;
+    overflow:hidden;
+}
+
+.card-head{
+    padding:16px 18px;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-title{
+    font-size:15px;
+    font-weight:800;
+}
+
+.card-body{
+    padding:18px;
+}
+
+/* VITALS */
+.vitals{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.field label{
+    font-size:11px;
+    color:#64748b;
+    font-weight:700;
+}
+
+.field input,
+.field textarea,
+.field select{
+    width:100%;
+    border:1px solid #dbe2ea;
+    border-radius:9px;
+    padding:10px 11px;
+    outline:none;
+    background:#fff;
+    color:#172033;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+.field textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.assessment{
+    display:grid;
+    gap:15px;
+}
+
+/* BUTTONS */
+.actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:10px 15px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:#fff;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-success{
+    background:#16a34a;
+    color:#fff;
+}
+
+.btn-danger{
+    background:#dc2626;
+    color:#fff;
+}
+
+.btn-light{
+    background:#f1f5f9;
+    color:#334155;
+}
+
+.btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
+
+/* APPOINTMENTS */
+.appointment-list{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    max-height:650px;
+    overflow-y:auto;
+}
+
+.appointment{
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.appointment:hover{
+    border-color:#93c5fd;
+    background:#f8fbff;
+}
+
+.appointment.active{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.ap-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.ap-name{
+    font-size:13px;
+    font-weight:800;
+}
+
+.status{
+    font-size:10px;
+    padding:4px 7px;
+    border-radius:20px;
+    font-weight:800;
+}
+
+.status-scheduled{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-confirmed{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-waiting{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.status-consultation{
+    background:#ede9fe;
+    color:#6d28d9;
+}
+
+.status-completed{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-cancelled{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.status-no-show{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.ap-info{
+    margin-top:7px;
+    color:#64748b;
+    font-size:11px;
+    line-height:1.6;
+}
+
+/* SELECTED */
+.selected-box{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    padding:14px;
+}
+
+.selected-row{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:7px 0;
+    border-bottom:1px solid #e5e7eb;
+    font-size:12px;
+}
+
+.selected-row:last-child{
+    border-bottom:0;
+}
+
+.selected-row span:first-child{
+    color:#64748b;
+}
+
+.selected-row strong{
+    text-align:right;
+}
+
+/* PRESCRIPTION */
+.medicine-row{
+    display:grid;
+    grid-template-columns:1.4fr .8fr .8fr auto;
+    gap:8px;
+    margin-bottom:9px;
+}
+
+.remove-med{
+    border:0;
+    background:#fee2e2;
+    color:#b91c1c;
+    border-radius:8px;
+    width:38px;
+}
+
+/* LAB */
+.lab-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.check{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:10px;
+    border:1px solid #e2e8f0;
+    border-radius:9px;
+    font-size:12px;
+}
+
+.check input{
+    width:auto;
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:30px 15px;
+    color:#64748b;
+    font-size:13px;
+}
+
+.loading{
+    color:#64748b;
+    font-size:13px;
+}
+
+.error{
+    color:#dc2626;
+    font-size:13px;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    min-width:280px;
+    max-width:400px;
+    padding:14px 17px;
+    background:#0f172a;
+    color:#fff;
+    border-radius:10px;
+    box-shadow:0 12px 35px rgba(0,0,0,.2);
+    opacity:0;
+    transform:translateY(15px);
+    pointer-events:none;
+    transition:.25s;
+    z-index:9999;
+    font-size:13px;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.toast.success{
+    background:#15803d;
+}
+
+.toast.error-toast{
+    background:#b91c1c;
+}
+
+/* RESPONSIVE */
+@media(max-width:1050px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:850px){
+    .sidebar{
+        width:70px;
+    }
+
+    .brand-title,
+    .brand-sub,
+    .section-title,
+    .nav a span{
+        display:none;
+    }
+
+    .brand{
+        justify-content:center;
+    }
+
+    .nav a{
+        justify-content:center;
+    }
+
+    .main{
+        margin-left:70px;
+        width:calc(100% - 70px);
+    }
+}
+
+@media(max-width:650px){
+    .content{
+        padding:14px;
+    }
+
+    .topbar{
+        padding:0 15px;
+    }
+
+    .vitals{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .patient-main{
+        align-items:flex-start;
+    }
+
+    .medicine-row{
+        grid-template-columns:1fr;
+    }
+
+    .lab-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo">GJ</div>
+
+            <div>
+                <div class="brand-title">Gopal Joshi</div>
+                <div class="brand-sub">Hospital Management</div>
+            </div>
+        </div>
+
+        <div class="section-title">Main</div>
+
+        <nav class="nav">
+
+            <a href="index.html">
+                <b>⌂</b>
+                <span>Command Center</span>
+            </a>
+
+            <a href="patients.html">
+                <b>♙</b>
+                <span>Patients</span>
+            </a>
+
+            <a href="appointments.html">
+                <b>▣</b>
+                <span>Appointments</span>
+            </a>
+
+            <a href="consultation.html" class="active">
+                <b>✚</b>
+                <span>Consultation</span>
+            </a>
+
+        </nav>
+
+        <div class="section-title">Operations</div>
+
+        <nav class="nav">
+
+            <a href="../doctor/index.html">
+                <b>⚕</b>
+                <span>Doctors</span>
+            </a>
+
+            <a href="../nurse/index.html">
+                <b>♟</b>
+                <span>Nurses</span>
+            </a>
+
+            <a href="../beds/index.html">
+                <b>▦</b>
+                <span>Beds & IPD</span>
+            </a>
+
+            <a href="../laboratory/index.html">
+                <b>⚗</b>
+                <span>Laboratory</span>
+            </a>
+
+            <a href="../pharmacy/index.html">
+                <b>▤</b>
+                <span>Pharmacy</span>
+            </a>
+
+            <a href="../ambulance/index.html">
+                <b>🚑</b>
+                <span>Ambulance</span>
+            </a>
+
+        </nav>
+
+        <div class="section-title">Finance</div>
+
+        <nav class="nav">
+
+            <a href="#">
+                <b>₹</b>
+                <span>Billing</span>
+            </a>
+
+            <a href="#">
+                <b>▤</b>
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <div class="page-title">
+                    Doctor Consultation
+                </div>
+
+                <div class="page-sub">
+                    OPD consultation and clinical workflow
+                </div>
+            </div>
+
+            <div class="server">
+                <div class="dot"></div>
+                Backend Connected
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- PATIENT HEADER -->
+            <div class="patient-header">
+
+                <div class="patient-main">
+
+                    <div class="patient-avatar" id="patientAvatar">
+                        P
+                    </div>
+
+                    <div>
+
+                        <div class="patient-name" id="patientName">
+                            Select an appointment
+                        </div>
+
+                        <div class="patient-id" id="patientId">
+                            No patient selected
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="patient-meta">
+
+                    <div class="meta">
+                        <strong>Age:</strong>
+                        <span id="patientAge">—</span>
+                    </div>
+
+                    <div class="meta">
+                        <strong>Gender:</strong>
+                        <span id="patientGender">—</span>
+                    </div>
+
+                    <div class="meta">
+                        <strong>Blood:</strong>
+                        <span id="patientBlood">—</span>
+                    </div>
+
+                    <div class="meta">
+                        <strong>Phone:</strong>
+                        <span id="patientPhone">—</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+                <!-- LEFT -->
+                <div>
+
+                    <!-- SELECTED APPOINTMENT -->
+                    <div class="card">
+
+                        <div class="card-head">
+                            <div class="card-title">
+                                Current Appointment
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="selected-box">
+
+                                <div class="selected-row">
+                                    <span>Appointment ID</span>
+                                    <strong id="selectedId">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Doctor</span>
+                                    <strong id="selectedDoctor">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Department</span>
+                                    <strong id="selectedDepartment">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Date</span>
+                                    <strong id="selectedDate">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Time</span>
+                                    <strong id="selectedTime">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Visit Type</span>
+                                    <strong id="selectedType">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Reason</span>
+                                    <strong id="selectedReason">—</strong>
+                                </div>
+
+                                <div class="selected-row">
+                                    <span>Fee</span>
+                                    <strong id="selectedFee">₹0</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VITALS -->
+                    <div class="card">
+
+                        <div class="card-head">
+                            <div class="card-title">
+                                Patient Vitals
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="vitals">
+
+                                <div class="field">
+                                    <label>Temperature</label>
+                                    <input
+                                        id="temperature"
+                                        type="text"
+                                        placeholder="e.g. 98.6 °F">
+                                </div>
+
+                                <div class="field">
+                                    <label>Blood Pressure</label>
+                                    <input
+                                        id="bloodPressure"
+                                        type="text"
+                                        placeholder="e.g. 120/80">
+                                </div>
+
+                                <div class="field">
+                                    <label>Pulse</label>
+                                    <input
+                                        id="pulse"
+                                        type="text"
+                                        placeholder="e.g. 72 bpm">
+                                </div>
+
+                                <div class="field">
+                                    <label>SpO₂</label>
+                                    <input
+                                        id="spo2"
+                                        type="text"
+                                        placeholder="e.g. 98%">
+                                </div>
+
+                                <div class="field">
+                                    <label>Weight</label>
+                                    <input
+                                        id="weight"
+                                        type="text"
+                                        placeholder="e.g. 65 kg">
+                                </div>
+
+                                <div class="field">
+                                    <label>Height</label>
+                                    <input
+                                        id="height"
+                                        type="text"
+                                        placeholder="e.g. 170 cm">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CLINICAL ASSESSMENT -->
+                    <div class="card">
+
+                        <div class="card-head">
+                            <div class="card-title">
+                                Clinical Assessment
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="assessment">
+
+                                <div class="field">
+                                    <label>Symptoms</label>
+
+                                    <textarea
+                                        id="symptoms"
+                                        placeholder="Enter patient's symptoms..."></textarea>
+                                </div>
+
+
+                                <div class="field">
+                                    <label>Diagnosis</label>
+
+                                    <textarea
+                                        id="diagnosis"
+                                        placeholder="Enter clinical diagnosis..."></textarea>
+                                </div>
+
+
+                                <div class="field">
+                                    <label>Doctor Notes</label>
+
+                                    <textarea
+                                        id="notes"
+                                        placeholder="Enter consultation notes..."></textarea>
+                                </div>
+
+
+                                <div class="field">
+
+                                    <label>Follow-up Date</label>
+
+                                    <input
+                                        id="followUpDate"
+                                        type="date">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRESCRIPTION -->
+                    <div class="card">
+
+                        <div class="card-head">
+
+                            <div class="card-title">
+                                Prescription
+                            </div>
+
+                            <button
+                                class="btn btn-light"
+                                type="button"
+                                onclick="addMedicine()">
+                                + Add Medicine
+                            </button>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div id="medicineList"></div>
+
+                            <div
+                                id="medicineEmpty"
+                                class="empty">
+                                No medicines added yet.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LAB -->
+                    <div class="card">
+
+                        <div class="card-head">
+
+                            <div class="card-title">
+                                Laboratory Orders
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="lab-grid">
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="CBC"
+                                        class="lab-check">
+                                    CBC
+                                </label>
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="Blood Sugar"
+                                        class="lab-check">
+                                    Blood Sugar
+                                </label>
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="LFT"
+                                        class="lab-check">
+                                    LFT
+                                </label>
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="KFT"
+                                        class="lab-check">
+                                    KFT
+                                </label>
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="Lipid Profile"
+                                        class="lab-check">
+                                    Lipid Profile
+                                </label>
+
+                                <label class="check">
+                                    <input
+                                        type="checkbox"
+                                        value="Urine Routine"
+                                        class="lab-check">
+                                    Urine Routine
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+                    <div class="card">
+
+                        <div class="card-body">
+
+                            <div class="actions">
+
+                                <button
+                                    class="btn btn-light"
+                                    type="button"
+                                    onclick="saveConsultation()">
+                                    Save Consultation
+                                </button>
+
+                                <button
+                                    class="btn btn-primary"
+                                    type="button"
+                                    onclick="saveConsultation(true)">
+                                    Save & Complete
+                                </button>
+
+                                <button
+                                    class="btn btn-success"
+                                    type="button"
+                                    onclick="completeConsultation()">
+                                    Complete Visit
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT -->
+                <div>
+
+                    <div class="card">
+
+                        <div class="card-head">
+
+                            <div class="card-title">
+                                Today's Appointments
+                            </div>
+
+                            <button
+                                class="btn btn-light"
+                                style="padding:7px 10px;font-size:11px"
+                                onclick="loadAppointments()">
+                                Refresh
+                            </button>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div
+                                id="appointmentList"
+                                class="appointment-list">
+
+                                <div class="loading">
+                                    Loading appointments...
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<div id="toast" class="toast"></div>
+
+
+<script>
+
+const API =
+    "http://localhost:5000/api/appointments";
+
+const PATIENT_API =
+    "http://localhost:5000/api/saas/patients";
+
+const HOSPITAL_ID =
+    "HOSP-TEST-001";
+
+
+let appointments = [];
+let selectedAppointment = null;
+let medicines = [];
+
+
+/* =========================
+   HELPERS
+========================= */
+
+function escapeHTML(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+function money(value){
+
+    return "₹" +
+        Number(value || 0)
+        .toLocaleString("en-IN");
+
+}
+
+
+function toast(message,type=""){
+
+    const box =
+        document.getElementById("toast");
+
+    box.textContent = message;
+
+    box.className =
+        "toast show " +
+        (type === "success"
+            ? "success"
+            : type === "error"
+                ? "error-toast"
+                : "");
+
+    setTimeout(() => {
+
+        box.classList.remove("show");
+
+    },3000);
+
+}
+
+
+function statusClass(status){
+
+    const value =
+        String(status || "")
+        .toLowerCase();
+
+    if(value === "scheduled")
+        return "status-scheduled";
+
+    if(value === "confirmed")
+        return "status-confirmed";
+
+    if(value === "waiting")
+        return "status-waiting";
+
+    if(value.includes("consultation"))
+        return "status-consultation";
+
+    if(value === "completed")
+        return "status-completed";
+
+    if(value === "cancelled")
+        return "status-cancelled";
+
+    if(value === "no show")
+        return "status-no-show";
+
+    return "status-scheduled";
+
+}
+
+
+/* =========================
+   LOAD APPOINTMENTS
+========================= */
+
+async function loadAppointments(){
+
+    const list =
+        document.getElementById(
+            "appointmentList"
+        );
+
+    list.innerHTML =
+        `<div class="loading">
+            Loading appointments...
+        </div>`;
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Appointment API failed"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        appointments =
+            data.appointments ||
+            data.data ||
+            [];
+
+        renderAppointments();
+
+        /*
+         * Automatically select the first
+         * appointment if nothing is selected.
+         */
+        if(
+            !selectedAppointment &&
+            appointments.length
+        ){
+
+            await selectAppointment(
+                appointments[0].id
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        list.innerHTML =
+            `<div class="error">
+                Unable to load appointments.
+            </div>`;
+
+        toast(
+            "Appointments load nahi ho paaye.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   RENDER APPOINTMENTS
+========================= */
+
+function renderAppointments(){
+
+    const list =
+        document.getElementById(
+            "appointmentList"
+        );
+
+    if(!appointments.length){
+
+        list.innerHTML =
+            `<div class="empty">
+                No appointments found.
+            </div>`;
+
+        return;
+
+    }
+
+
+    list.innerHTML =
+        appointments.map(item => {
+
+            const active =
+                selectedAppointment &&
+                selectedAppointment.id === item.id
+                    ? "active"
+                    : "";
+
+            return `
+                <div
+                    class="appointment ${active}"
+                    onclick="selectAppointment('${escapeHTML(item.id)}')">
+
+                    <div class="ap-top">
+
+                        <div class="ap-name">
+                            ${escapeHTML(
+                                item.patientName ||
+                                "Unknown Patient"
+                            )}
+                        </div>
+
+                        <div class="status ${statusClass(item.status)}">
+                            ${escapeHTML(
+                                item.status ||
+                                "Scheduled"
+                            )}
+                        </div>
+
+                    </div>
+
+                    <div class="ap-info">
+
+                        ${escapeHTML(
+                            item.date || "—"
+                        )}
+                        •
+                        ${escapeHTML(
+                            item.time || "—"
+                        )}
+
+                        <br>
+
+                        ${escapeHTML(
+                            item.doctorName ||
+                            "Doctor not assigned"
+                        )}
+
+                        <br>
+
+                        ${escapeHTML(
+                            item.department ||
+                            "Department not specified"
+                        )}
+
+                    </div>
+
+                </div>
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================
+   SELECT APPOINTMENT
+========================= */
+
+async function selectAppointment(id){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/${encodeURIComponent(id)}?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Appointment detail failed"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        selectedAppointment =
+            data.appointment ||
+            data.data ||
+            data;
+
+        renderAppointments();
+
+        await loadPatient();
+
+        fillAppointment();
+
+        /*
+         * Move appointment into consultation
+         * when doctor opens it.
+         */
+        if(
+            selectedAppointment.status === "Scheduled" ||
+            selectedAppointment.status === "Confirmed" ||
+            selectedAppointment.status === "Waiting"
+        ){
+
+            await updateAppointmentStatus(
+                "In Consultation",
+                false
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            "Appointment details load nahi ho paaye.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   PATIENT
+========================= */
+
+async function loadPatient(){
+
+    if(!selectedAppointment){
+
+        return;
+
+    }
+
+    const patientId =
+        selectedAppointment.patientId;
+
+    if(!patientId){
+
+        fillPatientFallback();
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${PATIENT_API}/${encodeURIComponent(patientId)}?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Patient API failed"
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        const patient =
+            data.patient ||
+            data.data ||
+            data;
+
+        fillPatient(patient);
+
+    }catch(error){
+
+        console.error(error);
+
+        fillPatientFallback();
+
+    }
+
+}
+
+
+function fillPatient(patient){
+
+    const name =
+        patient.name ||
+        `${patient.firstName || ""} ${patient.lastName || ""}`.trim() ||
+        selectedAppointment.patientName ||
+        "Patient";
+
+    document.getElementById(
+        "patientName"
+    ).textContent =
+        name;
+
+    document.getElementById(
+        "patientId"
+    ).textContent =
+        `UHID: ${patient.uhid || patient.id || selectedAppointment.patientId || "—"}`;
+
+    document.getElementById(
+        "patientAge"
+    ).textContent =
+        patient.age ||
+        calculateAge(patient.dateOfBirth) ||
+        "—";
+
+    document.getElementById(
+        "patientGender"
+    ).textContent =
+        patient.gender || "—";
+
+    document.getElementById(
+        "patientBlood"
+    ).textContent =
+        patient.bloodGroup || "—";
+
+    document.getElementById(
+        "patientPhone"
+    ).textContent =
+        patient.phone ||
+        selectedAppointment.patientPhone ||
+        "—";
+
+    document.getElementById(
+        "patientAvatar"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
+}
+
+
+function fillPatientFallback(){
+
+    const name =
+        selectedAppointment?.patientName ||
+        "Patient";
+
+    document.getElementById(
+        "patientName"
+    ).textContent =
+        name;
+
+    document.getElementById(
+        "patientId"
+    ).textContent =
+        `Patient ID: ${selectedAppointment?.patientId || "—"}`;
+
+    document.getElementById(
+        "patientAge"
+    ).textContent =
+        "—";
+
+    document.getElementById(
+        "patientGender"
+    ).textContent =
+        "—";
+
+    document.getElementById(
+        "patientBlood"
+    ).textContent =
+        "—";
+
+    document.getElementById(
+        "patientPhone"
+    ).textContent =
+        selectedAppointment?.patientPhone || "—";
+
+    document.getElementById(
+        "patientAvatar"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
+}
+
+
+function calculateAge(date){
+
+    if(!date) return "";
+
+    const birth =
+        new Date(date);
+
+    if(Number.isNaN(birth.getTime()))
+        return "";
+
+    const today =
+        new Date();
+
+    let age =
+        today.getFullYear() -
+        birth.getFullYear();
+
+    const month =
+        today.getMonth() -
+        birth.getMonth();
+
+    if(
+        month < 0 ||
+        (
+            month === 0 &&
+            today.getDate() < birth.getDate()
+        )
+    ){
+
+        age--;
+
+    }
+
+    return age > 0 ? age : "";
+
+}
+
+
+/* =========================
+   APPOINTMENT DETAILS
+========================= */
+
+function fillAppointment(){
+
+    if(!selectedAppointment)
+        return;
+
+
+    const a =
+        selectedAppointment;
+
+
+    document.getElementById(
+        "selectedId"
+    ).textContent =
+        a.id || "—";
+
+    document.getElementById(
+        "selectedDoctor"
+    ).textContent =
+        a.doctorName || "—";
+
+    document.getElementById(
+        "selectedDepartment"
+    ).textContent =
+        a.department || "—";
+
+    document.getElementById(
+        "selectedDate"
+    ).textContent =
+        a.date || "—";
+
+    document.getElementById(
+        "selectedTime"
+    ).textContent =
+        a.time || "—";
+
+    document.getElementById(
+        "selectedType"
+    ).textContent =
+        a.type || "OPD";
+
+    document.getElementById(
+        "selectedReason"
+    ).textContent =
+        a.reason || "—";
+
+    document.getElementById(
+        "selectedFee"
+    ).textContent =
+        money(a.fee);
+
+}
+
+
+/* =========================
+   MEDICINES
+========================= */
+
+function addMedicine(){
+
+    medicines.push({
+
+        name:"",
+        dosage:"",
+        duration:""
+
+    });
+
+    renderMedicines();
+
+}
+
+
+function removeMedicine(index){
+
+    medicines.splice(index,1);
+
+    renderMedicines();
+
+}
+
+
+function updateMedicine(
+    index,
+    field,
+    value
+){
+
+    if(!medicines[index])
+        return;
+
+    medicines[index][field] =
+        value;
+
+}
+
+
+function renderMedicines(){
+
+    const list =
+        document.getElementById(
+            "medicineList"
+        );
+
+    const empty =
+        document.getElementById(
+            "medicineEmpty"
+        );
+
+
+    if(!medicines.length){
+
+        list.innerHTML = "";
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    list.innerHTML =
+        medicines.map(
+            (medicine,index) => {
+
+                return `
+                    <div class="medicine-row">
+
+                        <input
+                            type="text"
+                            placeholder="Medicine name"
+                            value="${escapeHTML(medicine.name)}"
+                            oninput="updateMedicine(${index},'name',this.value)">
+
+                        <input
+                            type="text"
+                            placeholder="Dosage"
+                            value="${escapeHTML(medicine.dosage)}"
+                            oninput="updateMedicine(${index},'dosage',this.value)">
+
+                        <input
+                            type="text"
+                            placeholder="Duration"
+                            value="${escapeHTML(medicine.duration)}"
+                            oninput="updateMedicine(${index},'duration',this.value)">
+
+                        <button
+                            type="button"
+                            class="remove-med"
+                            onclick="removeMedicine(${index})">
+                            ×
+                        </button>
+
+                    </div>
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================
+   COLLECT FORM
+========================= */
+
+function collectConsultation(){
+
+    const selectedLabs =
+        Array.from(
+            document.querySelectorAll(
+                ".lab-check:checked"
+            )
+        ).map(
+            checkbox =>
+                checkbox.value
+        );
+
+
+    const symptomsText =
+        document.getElementById(
+            "symptoms"
+        ).value.trim();
+
+
+    const symptoms =
+        symptomsText
+            ? symptomsText
+                .split(",")
+                .map(item => item.trim())
+                .filter(Boolean)
+            : [];
+
+
+    return {
+
+        diagnosis:
+            document.getElementById(
+                "diagnosis"
+            ).value.trim(),
+
+        symptoms,
+
+        vitals:{
+
+            temperature:
+                document.getElementById(
+                    "temperature"
+                ).value.trim(),
+
+            bloodPressure:
+                document.getElementById(
+                    "bloodPressure"
+                ).value.trim(),
+
+            pulse:
+                document.getElementById(
+                    "pulse"
+                ).value.trim(),
+
+            spo2:
+                document.getElementById(
+                    "spo2"
+                ).value.trim(),
+
+            weight:
+                document.getElementById(
+                    "weight"
+                ).value.trim(),
+
+            height:
+                document.getElementById(
+                    "height"
+                ).value.trim()
+
+        },
+
+        notes:
+            document.getElementById(
+                "notes"
+            ).value.trim(),
+
+        followUpDate:
+            document.getElementById(
+                "followUpDate"
+            ).value || null,
+
+        prescription:{
+            medicines:
+                medicines.filter(
+                    medicine =>
+                        medicine.name.trim()
+                )
+        },
+
+        labOrder:{
+            tests:selectedLabs
+        }
+
+    };
+
+}
+
+
+/* =========================
+   SAVE CONSULTATION
+========================= */
+
+async function saveConsultation(
+    completeAfterSave=false
+){
+
+    if(!selectedAppointment){
+
+        toast(
+            "Pehle appointment select karo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const consultation =
+        collectConsultation();
+
+
+    if(!consultation.diagnosis){
+
+        toast(
+            "Diagnosis enter karo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/${encodeURIComponent(selectedAppointment.id)}/diagnosis?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`,
+                {
+                    method:"PATCH",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify(
+                        consultation
+                    )
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Consultation save failed"
+            );
+
+        }
+
+
+        selectedAppointment =
+            data.appointment ||
+            data.data ||
+            selectedAppointment;
+
+
+        toast(
+            completeAfterSave
+                ? "Consultation saved successfully."
+                : "Consultation saved.",
+            "success"
+        );
+
+
+        if(completeAfterSave){
+
+            await updateAppointmentStatus(
+                "Completed",
+                true
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        toast(
+            error.message ||
+            "Consultation save nahi ho paayi.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   STATUS UPDATE
+========================= */
+
+async function updateAppointmentStatus(
+    status,
+    showToast=true
+){
+
+    if(!selectedAppointment)
+        return;
+
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/${encodeURIComponent(selectedAppointment.id)}/status?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`,
+                {
+                    method:"PATCH",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        status
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Status update failed"
+            );
+
+        }
+
+
+        selectedAppointment =
+            data.appointment ||
+            data.data ||
+            selectedAppointment;
+
+
+        /*
+         * Update local appointment
+         * so UI immediately changes.
+         */
+
+        const index =
+            appointments.findIndex(
+                item =>
+                    item.id ===
+                    selectedAppointment.id
+            );
+
+
+        if(index !== -1){
+
+            appointments[index] =
+                selectedAppointment;
+
+        }
+
+
+        renderAppointments();
+
+
+        if(showToast){
+
+            toast(
+                `Appointment marked as ${status}.`,
+                "success"
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        if(showToast){
+
+            toast(
+                error.message ||
+                "Status update nahi hua.",
+                "error"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+async function completeConsultation(){
+
+    if(!selectedAppointment){
+
+        toast(
+            "Pehle appointment select karo.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const diagnosis =
+        document.getElementById(
+            "diagnosis"
+        ).value.trim();
+
+
+    if(!diagnosis){
+
+        toast(
+            "Diagnosis enter karna zaroori hai.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    await saveConsultation(
+        true
+    );
+
+}
+
+
+/* =========================
+   RESET FORM
+========================= */
+
+function resetForm(){
+
+    document.getElementById(
+        "temperature"
+    ).value = "";
+
+    document.getElementById(
+        "bloodPressure"
+    ).value = "";
+
+    document.getElementById(
+        "pulse"
+    ).value = "";
+
+    document.getElementById(
+        "spo2"
+    ).value = "";
+
+    document.getElementById(
+        "weight"
+    ).value = "";
+
+    document.getElementById(
+        "height"
+    ).value = "";
+
+    document.getElementById(
+        "symptoms"
+    ).value = "";
+
+    document.getElementById(
+        "diagnosis"
+    ).value = "";
+
+    document.getElementById(
+        "notes"
+    ).value = "";
+
+    document.getElementById(
+        "followUpDate"
+    ).value = "";
+
+    medicines = [];
+
+    renderMedicines();
+
+    document
+        .querySelectorAll(
+            ".lab-check"
+        )
+        .forEach(
+            checkbox =>
+                checkbox.checked = false
+        );
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        /*
+         * Don't auto-reset because
+         * selected appointment may be
+         * opened from another page later.
+         */
+
+        renderMedicines();
+
+        loadAppointments();
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appointments | Gopal Joshi Hospital</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Inter,Arial,sans-serif;
+    background:#f4f7fb;
+    color:#172033
+}
+
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:250px;
+    background:#101828;
+    color:#fff;
+    padding:20px 14px;
+    overflow-y:auto;
+    z-index:100
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 10px 25px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    margin-bottom:18px
+}
+
+.brand-logo{
+    width:42px;
+    height:42px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:800
+}
+
+.brand h2{font-size:15px}
+.brand span{font-size:11px;color:#98a2b3}
+
+.menu-title{
+    color:#667085;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    margin:18px 10px 8px
+}
+
+.nav-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:#b8c0cc;
+    text-decoration:none;
+    padding:11px 12px;
+    border-radius:9px;
+    margin-bottom:4px;
+    font-size:13px
+}
+
+.nav-link:hover,
+.nav-link.active{
+    background:#1d2939;
+    color:#fff
+}
+
+.nav-icon{width:20px;text-align:center}
+
+.main{
+    margin-left:250px;
+    min-height:100vh
+}
+
+.topbar{
+    height:72px;
+    background:#fff;
+    border-bottom:1px solid #e4e7ec;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    position:sticky;
+    top:0;
+    z-index:50
+}
+
+.page-title h1{font-size:21px}
+.page-title p{
+    font-size:12px;
+    color:#667085;
+    margin-top:3px
+}
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:15px
+}
+
+.server-status{
+    font-size:12px;
+    color:#16a34a;
+    display:flex;
+    align-items:center;
+    gap:6px
+}
+
+.server-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#22c55e
+}
+
+.admin-user{
+    padding:8px 12px;
+    background:#f2f4f7;
+    border-radius:8px;
+    font-size:12px
+}
+
+.content{padding:25px 28px}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    margin-bottom:22px
+}
+
+.stat-card{
+    background:#fff;
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    padding:18px
+}
+
+.stat-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.stat-label{color:#667085;font-size:12px}
+
+.stat-icon{
+    width:35px;
+    height:35px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef4ff;
+    font-size:17px
+}
+
+.stat-number{
+    font-size:25px;
+    font-weight:750;
+    margin-top:10px
+}
+
+.toolbar{
+    background:#fff;
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:18px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap
+}
+
+.search-box{
+    flex:1;
+    min-width:230px
+}
+
+.search-box input{
+    width:100%;
+    padding:11px 13px;
+    border:1px solid #d0d5dd;
+    border-radius:9px;
+    outline:none
+}
+
+.toolbar select,
+.toolbar input[type="date"]{
+    padding:11px 12px;
+    border:1px solid #d0d5dd;
+    border-radius:9px;
+    background:#fff;
+    min-width:145px;
+    outline:none
+}
+
+.btn{
+    border:0;
+    border-radius:9px;
+    padding:10px 15px;
+    font-weight:650;
+    font-size:12px
+}
+
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-light{background:#f2f4f7;color:#344054}
+.btn-danger{background:#fee4e2;color:#b42318}
+.btn-success{background:#dcfae6;color:#067647}
+.btn-warning{background:#fff4cc;color:#b54708}
+
+.table-card{
+    background:#fff;
+    border:1px solid #e4e7ec;
+    border-radius:14px;
+    overflow:hidden
+}
+
+.table-header{
+    padding:17px 18px;
+    border-bottom:1px solid #eaecf0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.table-header h2{font-size:15px}
+.table-count{font-size:12px;color:#667085}
+
+.table-wrapper{overflow-x:auto}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:1100px
+}
+
+th{
+    background:#f9fafb;
+    color:#667085;
+    font-size:11px;
+    font-weight:650;
+    text-align:left;
+    padding:12px 15px;
+    border-bottom:1px solid #eaecf0
+}
+
+td{
+    padding:14px 15px;
+    border-bottom:1px solid #f0f2f5;
+    font-size:12px;
+    vertical-align:middle
+}
+
+tr:hover td{background:#fafcff}
+
+.patient-name{font-weight:700}
+
+.sub-text{
+    font-size:10px;
+    color:#667085;
+    margin-top:3px
+}
+
+.doctor-name{font-weight:650}
+
+.status{
+    display:inline-flex;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700
+}
+
+.status-scheduled{background:#eef4ff;color:#175cd3}
+.status-confirmed{background:#ecfdf3;color:#027a48}
+.status-waiting{background:#fffaeb;color:#b54708}
+.status-consult{background:#f4f3ff;color:#5925dc}
+.status-completed{background:#dcfae6;color:#067647}
+.status-cancelled{background:#fee4e2;color:#b42318}
+.status-noshow{background:#f2f4f7;color:#344054}
+
+.type-badge{
+    font-size:10px;
+    color:#475467;
+    background:#f2f4f7;
+    padding:5px 8px;
+    border-radius:6px
+}
+
+.actions{display:flex;gap:6px}
+
+.action-btn{
+    border:0;
+    width:31px;
+    height:31px;
+    border-radius:7px;
+    background:#f2f4f7
+}
+
+.action-btn:hover{background:#e4e7ec}
+
+.empty{
+    text-align:center;
+    padding:55px 20px;
+    color:#667085
+}
+
+.empty-icon{
+    font-size:35px;
+    margin-bottom:10px
+}
+
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(16,24,40,.55);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:300;
+    padding:20px
+}
+
+.overlay.show{display:flex}
+
+.modal{
+    background:#fff;
+    width:min(850px,100%);
+    max-height:92vh;
+    overflow-y:auto;
+    border-radius:16px;
+    box-shadow:0 20px 50px rgba(0,0,0,.2)
+}
+
+.modal-header{
+    padding:20px 22px;
+    border-bottom:1px solid #eaecf0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between
+}
+
+.modal-header h2{font-size:17px}
+
+.close{
+    border:0;
+    background:#f2f4f7;
+    width:32px;
+    height:32px;
+    border-radius:8px;
+    font-size:17px
+}
+
+.modal-body{padding:22px}
+
+.form-section{margin-bottom:23px}
+
+.form-section-title{
+    font-size:12px;
+    font-weight:750;
+    margin-bottom:12px;
+    color:#344054;
+    padding-bottom:8px;
+    border-bottom:1px solid #eaecf0
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:13px
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:5px
+}
+
+.field.full{grid-column:1/-1}
+
+.field label{
+    font-size:11px;
+    color:#475467;
+    font-weight:650
+}
+
+.field input,
+.field select,
+.field textarea{
+    width:100%;
+    border:1px solid #d0d5dd;
+    border-radius:8px;
+    padding:10px 11px;
+    outline:none;
+    background:#fff;
+    font-size:12px
+}
+
+.field textarea{
+    min-height:75px;
+    resize:vertical
+}
+
+.modal-footer{
+    padding:15px 22px;
+    border-top:1px solid #eaecf0;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px
+}
+
+/* ================= DRAWER ================= */
+
+.drawer{
+    position:fixed;
+    right:-530px;
+    top:0;
+    bottom:0;
+    width:510px;
+    max-width:95vw;
+    background:#fff;
+    z-index:400;
+    box-shadow:-10px 0 40px rgba(0,0,0,.16);
+    transition:.25s;
+    overflow-y:auto
+}
+
+.drawer.show{right:0}
+
+.drawer-header{
+    padding:20px;
+    border-bottom:1px solid #eaecf0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center
+}
+
+.drawer-title{
+    display:flex;
+    gap:12px;
+    align-items:center
+}
+
+.avatar{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    background:#eef4ff;
+    color:#175cd3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800
+}
+
+.drawer-body{padding:20px}
+
+.detail-card{
+    border:1px solid #eaecf0;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:14px
+}
+
+.detail-card h3{
+    font-size:12px;
+    margin-bottom:12px
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:13px
+}
+
+.detail-item label{
+    display:block;
+    font-size:10px;
+    color:#667085;
+    margin-bottom:3px
+}
+
+.detail-item strong{
+    font-size:12px
+}
+
+.drawer-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap
+}
+
+.loading-box{
+    padding:45px;
+    text-align:center;
+    color:#667085
+}
+
+.spinner{
+    width:28px;
+    height:28px;
+    border:3px solid #e4e7ec;
+    border-top-color:#2563eb;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    margin:0 auto 12px
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+.toast{
+    position:fixed;
+    right:22px;
+    bottom:22px;
+    background:#101828;
+    color:#fff;
+    padding:13px 17px;
+    border-radius:9px;
+    font-size:12px;
+    opacity:0;
+    transform:translateY(15px);
+    pointer-events:none;
+    transition:.25s;
+    z-index:1000
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateY(0)
+}
+
+.toast.error{background:#b42318}
+
+@media(max-width:1100px){
+    .stats-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:800px){
+    .sidebar{
+        width:70px;
+        padding:15px 8px
+    }
+
+    .brand h2,
+    .brand span,
+    .menu-title,
+    .nav-link span{
+        display:none
+    }
+
+    .brand{justify-content:center}
+    .nav-link{justify-content:center}
+
+    .main{margin-left:70px}
+
+    .stats-grid{grid-template-columns:repeat(2,1fr)}
+
+    .form-grid{grid-template-columns:1fr}
+
+    .field.full{grid-column:auto}
+}
+
+@media(max-width:550px){
+    .topbar{padding:0 15px}
+    .content{padding:18px 15px}
+    .stats-grid{grid-template-columns:1fr}
+    .server-status{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-logo">GJ</div>
+
+        <div>
+            <h2>Gopal Joshi Hospital</h2>
+            <span>Hospital SaaS</span>
+        </div>
+
+    </div>
+
+    <div class="menu-title">Main</div>
+
+    <a class="nav-link" href="/admin/index.html">
+        <div class="nav-icon">⌂</div>
+        <span>Command Center</span>
+    </a>
+
+    <a class="nav-link" href="/admin/patients.html">
+        <div class="nav-icon">👥</div>
+        <span>Patients</span>
+    </a>
+
+    <a class="nav-link active" href="/admin/appointments.html">
+        <div class="nav-icon">📅</div>
+        <span>Appointments</span>
+    </a>
+
+    <a class="nav-link" href="/admin/consultation.html">
+        <div class="nav-icon">🩺</div>
+        <span>Consultation</span>
+    </a>
+
+    <div class="menu-title">Clinical</div>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">👨‍⚕️</div>
+        <span>Doctors</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">🧪</div>
+        <span>Laboratory</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">💊</div>
+        <span>Pharmacy</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">🛏️</div>
+        <span>Beds / IPD</span>
+    </a>
+
+    <div class="menu-title">Operations</div>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">🚑</div>
+        <span>Emergency</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">💰</div>
+        <span>Billing</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">📊</div>
+        <span>Reports</span>
+    </a>
+
+    <a class="nav-link" href="#">
+        <div class="nav-icon">⚙️</div>
+        <span>Settings</span>
+    </a>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+    <div class="page-title">
+
+        <h1>Appointment Management</h1>
+
+        <p>Schedule and manage hospital appointments</p>
+
+    </div>
+
+    <div class="top-actions">
+
+        <div class="server-status">
+            <div class="server-dot"></div>
+            Server Online
+        </div>
+
+        <div class="admin-user">
+            👤 Hospital Admin
+        </div>
+
+    </div>
+
+</header>
+
+
+<section class="content">
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div class="stat-label">Total Appointments</div>
+            <div class="stat-icon">📅</div>
+        </div>
+        <div class="stat-number" id="totalCount">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div class="stat-label">Today's Appointments</div>
+            <div class="stat-icon">🕐</div>
+        </div>
+        <div class="stat-number" id="todayCount">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div class="stat-label">Confirmed</div>
+            <div class="stat-icon">✓</div>
+        </div>
+        <div class="stat-number" id="confirmedCount">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div class="stat-label">Waiting</div>
+            <div class="stat-icon">⏳</div>
+        </div>
+        <div class="stat-number" id="waitingCount">0</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <div class="stat-label">Completed</div>
+            <div class="stat-icon">✓</div>
+        </div>
+        <div class="stat-number" id="completedCount">0</div>
+    </div>
+
+</div>
+
+
+<div class="toolbar">
+
+    <div class="search-box">
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Search patient, doctor, ID..."
+            oninput="applyFilters()">
+    </div>
+
+    <input
+        id="dateFilter"
+        type="date"
+        onchange="applyFilters()">
+
+    <select id="statusFilter" onchange="applyFilters()">
+        <option value="">All Status</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Waiting">Waiting</option>
+        <option value="In Consultation">In Consultation</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+        <option value="No Show">No Show</option>
+    </select>
+
+    <select id="typeFilter" onchange="applyFilters()">
+        <option value="">All Types</option>
+        <option value="OPD">OPD</option>
+        <option value="Follow-up">Follow-up</option>
+        <option value="Emergency">Emergency</option>
+        <option value="Teleconsultation">Teleconsultation</option>
+    </select>
+
+    <button class="btn btn-light" onclick="clearFilters()">Clear</button>
+
+    <button class="btn btn-light" onclick="loadAppointments()">↻ Refresh</button>
+
+    <button class="btn btn-primary" onclick="openAppointmentModal()">
+        + New Appointment
+    </button>
+
+</div>
+
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <h2>Appointments</h2>
+
+        <div class="table-count" id="tableCount">
+            0 appointments
+        </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>Patient</th>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Fee</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="appointmentTable"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- NEW APPOINTMENT -->
+
+<div class="overlay" id="appointmentOverlay">
+
+<div class="modal">
+
+<div class="modal-header">
+
+    <h2>Book New Appointment</h2>
+
+    <button class="close" onclick="closeAppointmentModal()">×</button>
+
+</div>
+
+
+<form id="appointmentForm" onsubmit="createAppointment(event)">
+
+<div class="modal-body">
+
+<div class="form-section">
+
+<div class="form-section-title">
+Patient Information
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Patient ID *</label>
+<input id="patientId" required placeholder="PAT-00001">
+</div>
+
+<div class="field">
+<label>Patient Name *</label>
+<input id="patientName" required placeholder="Amit Kumar">
+</div>
+
+<div class="field">
+<label>Patient Phone</label>
+<input id="patientPhone" placeholder="9876543210">
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-section">
+
+<div class="form-section-title">
+Doctor & Department
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Doctor ID *</label>
+<input id="doctorId" required placeholder="DOC-001">
+</div>
+
+<div class="field">
+<label>Doctor Name *</label>
+<input id="doctorName" required placeholder="Dr. Raj Sharma">
+</div>
+
+<div class="field">
+
+<label>Department</label>
+
+<select id="department">
+
+<option>General Medicine</option>
+<option>Cardiology</option>
+<option>Orthopedics</option>
+<option>Dermatology</option>
+<option>Pediatrics</option>
+<option>Gynecology</option>
+<option>ENT</option>
+<option>Neurology</option>
+<option>Dental</option>
+
+</select>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form-section">
+
+<div class="form-section-title">
+Appointment Details
+</div>
+
+<div class="form-grid">
+
+<div class="field">
+<label>Appointment Date *</label>
+<input id="appointmentDate" type="date" required>
+</div>
+
+<div class="field">
+<label>Appointment Time *</label>
+<input id="appointmentTime" type="time" required>
+</div>
+
+<div class="field">
+
+<label>Appointment Type</label>
+
+<select id="appointmentType">
+
+<option value="OPD">OPD</option>
+<option value="Follow-up">Follow-up</option>
+<option value="Emergency">Emergency</option>
+<option value="Teleconsultation">Teleconsultation</option>
+
+</select>
+
+</div>
+
+<div class="field">
+<label>Consultation Fee</label>
+<input id="appointmentFee" type="number" min="0" value="500">
+</div>
+
+<div class="field full">
+<label>Reason / Symptoms *</label>
+<textarea id="appointmentReason" required placeholder="Enter reason for consultation..."></textarea>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="modal-footer">
+
+<button type="button" class="btn btn-light" onclick="closeAppointmentModal()">
+Cancel
+</button>
+
+<button type="submit" class="btn btn-primary">
+Book Appointment
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- DRAWER -->
+
+<div class="drawer" id="appointmentDrawer">
+
+<div class="drawer-header">
+
+<div class="drawer-title">
+
+<div class="avatar" id="drawerAvatar">A</div>
+
+<div>
+
+<strong id="drawerPatient">Patient</strong>
+
+<div class="sub-text" id="drawerAppointmentId">
+Appointment
+</div>
+
+</div>
+
+</div>
+
+<button class="close" onclick="closeDrawer()">×</button>
+
+</div>
+
+
+<div class="drawer-body">
+
+<div class="detail-card">
+
+<h3>Appointment Information</h3>
+
+<div class="detail-grid">
+
+<div class="detail-item">
+<label>Date</label>
+<strong id="drawerDate">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Time</label>
+<strong id="drawerTime">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Type</label>
+<strong id="drawerType">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Status</label>
+<strong id="drawerStatus">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Doctor</label>
+<strong id="drawerDoctor">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Department</label>
+<strong id="drawerDepartment">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Fee</label>
+<strong id="drawerFee">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Payment</label>
+<strong id="drawerPayment">—</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="detail-card">
+
+<h3>Patient Information</h3>
+
+<div class="detail-grid">
+
+<div class="detail-item">
+<label>Patient ID</label>
+<strong id="drawerPatientId">—</strong>
+</div>
+
+<div class="detail-item">
+<label>Phone</label>
+<strong id="drawerPhone">—</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="detail-card">
+
+<h3>Reason / Symptoms</h3>
+
+<div id="drawerReason" style="font-size:12px;color:#475467">
+—
+</div>
+
+</div>
+
+
+<div class="drawer-actions">
+
+<button class="btn btn-success" onclick="changeCurrentStatus('Confirmed')">
+✓ Confirm
+</button>
+
+<button class="btn btn-warning" onclick="changeCurrentStatus('Waiting')">
+⏳ Waiting
+</button>
+
+<button class="btn btn-primary" onclick="startConsultation()">
+🩺 Start Consultation
+</button>
+
+<button class="btn btn-light" onclick="changeCurrentStatus('Completed')">
+✓ Complete
+</button>
+
+<button class="btn btn-danger" onclick="cancelCurrentAppointment()">
+× Cancel
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+const API = "http://localhost:5000/api/appointments";
+const HOSPITAL_ID = "HOSP-TEST-001";
+
+let allAppointments = [];
+let currentAppointmentId = null;
+
+
+/* ================= INIT ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    setDefaultDate();
+    loadAppointments();
+    loadStats();
+
+});
+
+
+/* ================= DATE ================= */
+
+function setDefaultDate(){
+
+    const today =
+        new Date().toISOString().slice(0,10);
+
+    document.getElementById(
+        "appointmentDate"
+    ).value = today;
+
+}
+
+
+/* ================= STATS ================= */
+
+async function loadStats(){
+
+    try{
+
+        const response = await fetch(
+            `${API}/stats?hospitalId=${HOSPITAL_ID}`
+        );
+
+        const data = await response.json();
+
+        if(!data.success) return;
+
+        const stats = data.stats || {};
+
+        document.getElementById("totalCount").textContent =
+            stats.total || 0;
+
+        document.getElementById("todayCount").textContent =
+            stats.today || 0;
+
+        document.getElementById("confirmedCount").textContent =
+            stats.confirmed || 0;
+
+        document.getElementById("waitingCount").textContent =
+            stats.waiting || 0;
+
+        document.getElementById("completedCount").textContent =
+            stats.completed || 0;
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+/* ================= LOAD ================= */
+
+async function loadAppointments(){
+
+    try{
+
+        showLoading();
+
+        const response = await fetch(
+            `${API}?hospitalId=${HOSPITAL_ID}&limit=100`
+        );
+
+        const data = await response.json();
+
+        if(!response.ok || !data.success){
+
+            throw new Error(
+                data.message || "Unable to load appointments"
+            );
+
+        }
+
+        allAppointments =
+            data.appointments || [];
+
+        renderAppointments(
+            allAppointments
+        );
+
+        loadStats();
+
+    }catch(error){
+
+        console.error(error);
+
+        document.getElementById(
+            "appointmentTable"
+        ).innerHTML = `
+
+        <tr>
+        <td colspan="9">
+
+        <div class="empty">
+
+        <div class="empty-icon">⚠️</div>
+
+        <strong>Unable to load appointments</strong>
+
+        <p style="margin-top:6px">
+        Check whether the server is running.
+        </p>
+
+        </div>
+
+        </td>
+        </tr>
+
+        `;
+
+    }
+
+}
+
+
+/* ================= LOADING ================= */
+
+function showLoading(){
+
+    document.getElementById(
+        "appointmentTable"
+    ).innerHTML = `
+
+    <tr>
+
+    <td colspan="9">
+
+    <div class="loading-box">
+
+    <div class="spinner"></div>
+
+    Loading appointments...
+
+    </div>
+
+    </td>
+
+    </tr>
+
+    `;
+
+}
+
+
+/* ================= FILTER ================= */
+
+function applyFilters(){
+
+    const search =
+        document.getElementById("searchInput")
+        .value.toLowerCase().trim();
+
+    const date =
+        document.getElementById("dateFilter").value;
+
+    const status =
+        document.getElementById("statusFilter").value;
+
+    const type =
+        document.getElementById("typeFilter").value;
+
+
+    const filtered =
+        allAppointments.filter(appointment => {
+
+            const searchable = [
+
+                appointment.id,
+                appointment.patientId,
+                appointment.patientName,
+                appointment.patientPhone,
+                appointment.doctorId,
+                appointment.doctorName,
+                appointment.department,
+                appointment.reason
+
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            if(
+                search &&
+                !searchable.includes(search)
+            ){
+                return false;
+            }
+
+
+            if(
+                date &&
+                appointment.date !== date
+            ){
+                return false;
+            }
+
+
+            if(
+                status &&
+                appointment.status !== status
+            ){
+                return false;
+            }
+
+
+            if(
+                type &&
+                appointment.type !== type
+            ){
+                return false;
+            }
+
+
+            return true;
+
+        });
+
+
+    renderAppointments(
+        filtered
+    );
+
+}
+
+
+/* ================= CLEAR ================= */
+
+function clearFilters(){
+
+    document.getElementById("searchInput").value = "";
+    document.getElementById("dateFilter").value = "";
+    document.getElementById("statusFilter").value = "";
+    document.getElementById("typeFilter").value = "";
+
+    renderAppointments(
+        allAppointments
+    );
+
+}
+
+
+/* ================= TABLE ================= */
+
+function renderAppointments(
+    appointments
+){
+
+    const tbody =
+        document.getElementById(
+            "appointmentTable"
+        );
+
+
+    document.getElementById(
+        "tableCount"
+    ).textContent =
+        `${appointments.length} appointment${
+            appointments.length === 1 ? "" : "s"
+        }`;
+
+
+    if(!appointments.length){
+
+        tbody.innerHTML = `
+
+        <tr>
+
+        <td colspan="9">
+
+        <div class="empty">
+
+        <div class="empty-icon">📅</div>
+
+        <strong>No appointments found</strong>
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        appointments.map(
+            appointment => `
+
+        <tr>
+
+        <td>
+
+        <div class="patient-name">
+        ${escapeHtml(
+            appointment.patientName || "Unknown Patient"
+        )}
+        </div>
+
+        <div class="sub-text">
+        ${escapeHtml(
+            appointment.patientId || ""
+        )}
+        </div>
+
+        </td>
+
+
+        <td>
+
+        <div class="doctor-name">
+        ${escapeHtml(
+            appointment.doctorName || "Unknown Doctor"
+        )}
+        </div>
+
+        <div class="sub-text">
+        ${escapeHtml(
+            appointment.doctorId || ""
+        )}
+        </div>
+
+        </td>
+
+
+        <td>
+        ${escapeHtml(
+            appointment.department || "—"
+        )}
+        </td>
+
+
+        <td>
+        ${formatDate(
+            appointment.date
+        )}
+        </td>
+
+
+        <td>
+        <strong>
+        ${escapeHtml(
+            appointment.time || "—"
+        )}
+        </strong>
+        </td>
+
+
+        <td>
+
+        <span class="type-badge">
+        ${escapeHtml(
+            appointment.type || "OPD"
+        )}
+        </span>
+
+        </td>
+
+
+        <td>
+        ₹${Number(
+            appointment.fee || 0
+        ).toLocaleString("en-IN")}
+        </td>
+
+
+        <td>
+
+        <span class="status ${
+            getStatusClass(
+                appointment.status
+            )
+        }">
+
+        ${escapeHtml(
+            appointment.status || "Scheduled"
+        )}
+
+        </span>
+
+        </td>
+
+
+        <td>
+
+        <div class="actions">
+
+        <button
+        class="action-btn"
+        title="View"
+        onclick="openDrawer('${appointment.id}')">
+        👁️
+        </button>
+
+        ${
+            appointment.status !== "Cancelled" &&
+            appointment.status !== "Completed"
+            ?
+            `
+
+            <button
+            class="action-btn"
+            title="Confirm"
+            onclick="quickStatus('${appointment.id}','Confirmed')">
+            ✓
+            </button>
+
+            <button
+            class="action-btn"
+            title="Cancel"
+            onclick="cancelAppointment('${appointment.id}')">
+            ×
+            </button>
+
+            `
+            :
+            ""
+        }
+
+        </div>
+
+        </td>
+
+        </tr>
+
+        `
+        ).join("");
+
+}
+
+
+/* ================= MODAL ================= */
+
+function openAppointmentModal(){
+
+    document.getElementById(
+        "appointmentOverlay"
+    ).classList.add("show");
+
+    document.getElementById(
+        "appointmentForm"
+    ).reset();
+
+    setDefaultDate();
+
+    document.getElementById(
+        "appointmentFee"
+    ).value = 500;
+
+}
+
+
+function closeAppointmentModal(){
+
+    document.getElementById(
+        "appointmentOverlay"
+    ).classList.remove("show");
+
+}
+
+
+/* ================= CREATE ================= */
+
+async function createAppointment(event){
+
+    event.preventDefault();
+
+
+    const payload = {
+
+        hospitalId:HOSPITAL_ID,
+
+        patientId:
+            document.getElementById(
+                "patientId"
+            ).value.trim(),
+
+        patientName:
+            document.getElementById(
+                "patientName"
+            ).value.trim(),
+
+        patientPhone:
+            document.getElementById(
+                "patientPhone"
+            ).value.trim(),
+
+        doctorId:
+            document.getElementById(
+                "doctorId"
+            ).value.trim(),
+
+        doctorName:
+            document.getElementById(
+                "doctorName"
+            ).value.trim(),
+
+        department:
+            document.getElementById(
+                "department"
+            ).value,
+
+        date:
+            document.getElementById(
+                "appointmentDate"
+            ).value,
+
+        time:
+            document.getElementById(
+                "appointmentTime"
+            ).value,
+
+        type:
+            document.getElementById(
+                "appointmentType"
+            ).value,
+
+        reason:
+            document.getElementById(
+                "appointmentReason"
+            ).value.trim(),
+
+        fee:
+            Number(
+                document.getElementById(
+                    "appointmentFee"
+                ).value
+            ) || 0
+
+    };
+
+
+    try{
+
+        const response = await fetch(
+            API,
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:
+                    JSON.stringify(payload)
+
+            }
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Unable to create appointment"
+            );
+
+        }
+
+
+        showToast(
+            "Appointment booked successfully"
+        );
+
+        closeAppointmentModal();
+
+        await loadAppointments();
+
+    }catch(error){
+
+        showToast(
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+FIXED DRAWER
+========================================================= */
+
+async function openDrawer(
+    appointmentId
+){
+
+    currentAppointmentId =
+        appointmentId;
+
+
+    document.getElementById(
+        "appointmentDrawer"
+    ).classList.add("show");
+
+
+    /* RESET */
+
+    setDrawerValue(
+        "drawerPatient",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerAppointmentId",
+        appointmentId
+    );
+
+    setDrawerValue(
+        "drawerDate",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerTime",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerType",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerStatus",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerDoctor",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerDepartment",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerFee",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerPayment",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerPatientId",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerPhone",
+        "Loading..."
+    );
+
+    setDrawerValue(
+        "drawerReason",
+        "Loading..."
+    );
+
+
+    try{
+
+        /*
+         IMPORTANT:
+         Backend already confirmed that response is:
+
+         {
+            success:true,
+            hospitalId:"HOSP-TEST-001",
+            appointment:{ ... }
+         }
+
+         So directly use data.appointment.
+        */
+
+        const url =
+            `${API}/${encodeURIComponent(
+                appointmentId
+            )}?hospitalId=${encodeURIComponent(
+                HOSPITAL_ID
+            )}`;
+
+
+        const response =
+            await fetch(url);
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "DRAWER API RESPONSE:",
+            data
+        );
+
+
+        if(
+            !response.ok ||
+            data.success !== true ||
+            !data.appointment
+        ){
+
+            throw new Error(
+                data.message ||
+                "Appointment details not found"
+            );
+
+        }
+
+
+        const appointment =
+            data.appointment;
+
+
+        /* PATIENT */
+
+        const patientName =
+            appointment.patientName ||
+            "Unknown Patient";
+
+
+        const initials =
+            patientName
+            .split(" ")
+            .filter(Boolean)
+            .map(
+                word =>
+                    word.charAt(0)
+            )
+            .join("")
+            .substring(0,2)
+            .toUpperCase();
+
+
+        document.getElementById(
+            "drawerAvatar"
+        ).textContent =
+            initials || "P";
+
+
+        document.getElementById(
+            "drawerPatient"
+        ).textContent =
+            patientName;
+
+
+        document.getElementById(
+            "drawerAppointmentId"
+        ).textContent =
+            appointment.id ||
+            appointmentId;
+
+
+        /* APPOINTMENT */
+
+        document.getElementById(
+            "drawerDate"
+        ).textContent =
+            formatDate(
+                appointment.date
+            );
+
+
+        document.getElementById(
+            "drawerTime"
+        ).textContent =
+            appointment.time ||
+            "—";
+
+
+        document.getElementById(
+            "drawerType"
+        ).textContent =
+            appointment.type ||
+            "—";
+
+
+        document.getElementById(
+            "drawerStatus"
+        ).textContent =
+            appointment.status ||
+            "—";
+
+
+        document.getElementById(
+            "drawerDoctor"
+        ).textContent =
+            appointment.doctorName ||
+            "—";
+
+
+        document.getElementById(
+            "drawerDepartment"
+        ).textContent =
+            appointment.department ||
+            "—";
+
+
+        document.getElementById(
+            "drawerFee"
+        ).textContent =
+            `₹${Number(
+                appointment.fee || 0
+            ).toLocaleString("en-IN")}`;
+
+
+        /* PAYMENT */
+
+        const payment =
+            appointment.payment || {};
+
+
+        document.getElementById(
+            "drawerPayment"
+        ).textContent =
+            payment.status
+            ? `${payment.status} • Due ₹${Number(
+                payment.dueAmount || 0
+            ).toLocaleString("en-IN")}`
+            : "Pending";
+
+
+        /* PATIENT */
+
+        document.getElementById(
+            "drawerPatientId"
+        ).textContent =
+            appointment.patientId ||
+            "—";
+
+
+        document.getElementById(
+            "drawerPhone"
+        ).textContent =
+            appointment.patientPhone ||
+            "—";
+
+
+        /* REASON */
+
+        document.getElementById(
+            "drawerReason"
+        ).textContent =
+            appointment.reason ||
+            "No reason provided";
+
+
+        console.log(
+            "DRAWER FILLED:",
+            appointment
+        );
+
+
+    }catch(error){
+
+        console.error(
+            "Appointment drawer error:",
+            error
+        );
+
+
+        showToast(
+            error.message,
+            true
+        );
+
+
+        setDrawerValue(
+            "drawerPatient",
+            "Unable to load"
+        );
+
+        setDrawerValue(
+            "drawerReason",
+            error.message
+        );
+
+    }
+
+}
+
+
+/* ================= DRAWER HELPER ================= */
+
+function setDrawerValue(
+    id,
+    value
+){
+
+    const element =
+        document.getElementById(id);
+
+    if(element){
+        element.textContent =
+            value;
+    }
+
+}
+
+
+/* ================= CLOSE DRAWER ================= */
+
+function closeDrawer(){
+
+    document.getElementById(
+        "appointmentDrawer"
+    ).classList.remove("show");
+
+    currentAppointmentId =
+        null;
+
+}
+
+
+/* ================= STATUS ================= */
+
+async function quickStatus(
+    appointmentId,
+    status
+){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/${encodeURIComponent(
+                    appointmentId
+                )}/status?hospitalId=${HOSPITAL_ID}`,
+                {
+
+                    method:"PATCH",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            status
+                        })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Unable to update status"
+            );
+
+        }
+
+
+        showToast(
+            `Appointment marked ${status}`
+        );
+
+
+        await loadAppointments();
+
+
+        if(
+            currentAppointmentId ===
+            appointmentId
+        ){
+
+            await openDrawer(
+                appointmentId
+            );
+
+        }
+
+    }catch(error){
+
+        showToast(
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+function changeCurrentStatus(
+    status
+){
+
+    if(!currentAppointmentId)
+        return;
+
+    quickStatus(
+        currentAppointmentId,
+        status
+    );
+
+}
+
+
+/* ================= CANCEL ================= */
+
+async function cancelAppointment(
+    appointmentId
+){
+
+    try{
+
+        const response =
+            await fetch(
+                `${API}/${encodeURIComponent(
+                    appointmentId
+                )}?hospitalId=${HOSPITAL_ID}`,
+                {
+                    method:"DELETE"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.message ||
+                "Unable to cancel appointment"
+            );
+
+        }
+
+
+        showToast(
+            "Appointment cancelled"
+        );
+
+
+        await loadAppointments();
+
+
+        if(
+            currentAppointmentId ===
+            appointmentId
+        ){
+
+            closeDrawer();
+
+        }
+
+    }catch(error){
+
+        showToast(
+            error.message,
+            true
+        );
+
+    }
+
+}
+
+
+function cancelCurrentAppointment(){
+
+    if(!currentAppointmentId)
+        return;
+
+    cancelAppointment(
+        currentAppointmentId
+    );
+
+}
+
+
+/* ================= CONSULTATION ================= */
+
+function startConsultation(){
+
+    if(!currentAppointmentId)
+        return;
+
+    quickStatus(
+        currentAppointmentId,
+        "In Consultation"
+    );
+
+}
+
+
+/* ================= STATUS CLASS ================= */
+
+function getStatusClass(
+    status
+){
+
+    switch(status){
+
+        case "Confirmed":
+            return "status-confirmed";
+
+        case "Waiting":
+            return "status-waiting";
+
+        case "In Consultation":
+            return "status-consult";
+
+        case "Completed":
+            return "status-completed";
+
+        case "Cancelled":
+            return "status-cancelled";
+
+        case "No Show":
+            return "status-noshow";
+
+        default:
+            return "status-scheduled";
+
+    }
+
+}
+
+
+/* ================= DATE ================= */
+
+function formatDate(date){
+
+    if(!date)
+        return "—";
+
+    const parts =
+        String(date).split("-");
+
+
+    if(parts.length !== 3)
+        return date;
+
+
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+}
+
+
+/* ================= ESCAPE ================= */
+
+function escapeHtml(value){
+
+    return String(
+        value ?? ""
+    )
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* ================= TOAST ================= */
+
+let toastTimer;
+
+function showToast(
+    message,
+    error=false
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.classList.toggle(
+        "error",
+        error
+    );
+
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+/* ================= KEYBOARD ================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key ===
+            "Escape"
+        ){
+
+            closeAppointmentModal();
+            closeDrawer();
+
+        }
+
+    }
+);
+
+
+/* ================= OVERLAY ================= */
+
+document.getElementById(
+    "appointmentOverlay"
+).addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target.id ===
+            "appointmentOverlay"
+        ){
+
+            closeAppointmentModal();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
