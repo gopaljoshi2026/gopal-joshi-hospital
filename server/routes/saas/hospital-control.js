@@ -255,9 +255,7 @@ router.get(
             platform:
                 db.system ||
                 {},
-            modules:
-                db.modules ||
-                []
+            modules: HOSPITALOS_MODULES
         });
     }
 );
@@ -728,5 +726,6 @@ router.post(
 );
 
 module.exports = router;
+
 
 
