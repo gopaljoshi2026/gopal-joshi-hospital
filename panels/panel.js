@@ -37,9 +37,7 @@ const title =
     "Hospital Panel";
 
 const token =
-    localStorage.getItem(
-        "hospital_token"
-    );
+    localStorage.getItem("hospitalos_token") || localStorage.getItem("hospital_token");
 
 function esc(value){
     return String(value ?? "")
@@ -173,9 +171,7 @@ async function(){
 };
 
 function logout(){
-    localStorage.clear();
-    location.href =
-        location.pathname;
+    localStorage.removeItem("hospitalos_token"); localStorage.removeItem("hospitalos_user"); localStorage.removeItem("hospitalos_hospital"); localStorage.removeItem("hospitalos_subscription"); localStorage.removeItem("hospitalos_stats"); localStorage.removeItem("hospital_token"); localStorage.removeItem("hospital_user"); location.href = "/hospital-admin/";
 }
 
 function sideModules(){
@@ -209,9 +205,7 @@ function render(){
 
     const user =
         JSON.parse(
-            localStorage.getItem(
-                "hospital_user"
-            ) || "{}"
+            localStorage.getItem("hospitalos_user") || localStorage.getItem("hospital_user") || "{}"
         );
 
     document.body.innerHTML = `
@@ -444,3 +438,4 @@ async function boot(){
 boot();
 
 })();
+
