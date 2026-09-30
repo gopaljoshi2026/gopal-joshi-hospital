@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -521,22 +521,22 @@
         <div class="menu">
 
             <a href="index.html" class="active">
-                <b>⌂</b>
+                <b>âŒ‚</b>
                 <span>Command Center</span>
             </a>
 
             <a href="patients.html">
-                <b>♙</b>
+                <b>â™™</b>
                 <span>Patients</span>
             </a>
 
             <a href="appointments.html">
-                <b>▣</b>
+                <b>â–£</b>
                 <span>Appointments</span>
             </a>
 
             <a href="consultation.html">
-                <b>✚</b>
+                <b>âœš</b>
                 <span>Consultation</span>
             </a>
 
@@ -547,32 +547,32 @@
         <div class="menu">
 
             <a href="../doctor/index.html">
-                <b>⚕</b>
+                <b>âš•</b>
                 <span>Doctors</span>
             </a>
 
             <a href="../nurse/index.html">
-                <b>♟</b>
+                <b>â™Ÿ</b>
                 <span>Nurses</span>
             </a>
 
             <a href="../beds/index.html">
-                <b>▦</b>
+                <b>â–¦</b>
                 <span>Beds & IPD</span>
             </a>
 
             <a href="../laboratory/index.html">
-                <b>⚗</b>
+                <b>âš—</b>
                 <span>Laboratory</span>
             </a>
 
             <a href="../pharmacy/index.html">
-                <b>▤</b>
+                <b>â–¤</b>
                 <span>Pharmacy</span>
             </a>
 
             <a href="../ambulance/index.html">
-                <b>🚑</b>
+                <b>ðŸš‘</b>
                 <span>Ambulance</span>
             </a>
 
@@ -583,12 +583,12 @@
         <div class="menu">
 
             <a href="#">
-                <b>₹</b>
+                <b>â‚¹</b>
                 <span>Billing</span>
             </a>
 
             <a href="#">
-                <b>▤</b>
+                <b>â–¤</b>
                 <span>Reports</span>
             </a>
 
@@ -598,7 +598,7 @@
 
             <div class="menu">
                 <a href="#" onclick="logout()">
-                    <b>↪</b>
+                    <b>â†ª</b>
                     <span>Logout</span>
                 </a>
             </div>
@@ -650,7 +650,7 @@
                 </div>
 
                 <div class="status" id="hospitalStatus">
-                    ● ACTIVE
+                    â— ACTIVE
                 </div>
 
             </div>
@@ -664,7 +664,7 @@
 
                     <div class="stat-top">
                         <span class="stat-title">Total Patients</span>
-                        <div class="stat-icon">♙</div>
+                        <div class="stat-icon">â™™</div>
                     </div>
 
                     <h2 id="patients">0</h2>
@@ -677,7 +677,7 @@
 
                     <div class="stat-top">
                         <span class="stat-title">Doctors</span>
-                        <div class="stat-icon">⚕</div>
+                        <div class="stat-icon">âš•</div>
                     </div>
 
                     <h2 id="doctors">0</h2>
@@ -690,7 +690,7 @@
 
                     <div class="stat-top">
                         <span class="stat-title">Today's Appointments</span>
-                        <div class="stat-icon">▣</div>
+                        <div class="stat-icon">â–£</div>
                     </div>
 
                     <h2 id="appointments">0</h2>
@@ -703,10 +703,10 @@
 
                     <div class="stat-top">
                         <span class="stat-title">Today's Revenue</span>
-                        <div class="stat-icon">₹</div>
+                        <div class="stat-icon">â‚¹</div>
                     </div>
 
-                    <h2 id="revenue">₹0</h2>
+                    <h2 id="revenue">â‚¹0</h2>
                     <small>Collected today</small>
 
                 </div>
@@ -828,25 +828,25 @@
                 <div class="actions">
 
                     <a href="patients.html" class="action">
-                        <div class="action-icon">♙</div>
+                        <div class="action-icon">â™™</div>
                         <strong>Register Patient</strong>
                         <span>Add new patient</span>
                     </a>
 
                     <a href="appointments.html" class="action">
-                        <div class="action-icon">▣</div>
+                        <div class="action-icon">â–£</div>
                         <strong>New Appointment</strong>
                         <span>Book OPD appointment</span>
                     </a>
 
                     <a href="consultation.html" class="action">
-                        <div class="action-icon">⚕</div>
+                        <div class="action-icon">âš•</div>
                         <strong>Consultation</strong>
                         <span>Start doctor consultation</span>
                     </a>
 
                     <a href="../beds/index.html" class="action">
-                        <div class="action-icon">▦</div>
+                        <div class="action-icon">â–¦</div>
                         <strong>Manage Beds</strong>
                         <span>View IPD beds</span>
                     </a>
@@ -873,12 +873,12 @@
                     </div>
 
                     <div class="operation">
-                        <strong id="pendingBilling">₹0</strong>
+                        <strong id="pendingBilling">â‚¹0</strong>
                         <span>Pending Amount</span>
                     </div>
 
                     <div class="operation">
-                        <strong id="todayRevenue2">₹0</strong>
+                        <strong id="todayRevenue2">â‚¹0</strong>
                         <span>Today's Revenue</span>
                     </div>
 
@@ -901,7 +901,7 @@
 <script>
 
 const API =
-    "http://localhost:5000/api/saas/command-center/dashboard";
+    "/api/saas/command-center/dashboard";
 
 const HOSPITAL_ID =
     "HOSP-TEST-001";
@@ -909,7 +909,7 @@ const HOSPITAL_ID =
 
 function money(value) {
 
-    return "₹" + Number(value || 0).toLocaleString("en-IN");
+    return "â‚¹" + Number(value || 0).toLocaleString("en-IN");
 
 }
 
@@ -954,7 +954,7 @@ async function loadDashboard() {
 
                 <div class="alert-message">
                     Backend server check karo:
-                    http://localhost:5000
+                    
                 </div>
             </div>
         `;
@@ -992,8 +992,8 @@ function updateDashboard(data) {
 
     document.getElementById("hospitalStatus").textContent =
         hospital.status === "active"
-            ? "● ACTIVE"
-            : "● " + String(hospital.status || "UNKNOWN").toUpperCase();
+            ? "â— ACTIVE"
+            : "â— " + String(hospital.status || "UNKNOWN").toUpperCase();
 
 
     /* STATS */
@@ -1111,7 +1111,7 @@ function renderAlerts(alerts) {
 
         container.innerHTML = `
             <div class="no-alert">
-                ✓ No critical alerts right now
+                âœ“ No critical alerts right now
             </div>
         `;
 

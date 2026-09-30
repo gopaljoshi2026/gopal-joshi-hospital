@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -633,22 +633,22 @@ button{
         <nav class="nav">
 
             <a href="index.html">
-                <b>⌂</b>
+                <b>âŒ‚</b>
                 <span>Command Center</span>
             </a>
 
             <a href="patients.html">
-                <b>♙</b>
+                <b>â™™</b>
                 <span>Patients</span>
             </a>
 
             <a href="appointments.html">
-                <b>▣</b>
+                <b>â–£</b>
                 <span>Appointments</span>
             </a>
 
             <a href="consultation.html" class="active">
-                <b>✚</b>
+                <b>âœš</b>
                 <span>Consultation</span>
             </a>
 
@@ -659,32 +659,32 @@ button{
         <nav class="nav">
 
             <a href="../doctor/index.html">
-                <b>⚕</b>
+                <b>âš•</b>
                 <span>Doctors</span>
             </a>
 
             <a href="../nurse/index.html">
-                <b>♟</b>
+                <b>â™Ÿ</b>
                 <span>Nurses</span>
             </a>
 
             <a href="../beds/index.html">
-                <b>▦</b>
+                <b>â–¦</b>
                 <span>Beds & IPD</span>
             </a>
 
             <a href="../laboratory/index.html">
-                <b>⚗</b>
+                <b>âš—</b>
                 <span>Laboratory</span>
             </a>
 
             <a href="../pharmacy/index.html">
-                <b>▤</b>
+                <b>â–¤</b>
                 <span>Pharmacy</span>
             </a>
 
             <a href="../ambulance/index.html">
-                <b>🚑</b>
+                <b>ðŸš‘</b>
                 <span>Ambulance</span>
             </a>
 
@@ -695,12 +695,12 @@ button{
         <nav class="nav">
 
             <a href="#">
-                <b>₹</b>
+                <b>â‚¹</b>
                 <span>Billing</span>
             </a>
 
             <a href="#">
-                <b>▤</b>
+                <b>â–¤</b>
                 <span>Reports</span>
             </a>
 
@@ -761,22 +761,22 @@ button{
 
                     <div class="meta">
                         <strong>Age:</strong>
-                        <span id="patientAge">—</span>
+                        <span id="patientAge">â€”</span>
                     </div>
 
                     <div class="meta">
                         <strong>Gender:</strong>
-                        <span id="patientGender">—</span>
+                        <span id="patientGender">â€”</span>
                     </div>
 
                     <div class="meta">
                         <strong>Blood:</strong>
-                        <span id="patientBlood">—</span>
+                        <span id="patientBlood">â€”</span>
                     </div>
 
                     <div class="meta">
                         <strong>Phone:</strong>
-                        <span id="patientPhone">—</span>
+                        <span id="patientPhone">â€”</span>
                     </div>
 
                 </div>
@@ -804,42 +804,42 @@ button{
 
                                 <div class="selected-row">
                                     <span>Appointment ID</span>
-                                    <strong id="selectedId">—</strong>
+                                    <strong id="selectedId">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Doctor</span>
-                                    <strong id="selectedDoctor">—</strong>
+                                    <strong id="selectedDoctor">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Department</span>
-                                    <strong id="selectedDepartment">—</strong>
+                                    <strong id="selectedDepartment">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Date</span>
-                                    <strong id="selectedDate">—</strong>
+                                    <strong id="selectedDate">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Time</span>
-                                    <strong id="selectedTime">—</strong>
+                                    <strong id="selectedTime">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Visit Type</span>
-                                    <strong id="selectedType">—</strong>
+                                    <strong id="selectedType">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Reason</span>
-                                    <strong id="selectedReason">—</strong>
+                                    <strong id="selectedReason">â€”</strong>
                                 </div>
 
                                 <div class="selected-row">
                                     <span>Fee</span>
-                                    <strong id="selectedFee">₹0</strong>
+                                    <strong id="selectedFee">â‚¹0</strong>
                                 </div>
 
                             </div>
@@ -867,7 +867,7 @@ button{
                                     <input
                                         id="temperature"
                                         type="text"
-                                        placeholder="e.g. 98.6 °F">
+                                        placeholder="e.g. 98.6 Â°F">
                                 </div>
 
                                 <div class="field">
@@ -887,7 +887,7 @@ button{
                                 </div>
 
                                 <div class="field">
-                                    <label>SpO₂</label>
+                                    <label>SpOâ‚‚</label>
                                     <input
                                         id="spo2"
                                         type="text"
@@ -1167,10 +1167,10 @@ button{
 <script>
 
 const API =
-    "http://localhost:5000/api/appointments";
+    "/api/appointments";
 
 const PATIENT_API =
-    "http://localhost:5000/api/saas/patients";
+    "/api/saas/patients";
 
 const HOSPITAL_ID =
     "HOSP-TEST-001";
@@ -1199,7 +1199,7 @@ function escapeHTML(value){
 
 function money(value){
 
-    return "₹" +
+    return "â‚¹" +
         Number(value || 0)
         .toLocaleString("en-IN");
 
@@ -1395,11 +1395,11 @@ function renderAppointments(){
                     <div class="ap-info">
 
                         ${escapeHTML(
-                            item.date || "—"
+                            item.date || "â€”"
                         )}
-                        •
+                        â€¢
                         ${escapeHTML(
-                            item.time || "—"
+                            item.time || "â€”"
                         )}
 
                         <br>
@@ -1568,31 +1568,31 @@ function fillPatient(patient){
     document.getElementById(
         "patientId"
     ).textContent =
-        `UHID: ${patient.uhid || patient.id || selectedAppointment.patientId || "—"}`;
+        `UHID: ${patient.uhid || patient.id || selectedAppointment.patientId || "â€”"}`;
 
     document.getElementById(
         "patientAge"
     ).textContent =
         patient.age ||
         calculateAge(patient.dateOfBirth) ||
-        "—";
+        "â€”";
 
     document.getElementById(
         "patientGender"
     ).textContent =
-        patient.gender || "—";
+        patient.gender || "â€”";
 
     document.getElementById(
         "patientBlood"
     ).textContent =
-        patient.bloodGroup || "—";
+        patient.bloodGroup || "â€”";
 
     document.getElementById(
         "patientPhone"
     ).textContent =
         patient.phone ||
         selectedAppointment.patientPhone ||
-        "—";
+        "â€”";
 
     document.getElementById(
         "patientAvatar"
@@ -1616,27 +1616,27 @@ function fillPatientFallback(){
     document.getElementById(
         "patientId"
     ).textContent =
-        `Patient ID: ${selectedAppointment?.patientId || "—"}`;
+        `Patient ID: ${selectedAppointment?.patientId || "â€”"}`;
 
     document.getElementById(
         "patientAge"
     ).textContent =
-        "—";
+        "â€”";
 
     document.getElementById(
         "patientGender"
     ).textContent =
-        "—";
+        "â€”";
 
     document.getElementById(
         "patientBlood"
     ).textContent =
-        "—";
+        "â€”";
 
     document.getElementById(
         "patientPhone"
     ).textContent =
-        selectedAppointment?.patientPhone || "—";
+        selectedAppointment?.patientPhone || "â€”";
 
     document.getElementById(
         "patientAvatar"
@@ -1701,27 +1701,27 @@ function fillAppointment(){
     document.getElementById(
         "selectedId"
     ).textContent =
-        a.id || "—";
+        a.id || "â€”";
 
     document.getElementById(
         "selectedDoctor"
     ).textContent =
-        a.doctorName || "—";
+        a.doctorName || "â€”";
 
     document.getElementById(
         "selectedDepartment"
     ).textContent =
-        a.department || "—";
+        a.department || "â€”";
 
     document.getElementById(
         "selectedDate"
     ).textContent =
-        a.date || "—";
+        a.date || "â€”";
 
     document.getElementById(
         "selectedTime"
     ).textContent =
-        a.time || "—";
+        a.time || "â€”";
 
     document.getElementById(
         "selectedType"
@@ -1731,7 +1731,7 @@ function fillAppointment(){
     document.getElementById(
         "selectedReason"
     ).textContent =
-        a.reason || "—";
+        a.reason || "â€”";
 
     document.getElementById(
         "selectedFee"
@@ -1842,7 +1842,7 @@ function renderMedicines(){
                             type="button"
                             class="remove-med"
                             onclick="removeMedicine(${index})">
-                            ×
+                            Ã—
                         </button>
 
                     </div>

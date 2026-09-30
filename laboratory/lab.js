@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+﻿const API_BASE = "/api";
 
 let labRequests = [];
 
@@ -100,7 +100,7 @@ async function loadLabData() {
         console.error(error);
 
         showToast(
-            "Laboratory API connect nahi ho rahi. Check localhost:5000."
+            "Laboratory API connect nahi ho rahi. Check the HospitalOS backend connection."
         );
     }
 }
@@ -615,7 +615,7 @@ async function collectSample(id) {
         }
 
 
-        showToast("Sample collected successfully ✅");
+        showToast("Sample collected successfully âœ…");
 
         await loadLabData();
 
@@ -656,7 +656,7 @@ async function startProcessing(id) {
         }
 
 
-        showToast("Test processing started ⚙️");
+        showToast("Test processing started âš™ï¸");
 
         await loadLabData();
 
@@ -800,7 +800,7 @@ async function submitReport(event) {
         closeReportModal();
 
         showToast(
-            "Laboratory report completed successfully ✅"
+            "Laboratory report completed successfully âœ…"
         );
 
 

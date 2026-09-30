@@ -1,10 +1,10 @@
-/* =========================================================
+﻿/* =========================================================
    GOPAL JOSHI HOSPITAL
    PHARMACY MANAGEMENT SYSTEM
    VERSION: PHASE 1 - INVENTORY CORE
 ========================================================= */
 
-const API = "http://localhost:5000/api/pharmacy";
+const API = "/api/pharmacy";
 const HOSPITAL_ID = "HOSP-TEST-001";
 
 let medicines = [];
@@ -13,7 +13,7 @@ let inventoryTransactions = [];
 let selectedStockMedicineId = null;
 let selectedEditMedicineId = null;
 let prescriptions = [];
-const CONSULTATION_API = "http://localhost:5000/api/consultations";
+const CONSULTATION_API = "/api/consultations";
 
 
 /* =========================================================
@@ -25,7 +25,7 @@ function $(id) {
 }
 
 function money(value) {
-    return "₹" + Number(value || 0).toFixed(2);
+    return "â‚¹" + Number(value || 0).toFixed(2);
 }
 
 function formatDate(value) {
@@ -385,7 +385,7 @@ function renderPrescriptionQueue() {
 
         container.innerHTML = `
             <div class="empty">
-                💊 No pending doctor prescriptions found.
+                ðŸ’Š No pending doctor prescriptions found.
             </div>
         `;
 
@@ -507,7 +507,7 @@ function renderPrescriptionQueue() {
                                                             )}
                                                         </strong>
 
-                                                        × ${qty}
+                                                        Ã— ${qty}
 
                                                         ${
                                                             medicine
@@ -755,31 +755,31 @@ async function updateDashboard(error = false) {
     if (error) {
 
         if ($("totalMedicines"))
-            $("totalMedicines").textContent = "—";
+            $("totalMedicines").textContent = "â€”";
 
         if ($("inventoryCount"))
-            $("inventoryCount").textContent = "—";
+            $("inventoryCount").textContent = "â€”";
 
         if ($("lowStockCount"))
-            $("lowStockCount").textContent = "—";
+            $("lowStockCount").textContent = "â€”";
 
         if ($("dispensedCount"))
-            $("dispensedCount").textContent = "—";
+            $("dispensedCount").textContent = "â€”";
 
         if ($("inventoryValue"))
-            $("inventoryValue").textContent = "—";
+            $("inventoryValue").textContent = "â€”";
 
         if ($("expiringCount"))
-            $("expiringCount").textContent = "—";
+            $("expiringCount").textContent = "â€”";
 
         if ($("expiredCount"))
-            $("expiredCount").textContent = "—";
+            $("expiredCount").textContent = "â€”";
 
         if ($("todaySalesCount"))
-            $("todaySalesCount").textContent = "—";
+            $("todaySalesCount").textContent = "â€”";
 
         if ($("todaySalesAmount"))
-            $("todaySalesAmount").textContent = "—";
+            $("todaySalesAmount").textContent = "â€”";
 
         return;
     }
@@ -855,7 +855,7 @@ async function updateDashboard(error = false) {
 
 
         console.log(
-            "✓ Pharmacy dashboard summary loaded:",
+            "âœ“ Pharmacy dashboard summary loaded:",
             summary
         );
 
@@ -967,7 +967,7 @@ function renderDashboardSearch() {
             <div class="empty">
 
                 <div class="empty-icon">
-                    💊
+                    ðŸ’Š
                 </div>
 
                 Search for a medicine
@@ -1135,7 +1135,7 @@ function searchMedicines() {
             <div class="empty">
 
                 <div class="empty-icon">
-                    💊
+                    ðŸ’Š
                 </div>
 
                 No medicines found.
@@ -1241,7 +1241,7 @@ function searchMedicines() {
                                                 margin-top:10px;
                                             "
                                         >
-                                            ⚠ Expired
+                                            âš  Expired
                                         </span>
                                       `
                                     :
@@ -1256,7 +1256,7 @@ function searchMedicines() {
                                                 margin-top:10px;
                                             "
                                         >
-                                            ⚠ Low Stock
+                                            âš  Low Stock
                                         </span>
                                       `
                                     : `
@@ -1269,7 +1269,7 @@ function searchMedicines() {
                                                 margin-top:10px;
                                             "
                                         >
-                                            ✓ Available
+                                            âœ“ Available
                                         </span>
                                       `
                             }
@@ -1425,7 +1425,7 @@ function populateMedicineDropdowns() {
                 medicine.id;
 
             option.textContent =
-                `${medicine.name} — Stock: ${medicine.stock}`;
+                `${medicine.name} â€” Stock: ${medicine.stock}`;
 
             select.appendChild(option);
 
@@ -1466,7 +1466,7 @@ function addPrescriptionControls() {
             "gjPrescriptionNavButton";
 
         button.textContent =
-            "💊 Prescriptions";
+            "ðŸ’Š Prescriptions";
 
         button.onclick =
             function() {
@@ -1506,7 +1506,7 @@ function addPrescriptionControls() {
                 <div>
 
                     <h2>
-                        💊 Doctor Prescriptions
+                        ðŸ’Š Doctor Prescriptions
                     </h2>
 
                     <p>
@@ -1573,7 +1573,7 @@ function addInventoryControls() {
             "btn btn-primary";
 
         button.textContent =
-            "＋ Add Medicine";
+            "ï¼‹ Add Medicine";
 
         button.style.marginBottom =
             "15px";
@@ -1619,7 +1619,7 @@ function addInventoryControls() {
             >
 
                 <h3>
-                    📜 Inventory History
+                    ðŸ“œ Inventory History
                 </h3>
 
                 <button
@@ -1757,7 +1757,7 @@ function createMedicineFormModal(
                             )
                         "
                     >
-                        ✕
+                        âœ•
                     </button>
 
                 </div>
@@ -1955,7 +1955,7 @@ function createMedicineFormModal(
         );
     }
     /* =========================================================
-   MEDICINE FORM — FILL DATA
+   MEDICINE FORM â€” FILL DATA
 ========================================================= */
 
     $("gjMedicineFormTitle").textContent =
@@ -2399,7 +2399,7 @@ function openMedicineModal(
                 <div>
 
                     <h2>
-                        💊 ${escapeHtml(
+                        ðŸ’Š ${escapeHtml(
                             medicine.name
                         )}
                     </h2>
@@ -2422,7 +2422,7 @@ function openMedicineModal(
                         )
                     "
                 >
-                    ✕
+                    âœ•
                 </button>
 
             </div>
@@ -2652,7 +2652,7 @@ function openMedicineModal(
                         )
                     "
                 >
-                    ✏ Edit
+                    âœ Edit
                 </button>
 
 
@@ -2682,7 +2682,7 @@ function openMedicineModal(
                         )
                     "
                 >
-                    − Stock
+                    âˆ’ Stock
                 </button>
 
             </div>
@@ -2760,7 +2760,7 @@ function openStockModal(
             >
 
                 <h2>
-                    📦 Stock In
+                    ðŸ“¦ Stock In
                 </h2>
 
                 <button
@@ -2771,7 +2771,7 @@ function openStockModal(
                         )
                     "
                 >
-                    ✕
+                    âœ•
                 </button>
 
             </div>
@@ -2936,7 +2936,7 @@ function openStockOutModal(
             >
 
                 <h2>
-                    📤 Stock Out
+                    ðŸ“¤ Stock Out
                 </h2>
 
                 <button
@@ -2947,7 +2947,7 @@ function openStockOutModal(
                         )
                     "
                 >
-                    ✕
+                    âœ•
                 </button>
 
             </div>
@@ -3386,7 +3386,7 @@ function renderInventoryHistory() {
 
         container.innerHTML = `
             <div class="empty">
-                📜 No inventory transactions found.
+                ðŸ“œ No inventory transactions found.
             </div>
         `;
 
@@ -4005,7 +4005,7 @@ function renderDispensingRecords() {
                                     medicine
                                 )}
 
-                                ×
+                                Ã—
 
                                 ${Number(
                                     sale.quantity || 0
@@ -4233,7 +4233,7 @@ async function createBill() {
 
         const response =
             await fetch(
-                "http://localhost:5000/api/billing",
+                "/api/billing",
                 {
                     method: "POST",
 
@@ -4320,7 +4320,7 @@ async function createBill() {
 
 
         console.log(
-            "✓ Bill saved to backend:",
+            "âœ“ Bill saved to backend:",
             bill
         );
 
@@ -4353,7 +4353,7 @@ async function loadBills() {
 
         const response =
             await fetch(
-                `http://localhost:5000/api/billing?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
+                `/api/billing?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
             );
 
         const data =
@@ -4376,7 +4376,7 @@ async function loadBills() {
                 : [];
 
         console.log(
-            "✓ Backend bills loaded:",
+            "âœ“ Backend bills loaded:",
             bills
         );
 
@@ -4441,7 +4441,7 @@ function renderBills() {
                     const quantity =
                         Number(item.quantity || 0);
 
-                    return `${medicineName} × ${quantity}`;
+                    return `${medicineName} Ã— ${quantity}`;
 
                 })
                 .join("<br>");
@@ -4450,7 +4450,7 @@ function renderBills() {
 
             medicineText = `
                 ${escapeHtml(bill.medicineName)}
-                ×
+                Ã—
                 ${Number(bill.quantity || 0)}
             `;
         }
@@ -4516,7 +4516,7 @@ function renderBills() {
                 >
 
                     <strong style="font-size:17px;">
-                        ₹${total.toFixed(2)}
+                        â‚¹${total.toFixed(2)}
                     </strong>
 
                     <br>
@@ -4810,14 +4810,14 @@ function addBillingControls() {
         >
 
             <h3>
-                🧾 Generated Bills
+                ðŸ§¾ Generated Bills
             </h3>
 
             <button
                 class="btn btn-light"
                 onclick="loadBills()"
             >
-                ↻ Refresh
+                â†» Refresh
             </button>
 
         </div>
@@ -4877,12 +4877,12 @@ function setupBillingListeners() {
 
 async function renderAlerts() {
 
-    console.log("🔥 renderAlerts STARTED");
+    console.log("ðŸ”¥ renderAlerts STARTED");
 
 const container = $("allAlerts");
 
     if (!container) {
-        console.error("❌ allAlerts element nahi mila");
+        console.error("âŒ allAlerts element nahi mila");
         return;
     }
 
@@ -4894,31 +4894,31 @@ const container = $("allAlerts");
 
     try {
 
-        console.log("🔎 Checking Low Stock API...");
+        console.log("ðŸ”Ž Checking Low Stock API...");
 
         const lowStockResponse = await apiRequest(
             `${API}/alerts/low-stock?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
         );
 
-        console.log("✓ Low Stock API:", lowStockResponse);
+        console.log("âœ“ Low Stock API:", lowStockResponse);
 
 
-        console.log("🔎 Checking Expiry API...");
+        console.log("ðŸ”Ž Checking Expiry API...");
 
         const expiryResponse = await apiRequest(
             `${API}/alerts/expiry?hospitalId=${encodeURIComponent(HOSPITAL_ID)}&days=30`
         );
 
-        console.log("✓ Expiry API:", expiryResponse);
+        console.log("âœ“ Expiry API:", expiryResponse);
 
 
-        console.log("🔎 Checking Expired API...");
+        console.log("ðŸ”Ž Checking Expired API...");
 
         const expiredResponse = await apiRequest(
             `${API}/alerts/expired?hospitalId=${encodeURIComponent(HOSPITAL_ID)}`
         );
 
-        console.log("✓ Expired API:", expiredResponse);
+        console.log("âœ“ Expired API:", expiredResponse);
 
 
         const alerts = [];
@@ -4990,7 +4990,7 @@ const container = $("allAlerts");
         });
 
 
-        console.log("✓ Final alerts:", alerts);
+        console.log("âœ“ Final alerts:", alerts);
 
 
         /* =========================
@@ -5001,7 +5001,7 @@ const container = $("allAlerts");
 
             container.innerHTML = `
                 <div class="empty">
-                    <div class="empty-icon">✓</div>
+                    <div class="empty-icon">âœ“</div>
                     No active pharmacy alerts.
                 </div>
             `;
@@ -5063,20 +5063,20 @@ const container = $("allAlerts");
 
 
         console.log(
-            "✅ Pharmacy alerts UI rendered successfully"
+            "âœ… Pharmacy alerts UI rendered successfully"
         );
 
 
     } catch (error) {
 
         console.error(
-            "❌ Pharmacy alerts API error:",
+            "âŒ Pharmacy alerts API error:",
             error
         );
 
         container.innerHTML = `
             <div class="empty">
-                ⚠️ Pharmacy alerts load nahi ho paaye.
+                âš ï¸ Pharmacy alerts load nahi ho paaye.
                 <br>
                 <small>
                     ${escapeHtml(error.message || "Backend error")}
@@ -5622,7 +5622,7 @@ document.addEventListener(
     }
 );
 /* =========================================================
-   PART 8 — FINAL INITIALIZATION
+   PART 8 â€” FINAL INITIALIZATION
    GOPAL JOSHI HOSPITAL PHARMACY
 ========================================================= */
 
@@ -5839,7 +5839,7 @@ document.addEventListener(
             ----------------------------------------- */
 
             console.log(
-                "✓ Pharmacy module initialized successfully"
+                "âœ“ Pharmacy module initialized successfully"
             );
 
         } catch (error) {
