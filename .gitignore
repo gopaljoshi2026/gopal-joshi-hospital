@@ -1,0 +1,7 @@
+﻿server/node_modules/
+BACKUP_MASTER_*/
+BACKUP_BEFORE_MASTER_*/
+backup_master_*/
+*.log
+.env
+.env.*

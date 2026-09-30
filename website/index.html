@@ -1,129 +1,487 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HospitalOS | Complete Hospital Operating System</title>
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0"
+>
+
+<title>HospitalOS — Connected Hospital Operating System</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;color:#0f172a;background:#f8fafc}
-nav{padding:18px 7%;display:flex;justify-content:space-between;align-items:center;background:white;border-bottom:1px solid #e2e8f0}
-.logo{font-size:24px;font-weight:bold}
-.navbtn{background:#2563eb;color:white;border:0;padding:11px 17px;border-radius:8px;cursor:pointer}
-.hero{padding:85px 7%;background:linear-gradient(135deg,#eff6ff,#ffffff)}
-.hero h1{font-size:50px;max-width:850px;margin:0 0 20px}
-.hero p{font-size:19px;line-height:1.6;color:#475569;max-width:750px}
-.cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
-.btn{padding:14px 20px;border:0;border-radius:9px;cursor:pointer;font-weight:bold}
-.primary{background:#2563eb;color:white}
-.secondary{background:#0f172a;color:white}
-section{padding:65px 7%}
-h2{font-size:34px;margin-bottom:12px}
-.sub{color:#64748b;margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.card{background:white;border:1px solid #e2e8f0;border-radius:14px;padding:22px}
-.card h3{margin:10px 0}
-.card p{color:#64748b;line-height:1.5}
-.demo{background:#0f172a;color:white;border-radius:20px;padding:45px}
-footer{background:#0f172a;color:#cbd5e1;padding:35px 7%}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:38px}}
-@media(max-width:550px){.grid{grid-template-columns:1fr}.hero{padding:55px 6%}.hero h1{font-size:32px}}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:Inter,Segoe UI,Arial,sans-serif;
+background:#06111f;
+color:#f5faff;
+}
+
+nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 7%;
+border-bottom:1px solid #19304a;
+background:rgba(6,17,31,.9);
+position:sticky;
+top:0;
+z-index:10;
+}
+
+.logo{
+font-weight:900;
+font-size:21px;
+}
+
+.logo span{
+color:#39d3bd;
+}
+
+nav a{
+color:#b9cada;
+text-decoration:none;
+margin-left:20px;
+font-size:13px;
+}
+
+.btn{
+display:inline-block;
+padding:12px 17px;
+border-radius:10px;
+background:#39d3bd;
+color:#041019!important;
+font-weight:800;
+text-decoration:none;
+}
+
+.hero{
+padding:90px 7% 70px;
+display:grid;
+grid-template-columns:
+1.2fr .8fr;
+gap:50px;
+align-items:center;
+}
+
+.hero h1{
+font-size:clamp(42px,6vw,75px);
+line-height:.98;
+margin:0 0 20px;
+}
+
+.hero h1 span{
+color:#39d3bd;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.7;
+color:#9bb0c5;
+max-width:700px;
+}
+
+.hero-card{
+border:1px solid #1d3852;
+border-radius:24px;
+padding:25px;
+background:
+linear-gradient(
+145deg,
+#0d2238,
+#091725
+);
+box-shadow:0 25px 80px rgba(0,0,0,.35);
+}
+
+.fake{
+border:1px solid #27445f;
+border-radius:15px;
+padding:15px;
+margin:10px 0;
+background:#0a1929;
+}
+
+.fake b{
+display:block;
+font-size:25px;
+margin-top:5px;
+}
+
+section{
+padding:70px 7%;
+}
+
+.section-head{
+max-width:720px;
+margin-bottom:30px;
+}
+
+.section-head h2{
+font-size:38px;
+margin:0 0 10px;
+}
+
+.section-head p{
+color:#8ea4b9;
+line-height:1.7;
+}
+
+.features{
+display:grid;
+grid-template-columns:
+repeat(4,1fr);
+gap:14px;
+}
+
+.feature{
+border:1px solid #1b354d;
+border-radius:17px;
+padding:22px;
+background:#0b1b2c;
+}
+
+.feature h3{
+margin-top:0;
+}
+
+.feature p{
+color:#8ea4b9;
+font-size:13px;
+line-height:1.6;
+}
+
+.workflow{
+display:grid;
+grid-template-columns:
+repeat(7,1fr);
+gap:8px;
+}
+
+.step{
+padding:18px 10px;
+border:1px solid #1b354d;
+border-radius:12px;
+text-align:center;
+font-size:12px;
+background:#0b1b2c;
+}
+
+.security{
+background:#091a2a;
+border-top:1px solid #19344d;
+border-bottom:1px solid #19344d;
+}
+
+footer{
+padding:40px 7%;
+color:#8097ad;
+font-size:13px;
+border-top:1px solid #19304a;
+}
+
+@media(max-width:900px){
+
+.hero{
+grid-template-columns:1fr;
+}
+
+.features{
+grid-template-columns:
+repeat(2,1fr);
+}
+
+.workflow{
+grid-template-columns:
+repeat(2,1fr);
+}
+
+}
+
+@media(max-width:520px){
+
+nav{
+padding:0 5%;
+}
+
+nav div:last-child a:not(.btn){
+display:none;
+}
+
+.hero{
+padding-top:60px;
+}
+
+.features{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <nav>
- <div class="logo">HospitalOS</div>
- <button class="navbtn" onclick="location.href='/hospital-admin/login.html'">
-  Login / Live Demo
- </button>
+
+<div class="logo">
+Hospital<span>OS</span>
+</div>
+
+<div>
+<a href="#features">Features</a>
+<a href="#security">Security</a>
+<a
+class="btn"
+href="/hospital-admin/login.html"
+>
+Live Demo
+</a>
+</div>
+
 </nav>
 
-<div class="hero">
+<section class="hero">
 
- <h1>One Connected Operating System for the Entire Hospital.</h1>
+<div>
 
- <p>
- HospitalOS connects patient care, doctors, reception,
- laboratory, pharmacy, billing, IPD, emergency, inventory,
- staff, reporting and hospital administration in one platform.
- </p>
+<div
+style="
+color:#39d3bd;
+font-weight:800;
+margin-bottom:15px;
+"
+>
+CONNECTED HOSPITAL OPERATING SYSTEM
+</div>
 
- <div class="cta">
-  <button class="btn primary"
-   onclick="location.href='/hospital-admin/login.html'">
-   Start Live Demo
-  </button>
+<h1>
+One Hospital.<br>
+One <span>Operating System.</span>
+</h1>
 
-  <button class="btn secondary"
-   onclick="document.getElementById('features').scrollIntoView()">
-   Explore Platform
-  </button>
- </div>
+<p>
+HospitalOS connects patient care,
+hospital operations, departments,
+billing, pharmacy, laboratory,
+inventory, staff and security into
+one connected SaaS platform.
+</p>
+
+<a
+class="btn"
+href="/hospital-admin/login.html"
+>
+Open Live Demo →
+</a>
 
 </div>
 
+<div class="hero-card">
+
+<div class="fake">
+Command Center
+<b>24/7</b>
+<span>Operational visibility</span>
+</div>
+
+<div class="fake">
+Security Events
+<b>Real-time</b>
+<span>Audit & accountability</span>
+</div>
+
+<div class="fake">
+Modules
+<b>20+</b>
+<span>Connected hospital departments</span>
+</div>
+
+</div>
+
+</section>
+
 <section id="features">
 
- <h2>Complete Hospital Platform</h2>
+<div class="section-head">
 
- <div class="sub">
-  Designed as a connected Hospital SaaS rather than isolated department software.
- </div>
+<h2>Everything connected.</h2>
 
- <div class="grid">
+<p>
+A hospital should not have isolated software
+for every department. HospitalOS is designed
+as a connected operating layer.
+</p>
 
-  <div class="card">👤<h3>Patient Management</h3><p>Registration, records, history and patient workflow.</p></div>
-  <div class="card">🩺<h3>Doctor & Consultation</h3><p>Appointments, consultation, diagnosis and prescriptions.</p></div>
-  <div class="card">🧪<h3>Laboratory</h3><p>Orders, samples, results and reports.</p></div>
-  <div class="card">💊<h3>Pharmacy</h3><p>Medicines, prescriptions, dispensing and stock.</p></div>
-  <div class="card">💳<h3>Billing</h3><p>Charges, invoices, payments and financial records.</p></div>
-  <div class="card">🏥<h3>IPD & Beds</h3><p>Admissions, wards, occupancy and discharge.</p></div>
-  <div class="card">🚨<h3>Emergency</h3><p>Emergency cases, triage and ambulance workflow.</p></div>
-  <div class="card">📦<h3>Inventory</h3><p>Stock, suppliers, purchases and consumption.</p></div>
-  <div class="card">👥<h3>HR & Staff</h3><p>Hospital staff, departments and roles.</p></div>
-  <div class="card">🩸<h3>Blood Bank</h3><p>Blood groups, components and availability.</p></div>
-  <div class="card">📈<h3>Reports</h3><p>Operational and management analytics.</p></div>
-  <div class="card">🔐<h3>Security & Audit</h3><p>Roles, permissions and activity records.</p></div>
+</div>
 
- </div>
+<div class="features">
+
+<div class="feature">
+<h3>Command Center</h3>
+<p>
+Live operational overview with
+department-level visibility.
+</p>
+</div>
+
+<div class="feature">
+<h3>Patient Journey</h3>
+<p>
+Registration → appointment →
+consultation → treatment → billing.
+</p>
+</div>
+
+<div class="feature">
+<h3>Laboratory</h3>
+<p>
+Orders, processing, reports and
+clinical workflow integration.
+</p>
+</div>
+
+<div class="feature">
+<h3>Pharmacy</h3>
+<p>
+Prescriptions, medicines, stock
+and dispensing workflow.
+</p>
+</div>
+
+<div class="feature">
+<h3>IPD & Beds</h3>
+<p>
+Admissions, wards, beds and
+hospital occupancy visibility.
+</p>
+</div>
+
+<div class="feature">
+<h3>Billing & Accounts</h3>
+<p>
+Charges, invoices, payments and
+financial operations.
+</p>
+</div>
+
+<div class="feature">
+<h3>Inventory</h3>
+<p>
+Stock, suppliers, movements and
+department requirements.
+</p>
+</div>
+
+<div class="feature">
+<h3>Multi-Hospital SaaS</h3>
+<p>
+Designed for multiple hospitals
+with hospital-level data isolation.
+</p>
+</div>
+
+</div>
 
 </section>
 
 <section>
 
- <div class="demo">
+<div class="section-head">
+<h2>Connected patient workflow</h2>
+</div>
 
-  <h2>Hospital Command Center</h2>
+<div class="workflow">
 
-  <p>
-   See hospital operations from one screen and drill into
-   departments, records and operational activity.
-  </p>
+<div class="step">Patient</div>
+<div class="step">Appointment</div>
+<div class="step">Consultation</div>
+<div class="step">Prescription / Lab</div>
+<div class="step">Pharmacy / Lab</div>
+<div class="step">Billing</div>
+<div class="step">Completed</div>
 
-  <button class="btn primary"
-   onclick="location.href='/hospital-os/'">
-   Open Command Center Demo
-  </button>
+</div>
 
- </div>
+</section>
+
+<section
+id="security"
+class="security"
+>
+
+<div class="section-head">
+
+<h2>Security is part of the system.</h2>
+
+<p>
+Role-based access, hospital isolation,
+security events, audit trails,
+session visibility and backend controls
+are designed into the platform architecture.
+</p>
+
+</div>
+
+<div class="features">
+
+<div class="feature">
+<h3>RBAC</h3>
+<p>Role and permission based access.</p>
+</div>
+
+<div class="feature">
+<h3>Audit Trail</h3>
+<p>Track important administrative actions.</p>
+</div>
+
+<div class="feature">
+<h3>Security Center</h3>
+<p>Security events and operational signals.</p>
+</div>
+
+<div class="feature">
+<h3>Hospital Isolation</h3>
+<p>Hospital-aware SaaS architecture.</p>
+</div>
+
+</div>
+
+</section>
+
+<section style="text-align:center">
+
+<h2>
+See HospitalOS in action.
+</h2>
+
+<p style="color:#8ea4b9">
+Open the live demonstration environment.
+</p>
+
+<br>
+
+<a
+class="btn"
+href="/hospital-admin/login.html"
+>
+Launch Live Demo
+</a>
 
 </section>
 
 <footer>
 
- <strong>HospitalOS</strong>
-
- <p>
- Complete Hospital SaaS platform for connected hospital operations.
- </p>
-
- <button class="btn primary"
- onclick="location.href='/hospital-admin/login.html'">
- Request / Start Demo
- </button>
+HospitalOS © 2026 — Gopal Joshi Hospital SaaS Platform
 
 </footer>
 

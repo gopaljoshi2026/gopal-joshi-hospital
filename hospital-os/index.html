@@ -1,1097 +1,1443 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>HospitalOS - Hospital Operating System</title>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>HospitalOS — Hospital Operating System</title>
 
 <style>
-*{box-sizing:border-box}
 
-body{
- margin:0;
- font-family:Arial,Helvetica,sans-serif;
- background:#f1f5f9;
- color:#0f172a;
+:root{
+--bg:#07111f;
+--panel:#0d1b2d;
+--panel2:#10243a;
+--line:#20364d;
+--text:#eef6ff;
+--muted:#8fa6bb;
+--accent:#35d0ba;
+--blue:#4da3ff;
+--danger:#ff5d73;
+--warning:#ffc857;
+--shadow:0 18px 50px rgba(0,0,0,.25);
 }
 
-button,input,select,textarea{font:inherit}
+*{
+box-sizing:border-box;
+}
 
-.layout{
- display:flex;
- min-height:100vh;
+body{
+margin:0;
+font-family:Inter,Segoe UI,Arial,sans-serif;
+background:
+radial-gradient(circle at top right,#173657 0,#07111f 38%);
+color:var(--text);
+min-height:100vh;
+}
+
+.app{
+display:flex;
+min-height:100vh;
 }
 
 .sidebar{
- width:260px;
- background:#0f172a;
- color:white;
- position:fixed;
- left:0;
- top:0;
- bottom:0;
- overflow-y:auto;
- padding:20px 12px;
- z-index:10;
+width:270px;
+background:rgba(7,17,31,.96);
+border-right:1px solid var(--line);
+position:fixed;
+top:0;
+bottom:0;
+overflow:auto;
+padding:18px;
+z-index:20;
 }
 
 .brand{
- padding:10px 12px 22px;
- border-bottom:1px solid #334155;
- margin-bottom:15px;
+font-size:22px;
+font-weight:800;
+letter-spacing:.5px;
+margin-bottom:4px;
 }
 
-.brand-title{
- font-size:22px;
- font-weight:bold;
+.brand small{
+display:block;
+font-size:11px;
+font-weight:500;
+color:var(--muted);
+margin-top:4px;
 }
 
-.brand-sub{
- font-size:12px;
- color:#94a3b8;
- margin-top:5px;
+.hospital{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:14px;
+padding:13px;
+margin:20px 0;
 }
 
-.nav-title{
- color:#64748b;
- font-size:11px;
- text-transform:uppercase;
- padding:15px 12px 7px;
+.hospital strong{
+display:block;
+font-size:14px;
+}
+
+.hospital span{
+display:block;
+color:var(--muted);
+font-size:11px;
+margin-top:4px;
+}
+
+.nav{
+display:grid;
+gap:6px;
 }
 
 .nav button{
- width:100%;
- text-align:left;
- background:transparent;
- border:0;
- color:#cbd5e1;
- padding:10px 12px;
- border-radius:8px;
- cursor:pointer;
- margin:2px 0;
+border:0;
+background:transparent;
+color:#b7c8d8;
+text-align:left;
+padding:11px 12px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
 }
 
 .nav button:hover,
 .nav button.active{
- background:#1e3a8a;
- color:white;
+background:linear-gradient(
+90deg,
+rgba(53,208,186,.16),
+rgba(77,163,255,.08)
+);
+color:white;
 }
 
 .main{
- margin-left:260px;
- width:calc(100% - 260px);
- min-height:100vh;
+margin-left:270px;
+width:calc(100% - 270px);
+padding:22px;
 }
 
-.topbar{
- background:white;
- padding:15px 25px;
- border-bottom:1px solid #e2e8f0;
- display:flex;
- justify-content:space-between;
- align-items:center;
- position:sticky;
- top:0;
- z-index:5;
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px;
+margin-bottom:20px;
 }
 
-.hospital-title{
- font-weight:bold;
+.title h1{
+margin:0;
+font-size:27px;
 }
 
-.user{
- color:#64748b;
- font-size:13px;
+.title p{
+margin:5px 0 0;
+color:var(--muted);
+font-size:13px;
 }
 
-.content{
- padding:25px;
+.userbox{
+display:flex;
+align-items:center;
+gap:12px;
+background:var(--panel);
+border:1px solid var(--line);
+padding:10px 14px;
+border-radius:14px;
 }
 
-.page-title{
- font-size:27px;
- font-weight:bold;
- margin-bottom:5px;
+.avatar{
+width:38px;
+height:38px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:linear-gradient(
+135deg,
+var(--accent),
+var(--blue)
+);
+color:#04101c;
+font-weight:800;
 }
 
-.page-sub{
- color:#64748b;
- margin-bottom:22px;
+.grid{
+display:grid;
+grid-template-columns:
+repeat(5,minmax(0,1fr));
+gap:12px;
 }
 
-.stats{
- display:grid;
- grid-template-columns:repeat(5,1fr);
- gap:15px;
- margin-bottom:22px;
+.card{
+background:
+linear-gradient(
+145deg,
+rgba(16,36,58,.96),
+rgba(13,27,45,.96)
+);
+border:1px solid var(--line);
+border-radius:16px;
+padding:17px;
+box-shadow:var(--shadow);
 }
 
-.stat{
- background:white;
- border-radius:12px;
- padding:18px;
- box-shadow:0 3px 15px rgba(15,23,42,.06);
+.metric{
+font-size:28px;
+font-weight:800;
+margin-top:10px;
 }
 
-.stat-label{
- color:#64748b;
- font-size:13px;
+.label{
+font-size:12px;
+color:var(--muted);
 }
 
-.stat-value{
- font-size:27px;
- font-weight:bold;
- margin-top:8px;
+.section{
+margin-top:18px;
 }
 
-.panel{
- background:white;
- border-radius:12px;
- padding:20px;
- box-shadow:0 3px 15px rgba(15,23,42,.06);
- margin-bottom:20px;
+.section-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
 }
 
-.panel-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- margin-bottom:15px;
+.section-title h2{
+font-size:17px;
+margin:0;
 }
 
-.panel-head h2{
- margin:0;
- font-size:19px;
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
 }
 
 .btn{
- border:0;
- background:#2563eb;
- color:white;
- padding:10px 15px;
- border-radius:8px;
- cursor:pointer;
+border:1px solid var(--line);
+background:#10263d;
+color:white;
+padding:9px 13px;
+border-radius:9px;
+cursor:pointer;
 }
 
-.btn.secondary{
- background:#475569;
-}
-
-.btn.success{
- background:#059669;
+.btn.primary{
+background:var(--accent);
+color:#04101c;
+font-weight:800;
 }
 
 .btn.danger{
- background:#dc2626;
+background:rgba(255,93,115,.12);
+color:#ff9aaa;
 }
 
-.module-grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:15px;
+.modules{
+display:grid;
+grid-template-columns:
+repeat(4,minmax(0,1fr));
+gap:10px;
 }
 
 .module{
- border:1px solid #e2e8f0;
- border-radius:11px;
- padding:17px;
- cursor:pointer;
- transition:.15s;
+padding:15px;
+border-radius:13px;
+border:1px solid var(--line);
+background:#0d1b2d;
+cursor:pointer;
 }
 
 .module:hover{
- transform:translateY(-2px);
- box-shadow:0 7px 20px rgba(15,23,42,.09);
- border-color:#93c5fd;
+transform:translateY(-2px);
+border-color:#3c6383;
 }
 
-.module-icon{
- font-size:27px;
- margin-bottom:10px;
+.module b{
+display:block;
+font-size:14px;
 }
 
-.module-name{
- font-weight:bold;
-}
-
-.module-info{
- color:#64748b;
- font-size:12px;
- margin-top:5px;
- line-height:1.4;
+.module span{
+font-size:11px;
+color:var(--muted);
+display:block;
+margin-top:5px;
 }
 
 .table-wrap{
- overflow-x:auto;
+overflow:auto;
+border:1px solid var(--line);
+border-radius:14px;
 }
 
 table{
- width:100%;
- border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
+font-size:12px;
 }
 
 th,td{
- padding:11px;
- border-bottom:1px solid #e2e8f0;
- text-align:left;
- font-size:13px;
+padding:11px;
+border-bottom:1px solid var(--line);
+text-align:left;
+white-space:nowrap;
 }
 
 th{
- background:#f8fafc;
- color:#475569;
+color:#9fb5c9;
+font-weight:600;
 }
 
-.form-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:15px;
+.status{
+padding:4px 8px;
+border-radius:20px;
+background:rgba(53,208,186,.12);
+color:#74e9d8;
 }
 
-.field label{
- display:block;
- font-size:13px;
- font-weight:bold;
- margin-bottom:6px;
- color:#475569;
+.security{
+display:grid;
+grid-template-columns:
+repeat(4,minmax(0,1fr));
+gap:10px;
 }
 
-.field input,
-.field select,
-.field textarea{
- width:100%;
- padding:10px;
- border:1px solid #cbd5e1;
- border-radius:8px;
+.security .card{
+border-left:3px solid var(--accent);
 }
 
-.field textarea{
- min-height:90px;
- resize:vertical;
+.hidden{
+display:none;
 }
 
-.full{
- grid-column:1/-1;
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:100;
+padding:20px;
 }
 
 .modal{
- position:fixed;
- inset:0;
- background:rgba(15,23,42,.55);
- display:none;
- align-items:center;
- justify-content:center;
- padding:20px;
- z-index:50;
+width:min(720px,100%);
+background:#0c1b2c;
+border:1px solid var(--line);
+border-radius:18px;
+padding:20px;
 }
 
-.modal-box{
- width:100%;
- max-width:650px;
- max-height:90vh;
- overflow:auto;
- background:white;
- border-radius:15px;
- padding:22px;
-}
-
-.modal-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:20px;
-}
-
-.close{
- border:0;
- background:#e2e8f0;
- border-radius:7px;
- padding:7px 11px;
- cursor:pointer;
-}
-
-.alert{
- padding:12px;
- border-radius:8px;
- margin-bottom:15px;
- background:#eff6ff;
- color:#1e40af;
- display:none;
-}
-
-.loading{
- text-align:center;
- padding:25px;
- color:#64748b;
+input,select,textarea{
+width:100%;
+padding:11px;
+border-radius:9px;
+border:1px solid var(--line);
+background:#081522;
+color:white;
+margin:5px 0 12px;
 }
 
 @media(max-width:1100px){
- .stats{grid-template-columns:repeat(3,1fr)}
- .module-grid{grid-template-columns:repeat(3,1fr)}
+
+.grid{
+grid-template-columns:
+repeat(3,1fr);
+}
+
+.modules{
+grid-template-columns:
+repeat(3,1fr);
+}
+
+.security{
+grid-template-columns:
+repeat(2,1fr);
+}
+
 }
 
 @media(max-width:800px){
- .sidebar{
-  width:70px;
- }
- .brand-title,
- .brand-sub,
- .nav-title,
- .nav button span{
-  display:none;
- }
- .nav button{
-  text-align:center;
-  font-size:20px;
- }
- .main{
-  margin-left:70px;
-  width:calc(100% - 70px);
- }
- .stats{grid-template-columns:repeat(2,1fr)}
- .module-grid{grid-template-columns:repeat(2,1fr)}
+
+.sidebar{
+width:76px;
+padding:10px;
 }
 
-@media(max-width:550px){
- .content{padding:15px}
- .stats{grid-template-columns:1fr}
- .module-grid{grid-template-columns:1fr}
- .form-grid{grid-template-columns:1fr}
+.brand{
+font-size:13px;
 }
+
+.brand small,
+.hospital,
+.nav button span{
+display:none;
+}
+
+.nav button{
+font-size:18px;
+text-align:center;
+padding:12px 4px;
+}
+
+.main{
+margin-left:76px;
+width:calc(100% - 76px);
+padding:13px;
+}
+
+.top{
+align-items:flex-start;
+}
+
+.grid{
+grid-template-columns:
+repeat(2,1fr);
+}
+
+.modules{
+grid-template-columns:
+repeat(2,1fr);
+}
+
+}
+
+@media(max-width:520px){
+
+.grid,
+.modules,
+.security{
+grid-template-columns:1fr;
+}
+
+.title h1{
+font-size:21px;
+}
+
+.userbox{
+padding:7px;
+}
+
+.userbox div:not(.avatar){
+display:none;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="layout">
+<div class="app">
 
 <aside class="sidebar">
 
- <div class="brand">
-  <div class="brand-title">HospitalOS</div>
-  <div class="brand-sub">Hospital Operating System</div>
- </div>
+<div class="brand">
+HospitalOS
+<small>Connected Hospital Operating System</small>
+</div>
 
- <div class="nav">
+<div class="hospital">
+<strong id="hospitalName">
+Gopal Joshi Hospital
+</strong>
+<span id="hospitalCode">
+HOSP-TEST-001
+</span>
+</div>
 
-  <button onclick="showDashboard()" class="active">
-   📊 <span>Command Center</span>
-  </button>
+<div class="nav">
 
-  <div class="nav-title">Clinical</div>
+<button class="active" onclick="show('dashboard',this)">🏠 <span>Command Center</span></button>
+<button onclick="show('patients',this)">👥 <span>Patients</span></button>
+<button onclick="show('appointments',this)">📅 <span>Appointments</span></button>
+<button onclick="show('consultation',this)">🩺 <span>Consultation</span></button>
+<button onclick="show('prescription',this)">💊 <span>Prescription</span></button>
+<button onclick="show('laboratory',this)">🧪 <span>Laboratory</span></button>
+<button onclick="show('pharmacy',this)">💊 <span>Pharmacy</span></button>
+<button onclick="show('ipd',this)">🛏️ <span>IPD & Admissions</span></button>
+<button onclick="show('beds',this)">🛏️ <span>Beds & Wards</span></button>
+<button onclick="show('nursing',this)">👩‍⚕️ <span>Nursing</span></button>
+<button onclick="show('emergency',this)">🚨 <span>Emergency</span></button>
+<button onclick="show('ambulance',this)">🚑 <span>Ambulance</span></button>
+<button onclick="show('ot',this)">⚕️ <span>OT & Surgery</span></button>
+<button onclick="show('billing',this)">💰 <span>Billing</span></button>
+<button onclick="show('accounts',this)">📒 <span>Accounts</span></button>
+<button onclick="show('insurance',this)">🛡️ <span>Insurance / TPA</span></button>
+<button onclick="show('inventory',this)">📦 <span>Inventory</span></button>
+<button onclick="show('suppliers',this)">🚚 <span>Suppliers</span></button>
+<button onclick="show('blood',this)">🩸 <span>Blood Bank</span></button>
+<button onclick="show('hr',this)">👔 <span>Staff & HR</span></button>
+<button onclick="show('reports',this)">📊 <span>Reports</span></button>
+<button onclick="show('users',this)">🔐 <span>Users & Roles</span></button>
+<button onclick="show('security',this)">🛡️ <span>Security Center</span></button>
 
-  <button onclick="openModule('patients')">👤 <span>Patients</span></button>
-  <button onclick="openModule('appointments')">📅 <span>Appointments</span></button>
-  <button onclick="openModule('consultations')">🩺 <span>Consultation</span></button>
-  <button onclick="openModule('prescriptions')">💊 <span>Prescriptions</span></button>
-  <button onclick="openModule('laboratory')">🧪 <span>Laboratory</span></button>
-  <button onclick="openModule('pharmacy')">💊 <span>Pharmacy</span></button>
-
-  <div class="nav-title">Hospital Operations</div>
-
-  <button onclick="openModule('ipd')">🏥 <span>IPD / Admissions</span></button>
-  <button onclick="openModule('beds')">🛏️ <span>Beds & Wards</span></button>
-  <button onclick="openModule('nursing')">👩‍⚕️ <span>Nursing</span></button>
-  <button onclick="openModule('emergency')">🚨 <span>Emergency</span></button>
-  <button onclick="openModule('ambulance')">🚑 <span>Ambulance</span></button>
-  <button onclick="openModule('ot')">⚕️ <span>OT / Surgery</span></button>
-
-  <div class="nav-title">Business</div>
-
-  <button onclick="openModule('billing')">💳 <span>Billing</span></button>
-  <button onclick="openModule('accounts')">📒 <span>Accounts</span></button>
-  <button onclick="openModule('insurance')">🛡️ <span>Insurance / TPA</span></button>
-  <button onclick="openModule('inventory')">📦 <span>Inventory</span></button>
-  <button onclick="openModule('suppliers')">🚚 <span>Suppliers</span></button>
-  <button onclick="openModule('blood-bank')">🩸 <span>Blood Bank</span></button>
-
-  <div class="nav-title">Management</div>
-
-  <button onclick="openModule('staff')">👥 <span>Staff / HR</span></button>
-  <button onclick="openModule('reports')">📈 <span>Reports</span></button>
-  <button onclick="openModule('users')">🔐 <span>Users & Roles</span></button>
-  <button onclick="openModule('audit')">🛡️ <span>Audit & Security</span></button>
-
- </div>
+</div>
 
 </aside>
 
 <main class="main">
 
- <div class="topbar">
-  <div>
-   <div class="hospital-title" id="hospitalName">HospitalOS</div>
-   <div class="user" id="roleInfo">Loading...</div>
-  </div>
+<div class="top">
 
-  <button class="btn danger" onclick="logout()">Logout</button>
- </div>
+<div class="title">
+<h1 id="pageTitle">
+Hospital Command Center
+</h1>
+<p id="pageSubtitle">
+Live operational overview of the hospital
+</p>
+</div>
 
- <div class="content">
+<div class="userbox">
 
-  <div id="alert" class="alert"></div>
+<div class="avatar" id="avatar">
+A
+</div>
 
-  <div id="app"></div>
+<div>
+<strong id="userName">
+Hospital Admin
+</strong>
+<br>
+<small id="userRole">
+hospital_admin
+</small>
+</div>
 
- </div>
+<button
+class="btn danger"
+onclick="logout()"
+>
+Logout
+</button>
+
+</div>
+
+</div>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page">
+
+<div class="grid">
+
+<div class="card">
+<div class="label">Patients</div>
+<div class="metric" id="patientsCount">—</div>
+</div>
+
+<div class="card">
+<div class="label">Appointments</div>
+<div class="metric" id="appointmentsCount">—</div>
+</div>
+
+<div class="card">
+<div class="label">Lab Orders</div>
+<div class="metric" id="labCount">—</div>
+</div>
+
+<div class="card">
+<div class="label">Billing Records</div>
+<div class="metric" id="billingCount">—</div>
+</div>
+
+<div class="card">
+<div class="label">Security Events</div>
+<div class="metric" id="securityCount">—</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+<h2>Hospital Workflow</h2>
+
+<div class="actions">
+<button class="btn primary" onclick="openModule('patients')">
+Open Patient Flow
+</button>
+
+<button class="btn" onclick="show('security')">
+Security Center
+</button>
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="modules">
+
+<div class="module">
+<b>01 Patient</b>
+<span>Registration & medical identity</span>
+</div>
+
+<div class="module">
+<b>02 Appointment</b>
+<span>Booking & queue management</span>
+</div>
+
+<div class="module">
+<b>03 Consultation</b>
+<span>Doctor clinical encounter</span>
+</div>
+
+<div class="module">
+<b>04 Prescription / Lab</b>
+<span>Orders generated from consultation</span>
+</div>
+
+<div class="module">
+<b>05 Pharmacy / Laboratory</b>
+<span>Medicine dispensing & reports</span>
+</div>
+
+<div class="module">
+<b>06 Billing</b>
+<span>Charges, invoices & payments</span>
+</div>
+
+<div class="module">
+<b>07 Completion</b>
+<span>Visit closed with complete record</span>
+</div>
+
+<div class="module">
+<b>08 Audit</b>
+<span>Every important action traceable</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-title">
+<h2>Operational Modules</h2>
+</div>
+
+<div class="modules" id="moduleGrid"></div>
+
+</div>
+
+</section>
+
+<!-- GENERIC PAGE -->
+
+<section id="generic" class="page hidden">
+
+<div class="card">
+
+<div class="section-title">
+<h2 id="genericTitle">
+Module
+</h2>
+
+<div class="actions">
+<button class="btn primary" onclick="newRecord()">
++ New Record
+</button>
+
+<button class="btn" onclick="refreshRecords()">
+Refresh
+</button>
+</div>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Patient / Name</th>
+<th>Status</th>
+<th>Created</th>
+</tr>
+</thead>
+
+<tbody id="recordsBody">
+
+<tr>
+<td colspan="4">
+Loading...
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SECURITY -->
+
+<section id="security" class="page hidden">
+
+<div class="security">
+
+<div class="card">
+<div class="label">Active Sessions</div>
+<div class="metric" id="activeSessions">—</div>
+</div>
+
+<div class="card">
+<div class="label">Security Events</div>
+<div class="metric" id="securityEvents">—</div>
+</div>
+
+<div class="card">
+<div class="label">Critical Events</div>
+<div class="metric" id="criticalEvents">—</div>
+</div>
+
+<div class="card">
+<div class="label">Warning Events</div>
+<div class="metric" id="warningEvents">—</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="card">
+
+<div class="section-title">
+<h2>Security Audit Trail</h2>
+
+<button class="btn" onclick="loadSecurity()">
+Refresh
+</button>
+
+</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Time</th>
+<th>Severity</th>
+<th>Actor</th>
+<th>Action</th>
+<th>Hospital</th>
+<th>Record</th>
+</tr>
+</thead>
+
+<tbody id="securityBody"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 </main>
 
 </div>
 
-<div class="modal" id="recordModal">
+<div class="overlay" id="modal">
 
- <div class="modal-box">
+<div class="modal">
 
-  <div class="modal-head">
-   <h2 id="modalTitle">Add Record</h2>
-   <button class="close" onclick="closeModal()">✕</button>
-  </div>
+<div class="section-title">
+<h2>Create Record</h2>
 
-  <form id="recordForm">
+<button
+class="btn"
+onclick="closeModal()"
+>
+×
+</button>
 
-   <div id="formFields" class="form-grid"></div>
+</div>
 
-   <div style="margin-top:20px;display:flex;gap:10px">
-    <button class="btn success" type="submit">Save Record</button>
-    <button class="btn secondary" type="button" onclick="closeModal()">Cancel</button>
-   </div>
+<label>Name / Patient</label>
 
-  </form>
+<input id="recordName">
 
- </div>
+<label>Status</label>
+
+<select id="recordStatus">
+
+<option>Active</option>
+<option>Pending</option>
+<option>Completed</option>
+<option>Scheduled</option>
+<option>Admitted</option>
+<option>Available</option>
+
+</select>
+
+<label>Notes</label>
+
+<textarea
+id="recordNotes"
+rows="4"
+></textarea>
+
+<button
+class="btn primary"
+onclick="saveRecord()"
+>
+Save Record
+</button>
+
+</div>
 
 </div>
 
 <script>
 
-const token = localStorage.getItem("hospitalos_token");
-
-if(!token){
- window.location.href="/hospital-admin/login.html";
-}
-
-const user = JSON.parse(
- localStorage.getItem("hospitalos_user") || "{}"
+const token =
+localStorage.getItem(
+    "hospitalos_token"
 );
 
-const hospital = JSON.parse(
- localStorage.getItem("hospitalos_hospital") || "{}"
+const storedUser =
+JSON.parse(
+    localStorage.getItem(
+        "hospitalos_user" ||
+        "{}"
+    ) || "{}"
 );
 
-document.getElementById("hospitalName").textContent =
- hospital.name || "Gopal Joshi Hospital";
+const storedHospital =
+JSON.parse(
+    localStorage.getItem(
+        "hospitalos_hospital" ||
+        "{}"
+    ) || "{}"
+);
 
-document.getElementById("roleInfo").textContent =
- (user.name || "Admin") + " • " + (user.role || "hospital_admin");
+let currentModule = "patients";
 
-const modules = {
+const moduleNames = {
 
- patients:{
-  icon:"👤",
-  name:"Patients",
-  description:"Registration, demographics, medical records and patient history.",
-  fields:["name","age","gender","phone","address","bloodGroup","medicalHistory"]
- },
-
- appointments:{
-  icon:"📅",
-  name:"Appointments",
-  description:"Scheduling, doctor assignment and appointment status.",
-  fields:["patientId","doctor","date","time","status","reason"]
- },
-
- consultations:{
-  icon:"🩺",
-  name:"Consultations",
-  description:"Doctor consultation, diagnosis and clinical notes.",
-  fields:["patientId","doctor","symptoms","diagnosis","notes","followUp"]
- },
-
- prescriptions:{
-  icon:"💊",
-  name:"Prescriptions",
-  description:"Medicines, dosage and doctor instructions.",
-  fields:["patientId","doctor","medicine","dosage","duration","instructions"]
- },
-
- laboratory:{
-  icon:"🧪",
-  name:"Laboratory",
-  description:"Test orders, samples, results and report status.",
-  fields:["patientId","test","sample","result","status","doctor"]
- },
-
- pharmacy:{
-  icon:"💊",
-  name:"Pharmacy",
-  description:"Medicines, dispensing, sales and pharmacy records.",
-  fields:["patientId","medicine","quantity","price","status","prescriptionId"]
- },
-
- ipd:{
-  icon:"🏥",
-  name:"IPD / Admissions",
-  description:"Admissions, discharge and inpatient records.",
-  fields:["patientId","ward","doctor","admissionDate","dischargeDate","status"]
- },
-
- beds:{
-  icon:"🛏️",
-  name:"Beds & Wards",
-  description:"Bed occupancy, ward assignment and availability.",
-  fields:["ward","bedNumber","type","status","patientId"]
- },
-
- nursing:{
-  icon:"👩‍⚕️",
-  name:"Nursing",
-  description:"Nursing tasks, observations and patient care.",
-  fields:["patientId","nurse","task","observation","status"]
- },
-
- emergency:{
-  icon:"🚨",
-  name:"Emergency",
-  description:"Emergency cases, triage and urgent treatment.",
-  fields:["patientId","priority","arrivalTime","doctor","condition","status"]
- },
-
- ambulance:{
-  icon:"🚑",
-  name:"Ambulance",
-  description:"Ambulance requests, trips and emergency transport.",
-  fields:["patientId","vehicle","driver","pickup","destination","status"]
- },
-
- ot:{
-  icon:"⚕️",
-  name:"OT / Surgery",
-  description:"Surgery scheduling and operating theatre records.",
-  fields:["patientId","surgeon","procedure","date","theatre","status"]
- },
-
- billing:{
-  icon:"💳",
-  name:"Billing",
-  description:"Invoices, charges, payments and refunds.",
-  fields:["patientId","invoice","amount","paymentMethod","status","description"]
- },
-
- accounts:{
-  icon:"📒",
-  name:"Accounts",
-  description:"Hospital financial records and transactions.",
-  fields:["type","description","amount","date","reference","status"]
- },
-
- insurance:{
-  icon:"🛡️",
-  name:"Insurance / TPA",
-  description:"Insurance approvals, claims and settlement.",
-  fields:["patientId","provider","policyNumber","claimAmount","status","remarks"]
- },
-
- inventory:{
-  icon:"📦",
-  name:"Inventory",
-  description:"Stock, consumption, purchases and low-stock monitoring.",
-  fields:["item","category","quantity","unit","minimumStock","status"]
- },
-
- suppliers:{
-  icon:"🚚",
-  name:"Suppliers",
-  description:"Supplier records and procurement.",
-  fields:["supplier","contact","item","quantity","amount","status"]
- },
-
- "blood-bank":{
-  icon:"🩸",
-  name:"Blood Bank",
-  description:"Blood groups, units and availability.",
-  fields:["bloodGroup","component","units","expiry","status"]
- },
-
- staff:{
-  icon:"👥",
-  name:"Staff / HR",
-  description:"Hospital employees, departments and staff records.",
-  fields:["name","department","designation","phone","joiningDate","status"]
- },
-
- reports:{
-  icon:"📈",
-  name:"Reports",
-  description:"Operational and management reporting.",
-  fields:["reportType","period","description","status"]
- },
-
- users:{
-  icon:"🔐",
-  name:"Users & Roles",
-  description:"Users, roles and access management.",
-  fields:["name","username","role","department","status"]
- },
-
- audit:{
-  icon:"🛡️",
-  name:"Audit & Security",
-  description:"Security events and hospital activity trail.",
-  fields:["event","user","module","recordId","action","details"]
- }
+patients:"Patients",
+appointments:"Appointments",
+consultation:"Consultation",
+prescription:"Prescriptions",
+laboratory:"Laboratory",
+pharmacy:"Pharmacy",
+ipd:"IPD & Admissions",
+beds:"Beds & Wards",
+nursing:"Nursing",
+emergency:"Emergency",
+ambulance:"Ambulance",
+ot:"OT & Surgery",
+billing:"Billing",
+accounts:"Accounts",
+insurance:"Insurance / TPA",
+inventory:"Inventory",
+suppliers:"Suppliers",
+blood:"Blood Bank",
+hr:"Staff & HR",
+reports:"Reports",
+users:"Users & Roles"
 
 };
 
-function showDashboard(){
+function api(path, options={}){
 
- document.querySelectorAll(".nav button").forEach(x=>{
-  x.classList.remove("active");
- });
+    options.headers = {
+        ...(options.headers || {}),
+        "Content-Type":
+            "application/json"
+    };
 
- const app=document.getElementById("app");
+    if(token){
+        options.headers.Authorization =
+            "Bearer " + token;
+    }
 
- app.innerHTML=`
-
- <div class="page-title">Hospital Command Center</div>
- <div class="page-sub">
-  Real-time operational view of the complete hospital.
- </div>
-
- <div class="stats">
-
-  <div class="stat">
-   <div class="stat-label">Patients</div>
-   <div class="stat-value" id="count-patients">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">Appointments</div>
-   <div class="stat-value" id="count-appointments">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">Pending Lab</div>
-   <div class="stat-value" id="count-laboratory">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">Beds</div>
-   <div class="stat-value" id="count-beds">0</div>
-  </div>
-
-  <div class="stat">
-   <div class="stat-label">Billing</div>
-   <div class="stat-value" id="count-billing">0</div>
-  </div>
-
- </div>
-
- <div class="panel">
-
-  <div class="panel-head">
-   <h2>Hospital Departments</h2>
-   <button class="btn" onclick="loadDashboardCounts()">Refresh</button>
-  </div>
-
-  <div class="module-grid">
-
-   ${Object.entries(modules).map(([key,m])=>`
-
-    <div class="module" onclick="openModule('${key}')">
-
-     <div class="module-icon">${m.icon}</div>
-
-     <div class="module-name">
-      ${m.name}
-     </div>
-
-     <div class="module-info">
-      ${m.description}
-     </div>
-
-    </div>
-
-   `).join("")}
-
-  </div>
-
- </div>
-
- <div class="panel">
-
-  <div class="panel-head">
-   <h2>Connected Hospital Workflow</h2>
-  </div>
-
-  <div style="line-height:2;color:#475569">
-
-   👤 Patient Registration
-   →
-   📅 Appointment
-   →
-   🩺 Doctor Consultation
-   →
-   💊 Prescription / 🧪 Lab
-   →
-   💊 Pharmacy / 🧪 Report
-   →
-   💳 Billing
-   →
-   ✅ Completed Visit
-
-  </div>
-
- </div>
-
- `;
-
- loadDashboardCounts();
+    return fetch(
+        path,
+        options
+    );
 }
 
-async function api(url,options={}){
+function applyIdentity(){
 
- options.headers = {
-  ...(options.headers || {}),
-  "Content-Type":"application/json",
-  "Authorization":"Bearer "+token
- };
+    const hospitalName =
+        storedHospital.name ||
+        "Gopal Joshi Hospital";
 
- const response=await fetch(url,options);
+    const hospitalCode =
+        storedHospital.id ||
+        "HOSP-TEST-001";
 
- let data={};
+    const name =
+        storedUser.name ||
+        "Hospital Admin";
 
- try{
-  data=await response.json();
- }catch(e){}
+    const role =
+        storedUser.role ||
+        "hospital_admin";
 
- if(!response.ok){
-  throw new Error(data.message || "API request failed");
- }
+    document.getElementById(
+        "hospitalName"
+    ).textContent =
+        hospitalName;
 
- return data;
+    document.getElementById(
+        "hospitalCode"
+    ).textContent =
+        hospitalCode;
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        name;
+
+    document.getElementById(
+        "userRole"
+    ).textContent =
+        role;
+
+    document.getElementById(
+        "avatar"
+    ).textContent =
+        name.charAt(0).toUpperCase();
+
 }
 
-async function loadDashboardCounts(){
+function buildModules(){
 
- for(const key of ["patients","appointments","laboratory","beds","billing"]){
+    const grid =
+        document.getElementById(
+            "moduleGrid"
+        );
 
-  try{
+    grid.innerHTML = "";
 
-   const data=await api(
-    "/api/saas/control/records/"+encodeURIComponent(key)
-   );
+    Object.keys(moduleNames)
+        .forEach(key => {
 
-   const records =
-    data.records ||
-    data.data ||
-    data.items ||
-    [];
+            const div =
+                document.createElement(
+                    "div"
+                );
 
-   const el=document.getElementById("count-"+key);
+            div.className =
+                "module";
 
-   if(el){
-    el.textContent=Array.isArray(records)
-      ? records.length
-      : 0;
-   }
+            div.onclick =
+                () => openModule(key);
 
-  }catch(e){
+            div.innerHTML = `
+                <b>${moduleNames[key]}</b>
+                <span>Open connected module</span>
+            `;
 
-   const el=document.getElementById("count-"+key);
+            grid.appendChild(div);
 
-   if(el){
-    el.textContent="0";
-   }
+        });
 
-  }
- }
 }
 
-async function openModule(key){
+async function loadDashboard(){
 
- const m=modules[key];
+    const modules = [
+        ["patients","patientsCount"],
+        ["appointments","appointmentsCount"],
+        ["laboratory","labCount"],
+        ["billing","billingCount"]
+    ];
 
- if(!m) return;
+    for(
+        const [module,id]
+        of modules
+    ){
 
- const app=document.getElementById("app");
+        try{
 
- app.innerHTML=`
+            const response =
+                await api(
+                    "/api/saas/control/records/" +
+                    module
+                );
 
- <div class="page-title">
-  ${m.icon} ${m.name}
- </div>
+            const data =
+                await response.json();
 
- <div class="page-sub">
-  ${m.description}
- </div>
+            document.getElementById(
+                id
+            ).textContent =
+                Array.isArray(data.records)
+                    ? data.records.length
+                    : Array.isArray(data)
+                        ? data.length
+                        : 0;
 
- <div class="panel">
+        }catch{
 
-  <div class="panel-head">
+            document.getElementById(
+                id
+            ).textContent = "0";
 
-   <h2>${m.name} Records</h2>
+        }
 
-   <div>
-    <button class="btn" onclick="loadRecords('${key}')">
-     Refresh
-    </button>
+    }
 
-    <button class="btn success"
-     onclick="openRecordForm('${key}')">
-     + Add Record
-    </button>
-   </div>
+    loadSecuritySummary();
 
-  </div>
-
-  <div id="records-${key}" class="loading">
-   Loading records...
-  </div>
-
- </div>
-
- `;
-
- await loadRecords(key);
 }
 
-async function loadRecords(key){
+async function loadSecuritySummary(){
 
- const box=document.getElementById("records-"+key);
+    try{
 
- if(!box) return;
+        const response =
+            await api(
+                "/api/security/dashboard"
+            );
 
- box.innerHTML='<div class="loading">Loading...</div>';
+        const data =
+            await response.json();
 
- try{
+        if(!data.success){
+            return;
+        }
 
-  const data=await api(
-   "/api/saas/control/records/"+encodeURIComponent(key)
-  );
+        document.getElementById(
+            "securityCount"
+        ).textContent =
+            data.stats.totalEvents;
 
-  const records =
-   data.records ||
-   data.data ||
-   data.items ||
-   [];
+    }catch{
 
-  if(!Array.isArray(records) || records.length===0){
+        document.getElementById(
+            "securityCount"
+        ).textContent = "0";
 
-   box.innerHTML=`
-    <div class="loading">
-     No ${modules[key].name.toLowerCase()} records found.
-     <br><br>
-     Use <b>+ Add Record</b> to create the first record.
-    </div>
-   `;
+    }
 
-   return;
-  }
-
-  const keys=[
-   ...new Set(
-    records.flatMap(x=>Object.keys(x || {}))
-   )
-  ].slice(0,8);
-
-  box.innerHTML=`
-
-  <div class="table-wrap">
-
-   <table>
-
-    <thead>
-     <tr>
-      ${keys.map(k=>`<th>${pretty(k)}</th>`).join("")}
-     </tr>
-    </thead>
-
-    <tbody>
-
-     ${records.map(r=>`
-
-      <tr>
-
-       ${keys.map(k=>`
-        <td>
-         ${escapeHtml(
-          typeof r[k]==="object"
-           ? JSON.stringify(r[k])
-           : String(r[k] ?? "")
-         )}
-        </td>
-       `).join("")}
-
-      </tr>
-
-     `).join("")}
-
-    </tbody>
-
-   </table>
-
-  </div>
-
-  `;
-
- }catch(e){
-
-  box.innerHTML=`
-   <div class="loading">
-    Unable to load records: ${escapeHtml(e.message)}
-   </div>
-  `;
- }
 }
 
-function pretty(value){
+function show(id,button){
 
- return value
-  .replace(/([A-Z])/g," $1")
-  .replace(/^./,x=>x.toUpperCase());
+    document.querySelectorAll(
+        ".page"
+    ).forEach(
+        page =>
+            page.classList.add(
+                "hidden"
+            )
+    );
+
+    document.getElementById(
+        id
+    ).classList.remove(
+        "hidden"
+    );
+
+    document.querySelectorAll(
+        ".nav button"
+    ).forEach(
+        b =>
+            b.classList.remove(
+                "active"
+            )
+    );
+
+    if(button){
+        button.classList.add(
+            "active"
+        );
+    }
+
+    if(id === "security"){
+        loadSecurity();
+    }
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        id === "dashboard"
+            ? "Hospital Command Center"
+            : id === "security"
+                ? "Security Command Center"
+                : moduleNames[id] ||
+                  "HospitalOS";
+
+}
+
+function openModule(module){
+
+    currentModule =
+        module;
+
+    show(
+        "generic"
+    );
+
+    document.getElementById(
+        "genericTitle"
+    ).textContent =
+        moduleNames[module] ||
+        module;
+
+    loadRecords();
+
+}
+
+async function loadRecords(){
+
+    const body =
+        document.getElementById(
+            "recordsBody"
+        );
+
+    body.innerHTML =
+        "<tr><td colspan='4'>Loading...</td></tr>";
+
+    try{
+
+        const response =
+            await api(
+                "/api/saas/control/records/" +
+                currentModule
+            );
+
+        const data =
+            await response.json();
+
+        const records =
+            Array.isArray(data.records)
+                ? data.records
+                : Array.isArray(data)
+                    ? data
+                    : [];
+
+        if(!records.length){
+
+            body.innerHTML =
+                "<tr><td colspan='4'>No records yet</td></tr>";
+
+            return;
+        }
+
+        body.innerHTML =
+            records
+                .slice(0,100)
+                .map(record => {
+
+                    const id =
+                        record.id ||
+                        record._id ||
+                        "—";
+
+                    const name =
+                        record.name ||
+                        record.patientName ||
+                        record.patientId ||
+                        record.title ||
+                        "—";
+
+                    const status =
+                        record.status ||
+                        "Active";
+
+                    const created =
+                        record.createdAt ||
+                        record.updatedAt ||
+                        "—";
+
+                    return `
+                    <tr>
+                        <td>${escapeHtml(id)}</td>
+                        <td>${escapeHtml(name)}</td>
+                        <td>
+                            <span class="status">
+                                ${escapeHtml(status)}
+                            </span>
+                        </td>
+                        <td>
+                            ${escapeHtml(
+                                String(created)
+                            )}
+                        </td>
+                    </tr>
+                    `;
+
+                })
+                .join("");
+
+    }catch(error){
+
+        body.innerHTML =
+            `<tr>
+                <td colspan="4">
+                    Unable to load module
+                </td>
+            </tr>`;
+
+    }
+
+}
+
+function newRecord(){
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "flex";
+
+}
+
+function closeModal(){
+
+    document.getElementById(
+        "modal"
+    ).style.display =
+        "none";
+
+}
+
+async function saveRecord(){
+
+    const name =
+        document.getElementById(
+            "recordName"
+        ).value.trim();
+
+    const status =
+        document.getElementById(
+            "recordStatus"
+        ).value;
+
+    const notes =
+        document.getElementById(
+            "recordNotes"
+        ).value.trim();
+
+    if(!name){
+
+        alert(
+            "Name / Patient required"
+        );
+
+        return;
+    }
+
+    try{
+
+        const response =
+            await api(
+                "/api/saas/control/records/" +
+                currentModule,
+                {
+                    method:"POST",
+                    body:JSON.stringify({
+                        name,
+                        status,
+                        notes,
+                        createdAt:
+                            new Date()
+                            .toISOString()
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if(!response.ok){
+
+            alert(
+                data.message ||
+                "Unable to save record"
+            );
+
+            return;
+        }
+
+        closeModal();
+
+        document.getElementById(
+            "recordName"
+        ).value = "";
+
+        document.getElementById(
+            "recordNotes"
+        ).value = "";
+
+        loadRecords();
+
+        loadDashboard();
+
+    }catch{
+
+        alert(
+            "Server connection failed"
+        );
+
+    }
+
+}
+
+async function loadSecurity(){
+
+    try{
+
+        const response =
+            await api(
+                "/api/security/dashboard"
+            );
+
+        const data =
+            await response.json();
+
+        if(!data.success){
+            return;
+        }
+
+        document.getElementById(
+            "activeSessions"
+        ).textContent =
+            data.stats.activeSessions;
+
+        document.getElementById(
+            "securityEvents"
+        ).textContent =
+            data.stats.totalEvents;
+
+        document.getElementById(
+            "criticalEvents"
+        ).textContent =
+            data.stats.criticalEvents;
+
+        document.getElementById(
+            "warningEvents"
+        ).textContent =
+            data.stats.warningEvents;
+
+        const body =
+            document.getElementById(
+                "securityBody"
+            );
+
+        body.innerHTML =
+            data.recent
+                .map(event => `
+                <tr>
+                    <td>${escapeHtml(
+                        event.timestamp
+                    )}</td>
+
+                    <td>
+                        <span class="status">
+                            ${escapeHtml(
+                                event.severity
+                            )}
+                        </span>
+                    </td>
+
+                    <td>${escapeHtml(
+                        event.actor
+                    )}</td>
+
+                    <td>${escapeHtml(
+                        event.action
+                    )}</td>
+
+                    <td>${escapeHtml(
+                        event.hospitalId ||
+                        "—"
+                    )}</td>
+
+                    <td>${escapeHtml(
+                        event.recordId ||
+                        "—"
+                    )}</td>
+                </tr>
+                `)
+                .join("");
+
+    }catch{
+
+        document.getElementById(
+            "securityBody"
+        ).innerHTML =
+            "<tr><td colspan='6'>Security API unavailable</td></tr>";
+
+    }
+
+}
+
+function refreshRecords(){
+
+    loadRecords();
 
 }
 
 function escapeHtml(value){
 
- return String(value)
-  .replace(/&/g,"&amp;")
-  .replace(/</g,"&lt;")
-  .replace(/>/g,"&gt;")
-  .replace(/"/g,"&quot;")
-  .replace(/'/g,"&#039;");
-
-}
-
-function openRecordForm(key){
-
- const m=modules[key];
-
- document.getElementById("modalTitle").textContent=
-  "Add "+m.name+" Record";
-
- const fields=document.getElementById("formFields");
-
- fields.innerHTML=m.fields.map(field=>`
-
-  <div class="field">
-   <label>${pretty(field)}</label>
-
-   ${
-    field==="status"
-    ? `
-     <select name="${field}">
-      <option>active</option>
-      <option>pending</option>
-      <option>completed</option>
-      <option>cancelled</option>
-      <option>available</option>
-      <option>occupied</option>
-      <option>paid</option>
-      <option>unpaid</option>
-     </select>
-    `
-    :
-    `<input name="${field}" placeholder="Enter ${pretty(field)}">`
-   }
-
-  </div>
-
- `).join("");
-
- document.getElementById("recordForm").dataset.module=key;
-
- document.getElementById("recordModal").style.display="flex";
-}
-
-function closeModal(){
-
- document.getElementById("recordModal").style.display="none";
-
- document.getElementById("recordForm").reset();
-}
-
-document.getElementById("recordForm").addEventListener(
- "submit",
- async function(e){
-
-  e.preventDefault();
-
-  const key=this.dataset.module;
-
-  const body={};
-
-  new FormData(this).forEach((value,name)=>{
-   body[name]=value;
-  });
-
-  body.hospitalId =
-   hospital.id ||
-   "HOSP-TEST-001";
-
-  body.createdBy =
-   user.id ||
-   "USR-001";
-
-  body.createdAt =
-   new Date().toISOString();
-
-  try{
-
-   await api(
-    "/api/saas/control/records/"+encodeURIComponent(key),
-    {
-     method:"POST",
-     body:JSON.stringify(body)
-    }
-   );
-
-   closeModal();
-
-   showMessage(
-    modules[key].name+" record created successfully."
-   );
-
-   await loadRecords(key);
-
-  }catch(e){
-
-   showMessage(
-    "Could not save record: "+e.message
-   );
-
-  }
-
- }
-);
-
-function showMessage(message){
-
- const alert=document.getElementById("alert");
-
- alert.textContent=message;
- alert.style.display="block";
-
- setTimeout(()=>{
-  alert.style.display="none";
- },3500);
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
 
 }
 
 function logout(){
 
- localStorage.removeItem("hospitalos_token");
- localStorage.removeItem("hospitalos_user");
- localStorage.removeItem("hospitalos_hospital");
- localStorage.removeItem("hospitalos_subscription");
- localStorage.removeItem("hospitalos_stats");
+    localStorage.removeItem(
+        "hospitalos_token"
+    );
 
- window.location.href="/hospital-admin/login.html";
+    localStorage.removeItem(
+        "hospitalos_user"
+    );
+
+    localStorage.removeItem(
+        "hospitalos_hospital"
+    );
+
+    localStorage.removeItem(
+        "hospitalos_subscription"
+    );
+
+    location.href =
+        "/hospital-admin/login.html";
+
 }
 
-showDashboard();
+applyIdentity();
+buildModules();
+loadDashboard();
 
 </script>
 
