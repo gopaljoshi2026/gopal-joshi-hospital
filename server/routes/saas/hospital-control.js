@@ -1,4 +1,30 @@
 ﻿const express = require("express");
+
+const HOSPITALOS_MODULES = [
+    "command-center",
+    "patients",
+    "appointments",
+    "consultations",
+    "prescriptions",
+    "laboratory",
+    "pharmacy",
+    "ipd",
+    "beds",
+    "nursing",
+    "emergency",
+    "ambulance",
+    "ot-surgery",
+    "billing",
+    "accounts",
+    "insurance",
+    "inventory",
+    "suppliers",
+    "blood-bank",
+    "hr",
+    "reports",
+    "users",
+    "audit-security"
+];
 const fs = require("fs");
 const path = require("path");
 
@@ -255,15 +281,7 @@ router.get(
             db.roles[role] ||
             db.roles["hospital_admin"] ||
             {};
-
-        audit(
-            req,
-            "SESSION_CHECK",
-            "security",
-            "Authenticated session checked"
-        );
-
-        res.json({
+res.json({
             success: true,
             user: {
                 id: req.user.id,
@@ -299,15 +317,7 @@ router.get(
                     "Admin permission required"
             });
         }
-
-        audit(
-            req,
-            "VIEW",
-            "roles",
-            "Viewed role and permission matrix"
-        );
-
-        res.json({
+res.json({
             success: true,
             roles: db.roles
         });
@@ -508,15 +518,7 @@ router.get(
                     "Admin permission required"
             });
         }
-
-        audit(
-            req,
-            "VIEW",
-            "command-center",
-            "Viewed hospital control center"
-        );
-
-        let patients = 0;
+let patients = 0;
         let appointments = 0;
 
         try {
@@ -571,8 +573,7 @@ router.get(
 
             appointments,
 
-            modules:
-                db.modules.length,
+            modules: HOSPITALOS_MODULES.length,
 
             auditLogs:
                 db.auditLogs.length,
@@ -628,15 +629,7 @@ router.get(
         } catch (e) {
             records = [];
         }
-
-        audit(
-            req,
-            "VIEW",
-            moduleName,
-            "Viewed module records"
-        );
-
-        res.json({
+res.json({
             success: true,
             module: moduleName,
             count: records.length,
@@ -735,3 +728,5 @@ router.post(
 );
 
 module.exports = router;
+
+
