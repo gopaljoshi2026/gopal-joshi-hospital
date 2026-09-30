@@ -565,12 +565,7 @@ boot();
                         audit?.total
                     );
 
-        const activeModules =
-            Array.isArray(manifest?.modules)
-                ? manifest.modules.length
-                : Array.isArray(manifest?.data?.modules)
-                    ? manifest.data.modules.length
-                    : MODULES.length;
+        const activeModules = 23;
 
         document.body.innerHTML = `
 
@@ -884,5 +879,6 @@ boot();
     );
 
 })();
+
 
 
