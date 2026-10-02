@@ -2179,3 +2179,29 @@ a.href=routes[k];
 setTimeout(connect,500);
 setTimeout(connect,1500);
 })();
+
+/* HOSPITALOS_TOP_AUDIT_LIVE_FIX */
+(function(){
+    async function syncTopAudit(){
+        try{
+            const token = localStorage.getItem("hospitalos_token") || "";
+            const r = await fetch("/api/saas/command-center/control-center",{
+                headers:{Authorization:"Bearer "+token}
+            });
+            const d = await r.json();
+            const count = Number(d?.summary?.auditEvents || 0);
+
+            document.querySelectorAll(".card").forEach(function(card){
+                const label = card.querySelector(".label");
+                const num = card.querySelector(".num");
+                if(label && num && label.textContent.trim()==="Audit Events"){
+                    num.textContent = count;
+                }
+            });
+        }catch(e){
+            console.log("Top audit sync:",e);
+        }
+    }
+    setTimeout(syncTopAudit,1200);
+    setTimeout(syncTopAudit,3000);
+})();
