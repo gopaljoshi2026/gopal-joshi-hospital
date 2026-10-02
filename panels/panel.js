@@ -2205,3 +2205,25 @@ setTimeout(connect,1500);
     setTimeout(syncTopAudit,1200);
     setTimeout(syncTopAudit,3000);
 })();
+
+/* HOSPITALOS_AUDIT_FINAL_V2 */
+(function(){
+async function forceAuditCount(){
+try{
+const token=localStorage.getItem("hospitalos_token")||"";
+const r=await fetch("/api/saas/control/audit?limit=1000",{headers:{Authorization:"Bearer "+token}});
+const d=await r.json();
+const count=Array.isArray(d.logs)?d.logs.length:Number(d.count||0);
+document.querySelectorAll(".card").forEach(function(card){
+const label=card.querySelector(".label");
+const num=card.querySelector(".num");
+if(label&&num&&label.textContent.trim()==="Audit Events"){
+num.textContent=String(count);
+}
+});
+}catch(e){console.log("Audit counter sync failed",e);}
+}
+setTimeout(forceAuditCount,1000);
+setTimeout(forceAuditCount,2500);
+setInterval(forceAuditCount,10000);
+})();
