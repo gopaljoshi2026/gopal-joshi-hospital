@@ -288,12 +288,6 @@ registerRoute(
     "Hospital OS API"
 );
 
-
-// HospitalOS Core Clinical Workflow Engine
-
-// HospitalOS Core Clinical Workflow Engine
-app.use("/api/saas/workflow", clinicalWorkflowEngine);
-
 app.use(
     "/api",
     function(req, res) {
@@ -346,6 +340,7 @@ app.use(
     }
 );
 
+app.use("/api/saas/workflow", clinicalWorkflowEngine);
 
 app.listen(
     PORT,

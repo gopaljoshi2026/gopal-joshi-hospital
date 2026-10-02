@@ -1,0 +1,291 @@
+{
+  "visits": [
+    {
+      "id": "VIS-1790913709546-3717",
+      "hospitalId": "HOSP-TEST-001",
+      "patientId": "PAT-DEMO-001",
+      "appointmentId": "APT-DEMO-001",
+      "doctorId": "DOC-001",
+      "department": "General Medicine",
+      "reason": "Fever and weakness",
+      "status": "COMPLETED",
+      "createdAt": "2026-10-02T04:01:49.547Z",
+      "updatedAt": "2026-10-02T04:01:49.617Z",
+      "completedAt": "2026-10-02T04:01:49.617Z"
+    }
+  ],
+  "consultations": [
+    {
+      "id": "CON-1790913709573-3842",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "doctorId": "DOC-001",
+      "symptoms": "Fever, weakness, headache",
+      "diagnosis": "Viral fever",
+      "notes": "Rest and hydration advised",
+      "status": "COMPLETED",
+      "createdAt": "2026-10-02T04:01:49.573Z"
+    }
+  ],
+  "prescriptions": [
+    {
+      "id": "RX-1790913709580-2828",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "doctorId": "DOC-001",
+      "medicines": [
+        {
+          "frequency": "Twice daily",
+          "dosage": "500 mg",
+          "name": "Paracetamol",
+          "duration": "3 days"
+        },
+        {
+          "frequency": "As required",
+          "dosage": "1 sachet",
+          "name": "ORS",
+          "duration": "3 days"
+        }
+      ],
+      "instructions": "Take medicines after food and maintain hydration.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-02T04:01:49.580Z"
+    }
+  ],
+  "labOrders": [
+    {
+      "id": "LAB-1790913709592-8473",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "doctorId": "DOC-001",
+      "tests": [
+        {
+          "code": "CBC",
+          "name": "Complete Blood Count"
+        },
+        {
+          "code": "GLUCOSE",
+          "name": "Blood Glucose"
+        }
+      ],
+      "status": "COMPLETED",
+      "createdAt": "2026-10-02T04:01:49.592Z"
+    }
+  ],
+  "labResults": [
+    {
+      "id": "RES-1790913709599-4448",
+      "labOrderId": "LAB-1790913709592-8473",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "results": [
+        {
+          "unit": "",
+          "value": "Normal",
+          "test": "Complete Blood Count"
+        },
+        {
+          "unit": "mg/dL",
+          "value": "98",
+          "test": "Blood Glucose"
+        }
+      ],
+      "remarks": "Demo laboratory report completed.",
+      "status": "COMPLETED",
+      "createdAt": "2026-10-02T04:01:49.600Z"
+    }
+  ],
+  "pharmacyOrders": [
+    {
+      "id": "PHR-1790913709606-1036",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "medicines": [
+        {
+          "quantity": 6,
+          "name": "Paracetamol"
+        },
+        {
+          "quantity": 3,
+          "name": "ORS"
+        }
+      ],
+      "status": "PENDING",
+      "createdAt": "2026-10-02T04:01:49.606Z"
+    }
+  ],
+  "billingLinks": [
+    {
+      "id": "BILL-1790913709612-6894",
+      "visitId": "VIS-1790913709546-3717",
+      "patientId": "PAT-DEMO-001",
+      "items": [
+        {
+          "description": "Doctor Consultation",
+          "amount": 500
+        },
+        {
+          "description": "Laboratory - CBC",
+          "amount": 300
+        },
+        {
+          "description": "Laboratory - Blood Glucose",
+          "amount": 150
+        },
+        {
+          "description": "Medicines",
+          "amount": 250
+        }
+      ],
+      "total": 1200,
+      "paymentStatus": "PAID",
+      "createdAt": "2026-10-02T04:01:49.612Z"
+    }
+  ],
+  "timeline": [
+    {
+      "id": "EVT-1790913709547-9818",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "VISIT_CREATED",
+      "data": {
+        "patientId": "PAT-DEMO-001",
+        "appointmentId": "APT-DEMO-001"
+      },
+      "timestamp": "2026-10-02T04:01:49.547Z"
+    },
+    {
+      "id": "EVT-1790913709573-967",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "CONSULTATION_COMPLETED",
+      "data": {
+        "consultationId": "CON-1790913709573-3842",
+        "diagnosis": "Viral fever"
+      },
+      "timestamp": "2026-10-02T04:01:49.573Z"
+    },
+    {
+      "id": "EVT-1790913709580-1218",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "PRESCRIPTION_CREATED",
+      "data": {
+        "prescriptionId": "RX-1790913709580-2828"
+      },
+      "timestamp": "2026-10-02T04:01:49.580Z"
+    },
+    {
+      "id": "EVT-1790913709592-4884",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "LAB_ORDERED",
+      "data": {
+        "labOrderId": "LAB-1790913709592-8473"
+      },
+      "timestamp": "2026-10-02T04:01:49.592Z"
+    },
+    {
+      "id": "EVT-1790913709600-5354",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "LAB_COMPLETED",
+      "data": {
+        "resultId": "RES-1790913709599-4448"
+      },
+      "timestamp": "2026-10-02T04:01:49.600Z"
+    },
+    {
+      "id": "EVT-1790913709606-824",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "PHARMACY_ORDER_CREATED",
+      "data": {
+        "pharmacyOrderId": "PHR-1790913709606-1036"
+      },
+      "timestamp": "2026-10-02T04:01:49.606Z"
+    },
+    {
+      "id": "EVT-1790913709612-6834",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "BILLING_CREATED",
+      "data": {
+        "billingId": "BILL-1790913709612-6894"
+      },
+      "timestamp": "2026-10-02T04:01:49.612Z"
+    },
+    {
+      "id": "EVT-1790913709617-6289",
+      "visitId": "VIS-1790913709546-3717",
+      "event": "VISIT_COMPLETED",
+      "data": {},
+      "timestamp": "2026-10-02T04:01:49.617Z"
+    }
+  ],
+  "audit": [
+    {
+      "id": "AUD-1790913709547-5128",
+      "action": "CREATE_VISIT",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "patientId": "PAT-DEMO-001"
+      },
+      "timestamp": "2026-10-02T04:01:49.547Z"
+    },
+    {
+      "id": "AUD-1790913709573-1257",
+      "action": "CONSULTATION_COMPLETED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "consultationId": "CON-1790913709573-3842"
+      },
+      "timestamp": "2026-10-02T04:01:49.573Z"
+    },
+    {
+      "id": "AUD-1790913709580-8877",
+      "action": "PRESCRIPTION_CREATED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "prescriptionId": "RX-1790913709580-2828"
+      },
+      "timestamp": "2026-10-02T04:01:49.580Z"
+    },
+    {
+      "id": "AUD-1790913709592-7312",
+      "action": "LAB_ORDERED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "labOrderId": "LAB-1790913709592-8473"
+      },
+      "timestamp": "2026-10-02T04:01:49.592Z"
+    },
+    {
+      "id": "AUD-1790913709600-8733",
+      "action": "LAB_RESULT_COMPLETED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "resultId": "RES-1790913709599-4448"
+      },
+      "timestamp": "2026-10-02T04:01:49.600Z"
+    },
+    {
+      "id": "AUD-1790913709606-9321",
+      "action": "PHARMACY_ORDER_CREATED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "pharmacyOrderId": "PHR-1790913709606-1036"
+      },
+      "timestamp": "2026-10-02T04:01:49.606Z"
+    },
+    {
+      "id": "AUD-1790913709612-5141",
+      "action": "BILLING_CREATED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {
+        "billingId": "BILL-1790913709612-6894"
+      },
+      "timestamp": "2026-10-02T04:01:49.612Z"
+    },
+    {
+      "id": "AUD-1790913709617-3802",
+      "action": "VISIT_COMPLETED",
+      "visitId": "VIS-1790913709546-3717",
+      "data": {},
+      "timestamp": "2026-10-02T04:01:49.617Z"
+    }
+  ]
+}

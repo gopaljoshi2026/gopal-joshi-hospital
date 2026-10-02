@@ -1,0 +1,81 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HospitalOS Workflow Demo</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#0f172a;color:white;padding:22px}
+main{max-width:1100px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{background:white;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.num{font-size:30px;font-weight:700;margin-top:8px}
+.flow{margin-top:20px;background:white;padding:20px;border-radius:14px;overflow:auto}
+button{border:0;border-radius:10px;padding:12px 16px;background:#2563eb;color:white;font-weight:700;cursor:pointer}
+#status{margin:14px 0;padding:12px;border-radius:10px;background:#eef2ff}
+small{color:#64748b}
+</style>
+</head>
+<body>
+<header>
+  <strong>HospitalOS</strong>
+  <div>Core Clinical Workflow Command View</div>
+</header>
+
+<main>
+  <div id="status">Connecting to Workflow Engine...</div>
+
+  <div class="grid">
+    <div class="card">Visits<div id="visits" class="num">—</div></div>
+    <div class="card">Consultations<div id="consultations" class="num">—</div></div>
+    <div class="card">Prescriptions<div id="prescriptions" class="num">—</div></div>
+    <div class="card">Lab Orders<div id="labOrders" class="num">—</div></div>
+    <div class="card">Lab Results<div id="labResults" class="num">—</div></div>
+    <div class="card">Pharmacy Orders<div id="pharmacyOrders" class="num">—</div></div>
+    <div class="card">Billing Links<div id="billingLinks" class="num">—</div></div>
+    <div class="card">Audit Events<div id="auditEvents" class="num">—</div></div>
+  </div>
+
+  <div class="flow">
+    <h2>Connected Clinical Flow</h2>
+    <p>
+      Patient → Appointment → Consultation → Prescription / Lab
+      → Pharmacy / Lab → Billing → Completed Visit
+    </p>
+    <button onclick="loadDashboard()">Refresh Command Data</button>
+    <p><small>Live data is read from the HospitalOS workflow API.</small></p>
+  </div>
+</main>
+
+<script>
+async function loadDashboard(){
+  const status=document.getElementById("status");
+
+  try{
+    const r=await fetch("/api/saas/workflow/dashboard");
+    const data=await r.json();
+
+    if(!data.success) throw new Error(data.message || "Workflow API failed");
+
+    Object.entries(data.counts || {}).forEach(([key,value])=>{
+      const el=document.getElementById(key);
+      if(el) el.textContent=value;
+    });
+
+    status.textContent="● WORKFLOW ENGINE CONNECTED";
+    status.style.background="#ecfdf5";
+    status.style.color="#047857";
+  }catch(e){
+    status.textContent="Workflow API error: "+e.message;
+    status.style.background="#fef2f2";
+    status.style.color="#b91c1c";
+  }
+}
+
+loadDashboard();
+setInterval(loadDashboard,10000);
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+﻿HOSPITALOS FINAL DEMO STATUS
+============================
+
+Workflow Engine:
+ACTIVE
+
+Endpoint:
+GET /api/saas/workflow/dashboard
+
+Clinical flow:
+Patient -> Appointment -> Consultation -> Prescription/Lab -> Pharmacy/Lab -> Billing -> Completed Visit
+
+Demo page:
+/workflow-demo/
+
+Public deployment:
+https://gopal-joshi-hospital-1.onrender.com
+
+Admin:
+https://gopal-joshi-hospital-1.onrender.com/hospital-admin/
+
+Command Center:
+https://gopal-joshi-hospital-1.onrender.com/command-center/
+
+IMPORTANT:
+This build is a demo-ready SaaS prototype.
+Production hospital deployment still requires production database,
+strong authentication/authorization, backups, monitoring,
+privacy/compliance review and security testing.

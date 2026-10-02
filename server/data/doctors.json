@@ -1,0 +1,152 @@
+﻿[
+    {
+        "id":  "DOC-001",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Arjun Sharma",
+        "role":  "Doctor",
+        "specialization":  "General Medicine",
+        "department":  "General Medicine",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-002",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Priya Verma",
+        "role":  "Doctor",
+        "specialization":  "Cardiology",
+        "department":  "Cardiology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-003",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Rahul Singh",
+        "role":  "Doctor",
+        "specialization":  "Orthopedics",
+        "department":  "Orthopedics",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-004",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Neha Gupta",
+        "role":  "Doctor",
+        "specialization":  "Pediatrics",
+        "department":  "Pediatrics",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-005",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Amit Agarwal",
+        "role":  "Doctor",
+        "specialization":  "Dermatology",
+        "department":  "Dermatology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-006",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Sneha Kapoor",
+        "role":  "Doctor",
+        "specialization":  "Gynecology",
+        "department":  "Gynecology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-007",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Vivek Mehta",
+        "role":  "Doctor",
+        "specialization":  "Neurology",
+        "department":  "Neurology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-008",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Riya Malhotra",
+        "role":  "Doctor",
+        "specialization":  "ENT",
+        "department":  "ENT",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-009",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Karan Bansal",
+        "role":  "Doctor",
+        "specialization":  "Ophthalmology",
+        "department":  "Ophthalmology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-010",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Pooja Saxena",
+        "role":  "Doctor",
+        "specialization":  "Dentistry",
+        "department":  "Dental",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-011",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Nitin Jain",
+        "role":  "Doctor",
+        "specialization":  "Pulmonology",
+        "department":  "Pulmonology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-012",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Anjali Joshi",
+        "role":  "Doctor",
+        "specialization":  "Psychiatry",
+        "department":  "Psychiatry",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-013",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Mohit Yadav",
+        "role":  "Doctor",
+        "specialization":  "Urology",
+        "department":  "Urology",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-014",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Simran Kaur",
+        "role":  "Doctor",
+        "specialization":  "General Surgery",
+        "department":  "Surgery",
+        "status":  "active",
+        "consultationFee":  500
+    },
+    {
+        "id":  "DOC-015",
+        "hospitalId":  "HOSP-TEST-001",
+        "name":  "Dr. Rakesh Tiwari",
+        "role":  "Doctor",
+        "specialization":  "Anesthesiology",
+        "department":  "Anesthesia",
+        "status":  "active",
+        "consultationFee":  500
+    }
+]

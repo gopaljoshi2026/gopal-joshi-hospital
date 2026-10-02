@@ -1369,21 +1369,15 @@ router.get("/catalog", (req, res) => {
         let doctors = [];
 
         if (fs.existsSync(medicinesFile)) {
-            const medicinesRaw = fs.readFileSync(
-                medicinesFile,
-                "utf8"
-            ).replace(/^\uFEFF/, "").trim();
-
-            medicines = JSON.parse(medicinesRaw);
+            medicines = JSON.parse(
+                fs.readFileSync(medicinesFile, "utf8")
+            );
         }
 
         if (fs.existsSync(doctorsFile)) {
-            const doctorsRaw = fs.readFileSync(
-                doctorsFile,
-                "utf8"
-            ).replace(/^\uFEFF/, "").trim();
-
-            doctors = JSON.parse(doctorsRaw);
+            doctors = JSON.parse(
+                fs.readFileSync(doctorsFile, "utf8")
+            );
         }
 
         const activeMedicines = medicines.filter(
@@ -1442,111 +1436,4 @@ router.get("/catalog", (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-/* ============================================================
-   COMMAND CENTER RESOURCE API
-   ============================================================ */
-
-router.get("/resources", (req, res) => {
-    try {
-        const base = path.join(__dirname, "../../data");
-
-        const readJson = (file, fallback = []) => {
-            try {
-                const p = path.join(base, file);
-                if (!fs.existsSync(p)) return fallback;
-
-                const raw = fs.readFileSync(p, "utf8")
-                    .replace(/^\uFEFF/, "")
-                    .trim();
-
-                if (!raw) return fallback;
-
-                const parsed = JSON.parse(raw);
-                return Array.isArray(parsed) ? parsed : fallback;
-            } catch (e) {
-                return fallback;
-            }
-        };
-
-        const doctors = readJson("doctors.json");
-        const medicines = readJson("medicines.json");
-        const patients = readJson("patients.json");
-        const appointments = readJson("appointments.json");
-        const bills = readJson("bills.json");
-
-        let workflow = {
-            visits: [],
-            consultations: [],
-            prescriptions: [],
-            labOrders: [],
-            labResults: [],
-            pharmacyOrders: [],
-            billingLinks: [],
-            timeline: [],
-            audit: []
-        };
-
-        try {
-            const workflowFile = path.join(base, "clinical-workflow.json");
-
-            if (fs.existsSync(workflowFile)) {
-                const raw = fs.readFileSync(workflowFile, "utf8")
-                    .replace(/^\uFEFF/, "")
-                    .trim();
-
-                if (raw) workflow = JSON.parse(raw);
-            }
-        } catch (e) {}
-
-        res.json({
-            success: true,
-
-            doctors: doctors.slice(0, 100),
-            medicines: medicines.slice(0, 200),
-            patients: patients.slice(0, 100),
-            appointments: appointments.slice(0, 100),
-            bills: bills.slice(0, 100),
-
-            workflow: {
-                visits: workflow.visits || [],
-                consultations: workflow.consultations || [],
-                prescriptions: workflow.prescriptions || [],
-                labOrders: workflow.labOrders || [],
-                labResults: workflow.labResults || [],
-                pharmacyOrders: workflow.pharmacyOrders || [],
-                billingLinks: workflow.billingLinks || []
-            },
-
-            counts: {
-                doctors: doctors.length,
-                activeDoctors: doctors.filter(x => x.status === "active").length,
-
-                medicines: medicines.length,
-                activeMedicines: medicines.filter(x => x.status === "active").length,
-
-                patients: patients.length,
-                appointments: appointments.length,
-                bills: bills.length,
-
-                visits: (workflow.visits || []).length,
-                consultations: (workflow.consultations || []).length,
-                prescriptions: (workflow.prescriptions || []).length,
-                labOrders: (workflow.labOrders || []).length,
-                labResults: (workflow.labResults || []).length,
-                pharmacyOrders: (workflow.pharmacyOrders || []).length,
-                billingLinks: (workflow.billingLinks || []).length
-            }
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-});
 

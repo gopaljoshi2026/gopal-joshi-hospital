@@ -1,0 +1,65 @@
+﻿HOSPITALOS CORE WORKFLOW API
+============================
+
+BASE:
+ /api/saas/workflow
+
+CREATE VISIT
+POST /visits
+
+BODY:
+{
+  "hospitalId": "HOSP-TEST-001",
+  "patientId": "PAT-001",
+  "appointmentId": "APT-001",
+  "doctorId": "DOC-001",
+  "department": "General",
+  "reason": "Fever"
+}
+
+GET VISIT
+GET /visits/:id
+
+CONSULTATION
+POST /visits/:id/consultation
+
+PRESCRIPTION
+POST /visits/:id/prescriptions
+
+LAB ORDER
+POST /visits/:id/lab-orders
+
+LAB RESULT
+POST /lab-orders/:id/results
+
+PHARMACY
+POST /visits/:id/pharmacy-orders
+
+BILLING
+POST /visits/:id/billing
+
+COMPLETE VISIT
+POST /visits/:id/complete
+
+WORKFLOW DASHBOARD
+GET /dashboard
+
+FLOW:
+
+PATIENT
+   ↓
+APPOINTMENT
+   ↓
+VISIT
+   ↓
+CONSULTATION
+   ↓
+PRESCRIPTION
+   ├── PHARMACY
+   └── LAB
+         ↓
+      RESULT
+         ↓
+      BILLING
+         ↓
+     COMPLETED
