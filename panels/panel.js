@@ -2227,3 +2227,95 @@ setTimeout(forceAuditCount,1000);
 setTimeout(forceAuditCount,2500);
 setInterval(forceAuditCount,10000);
 })();
+
+/* HOSPITALOS_AUDIT_FINAL_V3 */
+(function(){
+
+    async function forceLiveAudit(){
+
+        try{
+
+            const token =
+                localStorage.getItem("hospitalos_token") || "";
+
+            const response =
+                await fetch(
+                    "/api/saas/command-center/control-center",
+                    {
+                        headers:{
+                            Authorization:
+                                "Bearer " + token
+                        },
+                        cache:"no-store"
+                    }
+                );
+
+            const data =
+                await response.json();
+
+            const count =
+                Number(
+                    data &&
+                    data.summary &&
+                    data.summary.auditEvents
+                ) || 0;
+
+            document
+                .querySelectorAll(".card")
+                .forEach(function(card){
+
+                    const label =
+                        card.querySelector(".label");
+
+                    const num =
+                        card.querySelector(".num");
+
+                    if(
+                        label &&
+                        num &&
+                        label.textContent
+                            .trim()
+                            .toLowerCase()
+                            === "audit events"
+                    ){
+                        num.textContent =
+                            String(count);
+                    }
+
+                });
+
+        }catch(error){
+
+            console.log(
+                "FINAL AUDIT FIX:",
+                error
+            );
+
+        }
+
+    }
+
+    forceLiveAudit();
+
+    setTimeout(
+        forceLiveAudit,
+        1000
+    );
+
+    setTimeout(
+        forceLiveAudit,
+        2500
+    );
+
+    setTimeout(
+        forceLiveAudit,
+        5000
+    );
+
+    setInterval(
+        forceLiveAudit,
+        5000
+    );
+
+})();
+
