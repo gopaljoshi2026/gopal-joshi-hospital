@@ -256,9 +256,9 @@ function render(){
           </div>
 
           <div class="card">
-            <div class="label">Audit Events</div>
-            <div id="audit" class="num">—</div>
-          </div>
+  <div class="label">Audit Events</div>
+  <div id="audit-events-live" class="num">0</div>
+</div>
         </section>
 
         <div class="hero" style="margin-top:20px">
@@ -2206,32 +2206,15 @@ setTimeout(connect,1500);
     setTimeout(syncTopAudit,3000);
 })();
 
-/* HOSPITALOS_AUDIT_FINAL_V2 */
-(function(){
-async function forceAuditCount(){
-try{
-const token=localStorage.getItem("hospitalos_token")||"";
-const r=await fetch("/api/saas/control/audit?limit=1000",{headers:{Authorization:"Bearer "+token}});
-const d=await r.json();
-const count=Array.isArray(d.logs)?d.logs.length:Number(d.count||0);
-document.querySelectorAll(".card").forEach(function(card){
-const label=card.querySelector(".label");
-const num=card.querySelector(".num");
-if(label&&num&&label.textContent.trim()==="Audit Events"){
-num.textContent=String(count);
-}
-});
-}catch(e){console.log("Audit counter sync failed",e);}
-}
-setTimeout(forceAuditCount,1000);
-setTimeout(forceAuditCount,2500);
-setInterval(forceAuditCount,10000);
-})();
 
-/* HOSPITALOS_AUDIT_FINAL_V3 */
+
+
+
+
+/* HOSPITALOS_AUDIT_UNIQUE_FINAL */
 (function(){
 
-    async function forceLiveAudit(){
+    async function updateAuditEvents(){
 
         try{
 
@@ -2242,9 +2225,10 @@ setInterval(forceAuditCount,10000);
                 await fetch(
                     "/api/saas/command-center/control-center",
                     {
+                        method:"GET",
                         headers:{
-                            Authorization:
-                                "Bearer " + token
+                            "Authorization":"Bearer " + token,
+                            "Cache-Control":"no-cache"
                         },
                         cache:"no-store"
                     }
@@ -2260,34 +2244,19 @@ setInterval(forceAuditCount,10000);
                     data.summary.auditEvents
                 ) || 0;
 
-            document
-                .querySelectorAll(".card")
-                .forEach(function(card){
+            const target =
+                document.getElementById(
+                    "audit-events-live"
+                );
 
-                    const label =
-                        card.querySelector(".label");
-
-                    const num =
-                        card.querySelector(".num");
-
-                    if(
-                        label &&
-                        num &&
-                        label.textContent
-                            .trim()
-                            .toLowerCase()
-                            === "audit events"
-                    ){
-                        num.textContent =
-                            String(count);
-                    }
-
-                });
+            if(target){
+                target.textContent = String(count);
+            }
 
         }catch(error){
 
             console.log(
-                "FINAL AUDIT FIX:",
+                "Audit Events live counter:",
                 error
             );
 
@@ -2295,27 +2264,9 @@ setInterval(forceAuditCount,10000);
 
     }
 
-    forceLiveAudit();
-
-    setTimeout(
-        forceLiveAudit,
-        1000
-    );
-
-    setTimeout(
-        forceLiveAudit,
-        2500
-    );
-
-    setTimeout(
-        forceLiveAudit,
-        5000
-    );
-
-    setInterval(
-        forceLiveAudit,
-        5000
-    );
+    setTimeout(updateAuditEvents,1500);
+    setTimeout(updateAuditEvents,3000);
+    setTimeout(updateAuditEvents,5000);
 
 })();
 
