@@ -2139,3 +2139,43 @@ setTimeout(() => {
     );
 
 })();
+
+/* HOSPITALOS_MODULE_ROUTER_V1 */
+(function(){
+const routes={
+"Patients":"/admin/patients.html",
+"Appointments":"/admin/appointments.html",
+"Consultation":"/admin/consultation.html",
+"Laboratory":"/laboratory/index.html",
+"Pharmacy":"/pharmacy/index.html",
+"Beds & Wards":"/beds/index.html",
+"Nursing":"/nurse/index.html",
+"Ambulance":"/ambulance/index.html",
+"Doctors":"/doctor/index.html",
+"IPD / Admissions":"/beds/index.html",
+"Emergency":"/ambulance/index.html",
+"Billing":"/hospital-os/",
+"Accounts":"/hospital-os/",
+"Reports & Analytics":"/hospital-os/",
+"Users & Roles":"/hospital-os/",
+"Audit & Security":"/hospital-os/",
+"Inventory":"/hospital-os/",
+"Suppliers":"/hospital-os/",
+"Insurance / TPA":"/hospital-os/",
+"Staff / HR":"/hospital-os/",
+"Blood Bank":"/hospital-os/",
+"OT / Surgery":"/hospital-os/"
+};
+function connect(){
+document.querySelectorAll("a").forEach(a=>{
+let t=a.textContent.replace(/\s+/g," ").trim();
+Object.keys(routes).forEach(k=>{
+if(t===k || t.startsWith(k+" ") || t.includes(k)){
+a.href=routes[k];
+}
+});
+});
+}
+setTimeout(connect,500);
+setTimeout(connect,1500);
+})();
