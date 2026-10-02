@@ -308,6 +308,29 @@ router.get(
 
         const db = readDB();
 
+        // Unified audit source: Clinical Workflow audit trail
+        let workflowAuditEvents = 0;
+
+        try {
+            const workflowFile = path.join(
+                __dirname,
+                "../../data/clinical-workflow.json"
+            );
+
+            if (fs.existsSync(workflowFile)) {
+                const workflowDB = JSON.parse(
+                    fs.readFileSync(workflowFile, "utf8")
+                );
+
+                workflowAuditEvents =
+                    Array.isArray(workflowDB.audit)
+                        ? workflowDB.audit.length
+                        : 0;
+            }
+        } catch (error) {
+            workflowAuditEvents = 0;
+        }
+
         if (!roleAllowed(req.user, db)) {
             return res.status(403).json({
                 success: false,
@@ -370,6 +393,29 @@ router.get(
 
         const db = readDB();
 
+        // Unified audit source: Clinical Workflow audit trail
+        let workflowAuditEvents = 0;
+
+        try {
+            const workflowFile = path.join(
+                __dirname,
+                "../../data/clinical-workflow.json"
+            );
+
+            if (fs.existsSync(workflowFile)) {
+                const workflowDB = JSON.parse(
+                    fs.readFileSync(workflowFile, "utf8")
+                );
+
+                workflowAuditEvents =
+                    Array.isArray(workflowDB.audit)
+                        ? workflowDB.audit.length
+                        : 0;
+            }
+        } catch (error) {
+            workflowAuditEvents = 0;
+        }
+
         if (!roleAllowed(req.user, db)) {
             return res.status(403).json({
                 success: false,
@@ -413,6 +459,29 @@ router.get(
     function(req, res) {
 
         const db = readDB();
+
+        // Unified audit source: Clinical Workflow audit trail
+        let workflowAuditEvents = 0;
+
+        try {
+            const workflowFile = path.join(
+                __dirname,
+                "../../data/clinical-workflow.json"
+            );
+
+            if (fs.existsSync(workflowFile)) {
+                const workflowDB = JSON.parse(
+                    fs.readFileSync(workflowFile, "utf8")
+                );
+
+                workflowAuditEvents =
+                    Array.isArray(workflowDB.audit)
+                        ? workflowDB.audit.length
+                        : 0;
+            }
+        } catch (error) {
+            workflowAuditEvents = 0;
+        }
 
         if (!roleAllowed(req.user, db)) {
             return res.status(403).json({
@@ -509,6 +578,29 @@ router.get(
 
         const db = readDB();
 
+        // Unified audit source: Clinical Workflow audit trail
+        let workflowAuditEvents = 0;
+
+        try {
+            const workflowFile = path.join(
+                __dirname,
+                "../../data/clinical-workflow.json"
+            );
+
+            if (fs.existsSync(workflowFile)) {
+                const workflowDB = JSON.parse(
+                    fs.readFileSync(workflowFile, "utf8")
+                );
+
+                workflowAuditEvents =
+                    Array.isArray(workflowDB.audit)
+                        ? workflowDB.audit.length
+                        : 0;
+            }
+        } catch (error) {
+            workflowAuditEvents = 0;
+        }
+
         if (!roleAllowed(req.user, db)) {
             return res.status(403).json({
                 success: false,
@@ -574,7 +666,7 @@ let patients = 0;
             modules: HOSPITALOS_MODULES.length,
 
             auditLogs:
-                db.auditLogs.length,
+                workflowAuditEvents,
 
             securityEvents:
                 db.securityEvents.length,
@@ -726,6 +818,7 @@ router.post(
 );
 
 module.exports = router;
+
 
 
 
