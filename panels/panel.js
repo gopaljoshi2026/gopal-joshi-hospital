@@ -1657,3 +1657,485 @@ setTimeout(() => {
     loadResourceOperationsLayer();
 }, 900);
 
+
+
+/* ============================================================
+   COMMAND_CENTER_CONTROL_UI_V2
+   ============================================================ */
+
+(function () {
+
+    async function loadControlCenterV2() {
+
+        try {
+
+            const response = await fetch(
+                "/api/saas/command-center/control-center"
+            );
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message || "Control Center API failed");
+            }
+
+            const old = document.getElementById(
+                "command-control-v2"
+            );
+
+            if (old) old.remove();
+
+            const section = document.createElement("section");
+
+            section.id = "command-control-v2";
+
+            section.style.cssText = `
+                margin:28px 0;
+                padding:24px;
+                background:#ffffff;
+                border:1px solid #e2e8f0;
+                border-radius:18px;
+                box-shadow:0 8px 30px rgba(15,23,42,.08);
+            `;
+
+            const s = data.summary || {};
+            const alerts = data.alerts || {};
+
+            section.innerHTML = `
+
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    flex-wrap:wrap;
+                    gap:12px;
+                    margin-bottom:20px;
+                ">
+
+                    <div>
+                        <h2 style="
+                            margin:0;
+                            color:#0f172a;
+                        ">
+                            Hospital Control Center
+                        </h2>
+
+                        <div style="
+                            color:#64748b;
+                            font-size:13px;
+                            margin-top:5px;
+                        ">
+                            Live operations, alerts and clinical activity
+                        </div>
+                    </div>
+
+                    <button id="cc-v2-refresh"
+                        style="
+                            border:0;
+                            border-radius:10px;
+                            padding:10px 16px;
+                            cursor:pointer;
+                            background:#0f172a;
+                            color:#fff;
+                        ">
+                        ↻ Refresh
+                    </button>
+
+                </div>
+
+                <div style="
+                    display:grid;
+                    grid-template-columns:
+                    repeat(auto-fit,minmax(180px,1fr));
+                    gap:14px;
+                ">
+
+                    ${controlCard(
+                        "👨‍⚕️",
+                        "Doctors",
+                        s.doctors,
+                        "doctor records"
+                    )}
+
+                    ${controlCard(
+                        "💊",
+                        "Medicines",
+                        s.medicines,
+                        "medicine records"
+                    )}
+
+                    ${controlCard(
+                        "👥",
+                        "Patients",
+                        s.patients,
+                        "patient records"
+                    )}
+
+                    ${controlCard(
+                        "📅",
+                        "Appointments",
+                        s.appointments,
+                        "appointments"
+                    )}
+
+                    ${controlCard(
+                        "🔄",
+                        "Visits",
+                        s.visits,
+                        "clinical visits"
+                    )}
+
+                    ${controlCard(
+                        "🧪",
+                        "Lab Orders",
+                        s.labOrders,
+                        "laboratory orders"
+                    )}
+
+                    ${controlCard(
+                        "💰",
+                        "Bills",
+                        s.bills,
+                        "billing records"
+                    )}
+
+                    ${controlCard(
+                        "🔐",
+                        "Audit Events",
+                        s.auditEvents,
+                        "security activity"
+                    )}
+
+                </div>
+
+                <div style="
+                    margin-top:24px;
+                    padding:18px;
+                    border-radius:14px;
+                    background:#f8fafc;
+                ">
+
+                    <h3 style="
+                        margin:0 0 14px;
+                        color:#0f172a;
+                    ">
+                        ⚠️ Operational Alerts
+                    </h3>
+
+                    <div style="
+                        display:grid;
+                        grid-template-columns:
+                        repeat(auto-fit,minmax(200px,1fr));
+                        gap:12px;
+                    ">
+
+                        ${alertCard(
+                            "💊",
+                            "Low Stock",
+                            alerts.lowStock?.length || 0
+                        )}
+
+                        ${alertCard(
+                            "📅",
+                            "Pending Appointments",
+                            alerts.pendingAppointments?.length || 0
+                        )}
+
+                        ${alertCard(
+                            "💰",
+                            "Unpaid Bills",
+                            alerts.unpaidBills?.length || 0
+                        )}
+
+                    </div>
+
+                </div>
+
+                <div style="
+                    margin-top:24px;
+                ">
+
+                    <h3 style="
+                        margin-bottom:12px;
+                        color:#0f172a;
+                    ">
+                        🏥 Doctors by Department
+                    </h3>
+
+                    <div id="cc-departments"
+                        style="
+                            display:grid;
+                            grid-template-columns:
+                            repeat(auto-fit,minmax(160px,1fr));
+                            gap:10px;
+                        ">
+                    </div>
+
+                </div>
+
+                <div style="
+                    margin-top:24px;
+                ">
+
+                    <h3 style="
+                        margin-bottom:12px;
+                        color:#0f172a;
+                    ">
+                        🔐 Recent Audit Activity
+                    </h3>
+
+                    <div id="cc-audit"
+                        style="
+                            overflow:auto;
+                        ">
+                    </div>
+
+                </div>
+            `;
+
+            const target =
+                document.querySelector("main") ||
+                document.querySelector(".container") ||
+                document.body;
+
+            target.appendChild(section);
+
+            document.getElementById(
+                "cc-v2-refresh"
+            ).onclick = loadControlCenterV2;
+
+            renderDepartments(
+                data.departments || {}
+            );
+
+            renderAudit(
+                data.recent?.audit || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Command Center V2:",
+                error
+            );
+        }
+    }
+
+
+    function controlCard(icon, title, value, sub) {
+
+        return `
+            <div style="
+                padding:17px;
+                border:1px solid #e2e8f0;
+                border-radius:14px;
+                background:#fff;
+            ">
+
+                <div style="font-size:24px;">
+                    ${icon}
+                </div>
+
+                <div style="
+                    margin-top:7px;
+                    font-weight:700;
+                    color:#0f172a;
+                ">
+                    ${title}
+                </div>
+
+                <div style="
+                    font-size:26px;
+                    font-weight:800;
+                    color:#2563eb;
+                    margin-top:3px;
+                ">
+                    ${Number(value || 0)}
+                </div>
+
+                <div style="
+                    font-size:12px;
+                    color:#64748b;
+                ">
+                    ${sub}
+                </div>
+
+            </div>
+        `;
+    }
+
+
+    function alertCard(icon, title, value) {
+
+        return `
+            <div style="
+                padding:15px;
+                border-radius:12px;
+                background:#fff;
+                border:1px solid #e2e8f0;
+            ">
+
+                <div style="font-size:21px;">
+                    ${icon}
+                </div>
+
+                <div style="
+                    margin-top:6px;
+                    font-weight:700;
+                ">
+                    ${title}
+                </div>
+
+                <div style="
+                    font-size:24px;
+                    font-weight:800;
+                    color:#dc2626;
+                ">
+                    ${Number(value || 0)}
+                </div>
+
+            </div>
+        `;
+    }
+
+
+    function renderDepartments(departments) {
+
+        const host =
+            document.getElementById(
+                "cc-departments"
+            );
+
+        if (!host) return;
+
+        host.innerHTML = "";
+
+        Object.entries(departments).forEach(
+            ([name, count]) => {
+
+                const div =
+                    document.createElement("div");
+
+                div.style.cssText = `
+                    padding:13px;
+                    border:1px solid #e2e8f0;
+                    border-radius:10px;
+                    background:#f8fafc;
+                `;
+
+                div.innerHTML = `
+                    <strong>${name}</strong>
+                    <div style="
+                        margin-top:4px;
+                        color:#2563eb;
+                        font-weight:700;
+                    ">
+                        ${count} doctor(s)
+                    </div>
+                `;
+
+                host.appendChild(div);
+            }
+        );
+    }
+
+
+    function renderAudit(events) {
+
+        const host =
+            document.getElementById(
+                "cc-audit"
+            );
+
+        if (!host) return;
+
+        if (!events.length) {
+
+            host.innerHTML = `
+                <div style="
+                    padding:16px;
+                    border-radius:10px;
+                    background:#f8fafc;
+                    color:#64748b;
+                ">
+                    No audit events recorded yet.
+                </div>
+            `;
+
+            return;
+        }
+
+        let html = `
+            <table style="
+                width:100%;
+                border-collapse:collapse;
+                min-width:600px;
+            ">
+
+            <thead>
+                <tr>
+                    <th style="text-align:left;padding:10px;">
+                        Event
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Time
+                    </th>
+
+                    <th style="text-align:left;padding:10px;">
+                        Details
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+        `;
+
+        events.forEach(event => {
+
+            html += `
+                <tr>
+
+                    <td style="
+                        padding:10px;
+                        border-top:1px solid #e2e8f0;
+                        font-weight:600;
+                    ">
+                        ${event.event || event.action || "-"}
+                    </td>
+
+                    <td style="
+                        padding:10px;
+                        border-top:1px solid #e2e8f0;
+                        font-size:12px;
+                    ">
+                        ${event.timestamp || event.createdAt || "-"}
+                    </td>
+
+                    <td style="
+                        padding:10px;
+                        border-top:1px solid #e2e8f0;
+                        font-size:12px;
+                    ">
+                        ${JSON.stringify(event).slice(0,220)}
+                    </td>
+
+                </tr>
+            `;
+        });
+
+        html += `
+            </tbody>
+            </table>
+        `;
+
+        host.innerHTML = html;
+    }
+
+
+    setTimeout(
+        loadControlCenterV2,
+        1300
+    );
+
+})();

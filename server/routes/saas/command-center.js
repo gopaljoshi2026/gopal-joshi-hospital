@@ -1550,3 +1550,140 @@ router.get("/resources", (req, res) => {
     }
 });
 
+
+
+/* ============================================================
+   COMMAND_CENTER_CONTROL_V2
+   ============================================================ */
+
+router.get("/control-center", (req, res) => {
+    try {
+
+        const base = path.join(__dirname, "../../data");
+
+        const read = (file, fallback = []) => {
+            try {
+                const p = path.join(base, file);
+                if (!fs.existsSync(p)) return fallback;
+
+                const raw = fs.readFileSync(p, "utf8")
+                    .replace(/^\uFEFF/, "")
+                    .trim();
+
+                if (!raw) return fallback;
+
+                const data = JSON.parse(raw);
+                return Array.isArray(data) ? data : fallback;
+            } catch (e) {
+                return fallback;
+            }
+        };
+
+        const doctors = read("doctors.json");
+        const medicines = read("medicines.json");
+        const patients = read("patients.json");
+        const appointments = read("appointments.json");
+        const bills = read("bills.json");
+
+        let workflow = {
+            visits: [],
+            consultations: [],
+            prescriptions: [],
+            labOrders: [],
+            labResults: [],
+            pharmacyOrders: [],
+            billingLinks: [],
+            timeline: [],
+            audit: []
+        };
+
+        try {
+            const p = path.join(base, "clinical-workflow.json");
+
+            if (fs.existsSync(p)) {
+                const raw = fs.readFileSync(p, "utf8")
+                    .replace(/^\uFEFF/, "")
+                    .trim();
+
+                if (raw) workflow = JSON.parse(raw);
+            }
+        } catch (e) {}
+
+        const lowStock = medicines.filter(m => {
+            const stock = Number(m.stock ?? 0);
+            const reorder = Number(m.reorderLevel ?? 0);
+            return stock <= reorder;
+        });
+
+        const pendingAppointments = appointments.filter(a =>
+            ["pending","scheduled","booked","confirmed"]
+                .includes(String(a.status || "").toLowerCase())
+        );
+
+        const unpaidBills = bills.filter(b =>
+            !["paid","completed","settled"]
+                .includes(String(b.paymentStatus || b.status || "").toLowerCase())
+        );
+
+        const workflowAudit = workflow.audit || [];
+
+        const departments = {};
+
+        doctors.forEach(d => {
+            const dept = d.department || "General";
+            departments[dept] = (departments[dept] || 0) + 1;
+        });
+
+        res.json({
+            success: true,
+
+            summary: {
+                doctors: doctors.length,
+                medicines: medicines.length,
+                patients: patients.length,
+                appointments: appointments.length,
+                bills: bills.length,
+
+                visits: (workflow.visits || []).length,
+                consultations: (workflow.consultations || []).length,
+                prescriptions: (workflow.prescriptions || []).length,
+                labOrders: (workflow.labOrders || []).length,
+                labResults: (workflow.labResults || []).length,
+                pharmacyOrders: (workflow.pharmacyOrders || []).length,
+
+                lowStockCount: lowStock.length,
+                pendingAppointments: pendingAppointments.length,
+                unpaidBills: unpaidBills.length,
+
+                auditEvents: workflowAudit.length
+            },
+
+            alerts: {
+                lowStock: lowStock.slice(0, 25),
+                pendingAppointments: pendingAppointments.slice(0, 25),
+                unpaidBills: unpaidBills.slice(0, 25)
+            },
+
+            departments,
+
+            recent: {
+                patients: patients.slice(-10).reverse(),
+                appointments: appointments.slice(-10).reverse(),
+                bills: bills.slice(-10).reverse(),
+                visits: (workflow.visits || []).slice(-10).reverse(),
+                prescriptions: (workflow.prescriptions || []).slice(-10).reverse(),
+                labOrders: (workflow.labOrders || []).slice(-10).reverse(),
+                pharmacyOrders: (workflow.pharmacyOrders || []).slice(-10).reverse(),
+                audit: workflowAudit.slice(-15).reverse()
+            }
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+});
+
