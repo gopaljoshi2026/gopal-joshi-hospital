@@ -4,6 +4,7 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+app.use('/personal-panels', express.static(path.join(__dirname, '..', 'personal-panels')));
 
 const PORT =
     Number(process.env.PORT) || 5000;
@@ -386,4 +387,5 @@ app.listen(
 
     }
 );
+
 
