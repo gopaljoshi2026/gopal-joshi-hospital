@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
@@ -209,36 +209,41 @@ function getDoctors(hospitalId) {
 
 function getAppointments(hospitalId) {
     const db = readDatabase();
-    const localAppointments = db.appointments.filter(function(item) {
-        return item.hospitalId === hospitalId;
-    });
+    const localAppointments = (Array.isArray(db.appointments) ? db.appointments : [])
+        .filter(function(item) {
+            return item.hospitalId === hospitalId;
+        });
 
     const appointmentModel = getAppointmentModel();
 
-    if (!appointmentModel) {
-        return localAppointments;
+    if (appointmentModel) {
+        try {
+            if (typeof appointmentModel.getAppointmentsByHospital === "function") {
+                const result = appointmentModel.getAppointmentsByHospital(hospitalId);
+                if (Array.isArray(result) && result.length > 0) return result;
+            }
+            if (typeof appointmentModel.getAllAppointments === "function") {
+                const result = appointmentModel.getAllAppointments();
+                if (Array.isArray(result) && result.length > 0) {
+                    const filtered = result.filter(function(item) {
+                        return item.hospitalId === hospitalId;
+                    });
+                    if (filtered.length > 0) return filtered;
+                }
+            }
+        } catch (error) {}
     }
 
-    try {
-        if (typeof appointmentModel.getAppointmentsByHospital === "function") {
-            const appointments =
-                appointmentModel.getAppointmentsByHospital(hospitalId);
-
-            if (Array.isArray(appointments)) {
-                return appointments;
-            }
-        }
-    } catch (error) {}
+    if (localAppointments.length > 0) return localAppointments;
 
     try {
-        if (typeof appointmentModel.getAllAppointments === "function") {
-            const appointments = appointmentModel.getAllAppointments();
-
-            if (Array.isArray(appointments)) {
-                return appointments.filter(function(item) {
-                    return item.hospitalId === hospitalId;
-                });
-            }
+        const saved = JSON.parse(
+            fs.readFileSync(path.join(DATA_DIR, "appointments.json"), "utf8")
+        );
+        if (Array.isArray(saved)) {
+            return saved.filter(function(item) {
+                return item.hospitalId === hospitalId;
+            });
         }
     } catch (error) {}
 
@@ -405,11 +410,27 @@ function getBillingSummary(hospitalId) {
 
 function getPatients(hospitalId) {
     const db = readDatabase();
+    const currentPatients = (Array.isArray(db.patients) ? db.patients : [])
+        .filter(function(patient) {
+            return patient.hospitalId === hospitalId &&
+                patient.status !== "archived";
+        });
 
-    return db.patients.filter(function(patient) {
-        return patient.hospitalId === hospitalId &&
-            patient.status !== "archived";
-    });
+    if (currentPatients.length > 0) return currentPatients;
+
+    try {
+        const saved = JSON.parse(
+            fs.readFileSync(path.join(DATA_DIR, "patients.json"), "utf8")
+        );
+        if (Array.isArray(saved)) {
+            return saved.filter(function(patient) {
+                return patient.hospitalId === hospitalId &&
+                    patient.status !== "archived";
+            });
+        }
+    } catch (error) {}
+
+    return currentPatients;
 }
 
 /* =========================================================
