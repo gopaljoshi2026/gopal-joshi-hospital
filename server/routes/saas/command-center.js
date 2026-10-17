@@ -676,7 +676,7 @@ function buildDashboard(hospitalId) {
 
         alerts: alerts,
 
-        appointments: todayAppointments.slice(0, 10),
+        appointments: appointments.slice().sort(function(a, b) { return String(b.date || b.createdAt || "").localeCompare(String(a.date || a.createdAt || "")); }).slice(0, 10),
 
         beds: {
             total: beds.length,
