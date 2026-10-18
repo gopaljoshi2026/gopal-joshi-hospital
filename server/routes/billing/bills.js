@@ -6,7 +6,7 @@ const {
     getBillsByHospital,
     getBillById,
     updateBill
-} = require("../../models/bill");
+} = require("../../models/Bill");
 
 
 // ===============================
