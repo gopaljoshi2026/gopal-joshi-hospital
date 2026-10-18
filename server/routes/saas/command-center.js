@@ -256,46 +256,40 @@ function getAppointments(hospitalId) {
 
 function getPharmacySummary(hospitalId) {
     const medicineModel = getMedicineModel();
-
-    if (!medicineModel) {
-        return {
-            totalMedicines: 0,
-            totalStock: 0,
-            lowStock: 0,
-            expiringSoon: 0,
-            expired: 0
-        };
-    }
-
     let medicines = [];
 
     try {
-        if (typeof medicineModel.getMedicinesByHospital === "function") {
+        if (medicineModel &&
+            typeof medicineModel.getMedicinesByHospital === "function") {
             medicines = medicineModel.getMedicinesByHospital(hospitalId);
         }
-    } catch (error) {}
 
-    try {
-        if (!medicines.length &&
+        if ((!Array.isArray(medicines) || medicines.length === 0) &&
+            medicineModel &&
             typeof medicineModel.getAllMedicines === "function") {
             medicines = medicineModel.getAllMedicines();
-
-            if (Array.isArray(medicines)) {
-                medicines = medicines.filter(function(item) {
-                    return !item.hospitalId ||
-                        item.hospitalId === hospitalId;
-                });
-            }
         }
-    } catch (error) {}
-
-    if (!Array.isArray(medicines)) {
+    } catch (error) {
         medicines = [];
     }
 
+    if (!Array.isArray(medicines) || medicines.length === 0) {
+        try {
+            const saved = JSON.parse(
+                fs.readFileSync(path.join(DATA_DIR, "medicines.json"), "utf8").replace(/^\uFEFF/, "")
+            );
+            medicines = Array.isArray(saved) ? saved : [];
+        } catch (error) {
+            medicines = [];
+        }
+    }
+
+    medicines = medicines.filter(function(item) {
+        return !item.hospitalId || item.hospitalId === hospitalId;
+    });
+
     const now = new Date();
     const next30Days = new Date();
-
     next30Days.setDate(next30Days.getDate() + 30);
 
     let totalStock = 0;
@@ -305,32 +299,23 @@ function getPharmacySummary(hospitalId) {
 
     medicines.forEach(function(medicine) {
         const stock = safeNumber(
-            medicine.stock !== undefined
-                ? medicine.stock
-                : medicine.quantity
+            medicine.stock !== undefined ? medicine.stock : medicine.quantity
         );
-
         totalStock += stock;
 
         const minimumStock = safeNumber(
-            medicine.minimumStock !== undefined
-                ? medicine.minimumStock
-                : medicine.minStock
+            medicine.minimumStock !== undefined ? medicine.minimumStock :
+            medicine.minStock !== undefined ? medicine.minStock :
+            medicine.reorderLevel
         );
 
-        if (minimumStock > 0 && stock <= minimumStock) {
-            lowStock++;
-        }
+        if (minimumStock > 0 && stock <= minimumStock) lowStock++;
 
         if (medicine.expiryDate) {
             const expiry = new Date(medicine.expiryDate);
-
             if (!Number.isNaN(expiry.getTime())) {
-                if (expiry < now) {
-                    expired++;
-                } else if (expiry <= next30Days) {
-                    expiringSoon++;
-                }
+                if (expiry < now) expired++;
+                else if (expiry <= next30Days) expiringSoon++;
             }
         }
     });
@@ -343,56 +328,54 @@ function getPharmacySummary(hospitalId) {
         expired: expired
     };
 }
-
 /* =========================================================
    BILLING
 ========================================================= */
 
 function getBillingSummary(hospitalId) {
     const billModel = getBillModel();
-
-    if (!billModel) {
-        return {
-            totalBills: 0,
-            todayRevenue: 0,
-            pendingAmount: 0
-        };
-    }
-
     let bills = [];
 
     try {
-        if (typeof billModel.getBillsByHospital === "function") {
+        if (billModel &&
+            typeof billModel.getBillsByHospital === "function") {
             bills = billModel.getBillsByHospital(hospitalId);
         }
-    } catch (error) {}
-
-    if (!Array.isArray(bills)) {
+    } catch (error) {
         bills = [];
     }
 
-    const today = todayDate();
+    if (!Array.isArray(bills) || bills.length === 0) {
+        try {
+            const saved = JSON.parse(
+                fs.readFileSync(path.join(DATA_DIR, "bills.json"), "utf8").replace(/^\uFEFF/, "")
+            );
+            bills = Array.isArray(saved) ? saved : [];
+        } catch (error) {
+            bills = [];
+        }
+    }
 
+    bills = bills.filter(function(bill) {
+        return bill.hospitalId === hospitalId;
+    });
+
+    const today = todayDate();
     let todayRevenue = 0;
     let pendingAmount = 0;
 
     bills.forEach(function(bill) {
         const total = safeNumber(bill.total);
+        const status = String(bill.paymentStatus || "").toLowerCase();
+        const billDate = bill.createdAt
+            ? String(bill.createdAt).slice(0, 10)
+            : "";
 
-        const billDate =
-            bill.createdAt
-                ? String(bill.createdAt).slice(0, 10)
-                : "";
-
-        if (billDate === today &&
-            bill.paymentStatus !== "cancelled") {
+        if (billDate === today && status !== "cancelled") {
             todayRevenue += total;
         }
 
-        if (
-            bill.paymentStatus === "pending" ||
-            bill.paymentStatus === "partial"
-        ) {
+        if (status === "pending" || status === "partial") {
             pendingAmount += total;
         }
     });
@@ -403,11 +386,6 @@ function getBillingSummary(hospitalId) {
         pendingAmount: pendingAmount
     };
 }
-
-/* =========================================================
-   PATIENTS
-========================================================= */
-
 function getPatients(hospitalId) {
     const db = readDatabase();
     const currentPatients = (Array.isArray(db.patients) ? db.patients : [])
@@ -630,7 +608,7 @@ function buildDashboard(hospitalId) {
             module: "Billing",
             title: "Pending payments",
             message:
-                "â‚¹" +
+                "\u20B9" +
                 billing.pendingAmount.toLocaleString("en-IN") +
                 " pending amount."
         });

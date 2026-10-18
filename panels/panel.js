@@ -1,4 +1,4 @@
-﻿(function(){
+(function(){
 
 const panel =
     window.HOSPITAL_PANEL ||
@@ -310,7 +310,7 @@ async function loadDashboard(){
             stats.modules;
 
         document.getElementById(
-            "audit"
+            "audit-events-live"
         ).textContent =
             stats.auditLogs;
     }
@@ -359,62 +359,104 @@ async function loadDashboard(){
       </div>`;
 }
 
-window.loadRecords =
-async function(){
+window.loadRecords = async function(){
 
-    const module =
-        panel === "command-center"
-            ? "dashboard"
-            : panel;
+    const target = document.getElementById("records");
+    if (!target) return;
 
-    const result =
-        await api(
-            "/api/saas/control/records/" +
-            encodeURIComponent(module)
+    target.innerHTML = "<p class='muted'>Loading records...</p>";
+
+    try {
+        if (panel === "billing") {
+            const hospital =
+                JSON.parse(localStorage.getItem("hospitalos_hospital") || "{}");
+            const user =
+                JSON.parse(localStorage.getItem("hospitalos_user") || "{}");
+            const hospitalId = hospital.id || user.hospitalId;
+
+            if (!hospitalId) {
+                throw new Error("Hospital ID not found");
+            }
+
+            const result = await api(
+                "/api/billing?hospitalId=" + encodeURIComponent(hospitalId)
+            );
+
+            if (!result || result.success === false) {
+                throw new Error(result?.message || "Billing records failed to load");
+            }
+
+            const bills = Array.isArray(result.bills) ? result.bills : [];
+
+            if (!bills.length) {
+                target.innerHTML = "<p class='muted'>No billing records found.</p>";
+                return;
+            }
+
+            target.innerHTML = `
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Bill ID</th>
+                    <th>Patient</th>
+                    <th>Amount</th>
+                    <th>Payment Status</th>
+                    <th>Created At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${bills.map(b => `
+                    <tr>
+                      <td>${esc(b.id || b._id || "—")}</td>
+                      <td>${esc(b.patientName || b.patientId || "—")}</td>
+                      <td>₹${esc(String(b.total ?? 0))}</td>
+                      <td>${esc(b.paymentStatus || b.status || "Pending")}</td>
+                      <td>${esc(b.createdAt || "—")}</td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>`;
+            return;
+        }
+
+        const module = panel === "command-center" ? "dashboard" : panel;
+        const result = await api(
+            "/api/saas/control/records/" + encodeURIComponent(module)
         );
 
-    const target =
-        document.getElementById(
-            "records"
-        );
+        if (!result || !result.success) {
+            throw new Error(result?.message || "Unable to load records");
+        }
 
-    if(!target) return;
+        const records = Array.isArray(result.records) ? result.records : [];
 
-    if(!result.success){
-        target.innerHTML =
-            "<p>Unable to load records.</p>";
-        return;
+        if (!records.length) {
+            target.innerHTML = "<p class='muted'>No records yet.</p>";
+            return;
+        }
+
+        target.innerHTML = `
+          <table class="table">
+            <thead>
+              <tr><th>ID</th><th>Created By</th><th>Created At</th><th>Data</th></tr>
+            </thead>
+            <tbody>
+              ${records.map(r => `
+                <tr>
+                  <td>${esc(r.id)}</td>
+                  <td>${esc(r.createdByName)}</td>
+                  <td>${esc(r.createdAt)}</td>
+                  <td>${esc(JSON.stringify(r.data))}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>`;
+
+    } catch (error) {
+        console.error("Load records error:", error);
+        target.innerHTML = "<p>Unable to load records. Check browser console.</p>";
     }
-
-    if(!result.records.length){
-        target.innerHTML =
-            "<p class='muted'>No records yet.</p>";
-        return;
-    }
-
-    target.innerHTML = `
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Created By</th>
-            <th>Created At</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${result.records.map(r => `
-            <tr>
-              <td>${esc(r.id)}</td>
-              <td>${esc(r.createdByName)}</td>
-              <td>${esc(r.createdAt)}</td>
-              <td>${esc(JSON.stringify(r.data))}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>`;
 };
-
 async function boot(){
 
     if(!token){
@@ -2269,4 +2311,3 @@ setTimeout(connect,1500);
     setTimeout(updateAuditEvents,5000);
 
 })();
-

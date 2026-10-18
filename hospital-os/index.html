@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -1111,101 +1111,77 @@ function openModule(module){
 
 }
 
-async function loadRecords(){
+async function loadRecords() {
+    const body = document.getElementById("recordsBody");
+    if (!body) return;
 
-    const body =
-        document.getElementById(
-            "recordsBody"
-        );
+    body.innerHTML = "<tr><td colspan='5'>Loading...</td></tr>";
 
-    body.innerHTML =
-        "<tr><td colspan='4'>Loading...</td></tr>";
+    try {
+        let endpoint = "/api/saas/control/records/" +
+            encodeURIComponent(currentModule);
 
-    try{
+        if (currentModule === "billing") {
+            const hospitalId =
+                storedHospital?.id || storedUser?.hospitalId;
 
-        const response =
-            await api(
-                "/api/saas/control/records/" +
-                currentModule
-            );
+            if (!hospitalId) {
+                throw new Error("Hospital ID not found");
+            }
 
-        const data =
-            await response.json();
+            endpoint = "/api/billing?hospitalId=" +
+                encodeURIComponent(hospitalId);
+        }
 
-        const records =
-            Array.isArray(data.records)
+        const response = await api(endpoint);
+        const data = await response.json();
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || "Records load failed");
+        }
+
+        const records = currentModule === "billing"
+            ? (Array.isArray(data.bills) ? data.bills : [])
+            : (Array.isArray(data.records)
                 ? data.records
-                : Array.isArray(data)
-                    ? data
-                    : [];
+                : Array.isArray(data) ? data : []);
 
-        if(!records.length){
-
+        if (!records.length) {
             body.innerHTML =
-                "<tr><td colspan='4'>No records yet</td></tr>";
-
+                "<tr><td colspan='5'>No records yet</td></tr>";
             return;
         }
 
+        body.innerHTML = records.slice(0, 100).map(record => {
+            const id = record.id || record._id || "—";
+            const name = currentModule === "billing"
+                ? (record.patientName || record.patientId || "—")
+                : (record.name || record.patientName ||
+                   record.patientId || record.title || "—");
+            const status = currentModule === "billing"
+                ? (record.paymentStatus || record.status || "Pending")
+                : (record.status || "Active");
+            const created = record.createdAt || record.updatedAt || "—";
+
+            const amount = currentModule === "billing"
+                ? "<td>₹" + escapeHtml(String(record.total ?? 0)) + "</td>"
+                : "";
+
+            return "<tr>" +
+                "<td>" + escapeHtml(String(id)) + "</td>" +
+                "<td>" + escapeHtml(String(name)) + "</td>" +
+                "<td><span class='status'>" +
+                    escapeHtml(String(status)) + "</span></td>" +
+                "<td>" + escapeHtml(String(created)) + "</td>" +
+                amount + "</tr>";
+        }).join("");
+
+    } catch (error) {
+        console.error("Load records error:", error);
         body.innerHTML =
-            records
-                .slice(0,100)
-                .map(record => {
-
-                    const id =
-                        record.id ||
-                        record._id ||
-                        "—";
-
-                    const name =
-                        record.name ||
-                        record.patientName ||
-                        record.patientId ||
-                        record.title ||
-                        "—";
-
-                    const status =
-                        record.status ||
-                        "Active";
-
-                    const created =
-                        record.createdAt ||
-                        record.updatedAt ||
-                        "—";
-
-                    return `
-                    <tr>
-                        <td>${escapeHtml(id)}</td>
-                        <td>${escapeHtml(name)}</td>
-                        <td>
-                            <span class="status">
-                                ${escapeHtml(status)}
-                            </span>
-                        </td>
-                        <td>
-                            ${escapeHtml(
-                                String(created)
-                            )}
-                        </td>
-                    </tr>
-                    `;
-
-                })
-                .join("");
-
-    }catch(error){
-
-        body.innerHTML =
-            `<tr>
-                <td colspan="4">
-                    Unable to load module
-                </td>
-            </tr>`;
-
+            "<tr><td colspan='5'>Unable to load records. Check console.</td></tr>";
     }
-
 }
-
 function newRecord(){
 
     document.getElementById(
@@ -1443,4 +1419,3 @@ loadDashboard();
 
 </body>
 </html>
-
